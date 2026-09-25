@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Tests;
 
-use Atrium\Atrium\AtriumServiceProvider;
+use JayI\Atrium\AtriumServiceProvider;
 use JayI\Polycart\PolycartServiceProvider;
 use JayI\Polycart\Tests\Fixtures\Models\Organization;
 use JayI\Polycart\Tests\Fixtures\Models\Person;

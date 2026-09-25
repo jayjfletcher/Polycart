@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JayI\Polycart;
 
-use Atrium\Atrium\Facades\Atrium;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use JayI\Atrium\Facades\Atrium;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Contracts\PriceResolver;
 use JayI\Polycart\Cortex\CortexIntegration;

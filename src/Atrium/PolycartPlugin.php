@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Atrium;
 
-use Atrium\Atrium\Navigation\NavItem;
-use Atrium\Atrium\Plugins\Plugin;
-use Atrium\Atrium\Search\SearchResult;
-use Atrium\Atrium\Search\SearchSource;
-use Atrium\Atrium\Widgets\WidgetDefinition;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Route;
+use JayI\Atrium\Navigation\NavItem;
+use JayI\Atrium\Plugins\Plugin;
+use JayI\Atrium\Search\SearchResult;
+use JayI\Atrium\Search\SearchSource;
+use JayI\Atrium\Widgets\WidgetDefinition;
 use JayI\Polycart\Enums\CartSource;
 use JayI\Polycart\Http\Middleware\CartSource as CartSourceMiddleware;
 use JayI\Polycart\Http\Ui\CartTypeUiController;

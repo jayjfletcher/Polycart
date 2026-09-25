@@ -2,7 +2,7 @@ laravel: '@testbench'
 
 providers:
   - Laravel\Mcp\Server\McpServiceProvider
-  - Atrium\Atrium\AtriumServiceProvider
+  - JayI\Atrium\AtriumServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
 
 migrations:
