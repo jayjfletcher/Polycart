@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace JayI\Polycart\Access;
+
+use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Config\Repository as Config;
+use Illuminate\Database\Eloquent\Model;
+use JayI\Polycart\Models\Cart;
+
+/**
+ * How the JSON API and MCP tools decide whether the caller may act.
+ *
+ * With `polycart.authorization` on, every call acts as the authenticated
+ * user: they only see carts they can access, they own the carts they start,
+ * and each change goes through the Gate, so a policy the application
+ * registers for Cart applies here too. With it off, the route middleware is
+ * the only check — for trusted server-to-server integrations.
+ */
+final class Authorizer
+{
+    public function __construct(
+        private readonly Config $config,
+        private readonly Gate $gate,
+    ) {}
+
+    public function enabled(): bool
+    {
+        return $this->config->get('polycart.authorization', true) === true;
+    }
+
+    /**
+     * Whether the caller may use the surface at all.
+     */
+    public function authenticated(?Authenticatable $user): bool
+    {
+        return ! $this->enabled() || $user instanceof Model;
+    }
+
+    /**
+     * The model calls act as, or null when authorization is off.
+     */
+    public function actor(?Authenticatable $user): ?Model
+    {
+        return $this->enabled() && $user instanceof Model ? $user : null;
+    }
+
+    /**
+     * @param  array<int, mixed>  $arguments
+     */
+    public function can(?Authenticatable $user, string $ability, Cart $cart, array $arguments = []): bool
+    {
+        if (! $this->enabled()) {
+            return true;
+        }
+
+        return $user !== null && $this->gate->forUser($user)->allows($ability, [$cart, ...$arguments]);
+    }
+}

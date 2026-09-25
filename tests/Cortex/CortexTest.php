@@ -1,0 +1,91 @@
+<?php
+
+declare(strict_types=1);
+
+use JayI\Cortex\Actions\CreateMcpInstructionVersionAction;
+use JayI\Cortex\Actions\CreateToolDescriptionVersionAction;
+use JayI\Cortex\Facades\Cortex;
+use JayI\Cortex\Mcp\McpServerRegistry;
+use JayI\Cortex\Tools\ToolRegistry;
+use JayI\Polycart\Cortex\CortexIntegration;
+use JayI\Polycart\Facades\Polycart;
+use JayI\Polycart\Mcp\PolycartServer;
+use JayI\Polycart\Mcp\Tools\ListCartsTool;
+use JayI\Polycart\Models\Cart;
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\Tool as AgentTool;
+use Laravel\Ai\Events\InvokingTool;
+use Laravel\Ai\Events\ToolInvoked;
+use Laravel\Ai\Tools\Request;
+use Laravel\Mcp\Server\Transport\FakeTransporter;
+
+it('registers the MCP server with Cortex', function (): void {
+    $servers = app(McpServerRegistry::class);
+
+    expect($servers->has('polycart'))->toBeTrue()
+        ->and($servers->get('polycart'))->toBe(PolycartServer::class)
+        ->and($servers->defaultInstructions('polycart'))->toStartWith('Manage carts of every type');
+});
+
+it('offers every cart tool to Cortex agents', function (): void {
+    $tools = app(ToolRegistry::class);
+
+    expect($tools->has('add-lines'))->toBeTrue()
+        ->and($tools->has('list-cart-activity'))->toBeTrue()
+        ->and(array_intersect($tools->names(), ['list-carts', 'share-cart', 'remove-lines']))->toHaveCount(3)
+        ->and($tools->get('create-cart'))->toBeInstanceOf(AgentTool::class);
+});
+
+it('offers only the tools listed in config', function (): void {
+    config()->set('polycart.cortex.tools', ['list-carts', 'show-cart']);
+    app()->forgetInstance(ToolRegistry::class);
+
+    $tools = app(ToolRegistry::class);
+
+    expect($tools->has('list-carts'))->toBeTrue()
+        ->and($tools->has('show-cart'))->toBeTrue()
+        ->and($tools->has('add-lines'))->toBeFalse();
+});
+
+it('serves the instructions published in Cortex', function (): void {
+    app(CreateMcpInstructionVersionAction::class)->execute('polycart', ['content' => 'Only ever touch quotes.', 'publish' => true]);
+
+    expect((new PolycartServer(new FakeTransporter))->createContext()->instructions)->toBe('Only ever touch quotes.');
+});
+
+it('serves tool descriptions published in Cortex, to MCP clients and agents alike', function (): void {
+    app(CreateToolDescriptionVersionAction::class)->execute('list-carts', ['content' => 'Find carts for the signed-in customer.', 'publish' => true]);
+
+    expect(app(ListCartsTool::class)->description())->toBe('Find carts for the signed-in customer.')
+        ->and(app(ToolRegistry::class)->get('list-carts')->description())->toBe('Find carts for the signed-in customer.');
+});
+
+it('lets an agent run a cart tool, recording cortex as the source', function (): void {
+    $tool = Cortex::tools()->get('create-cart');
+
+    // What an agent run does around each call.
+    $events = app('events');
+    $agent = Mockery::mock(Agent::class);
+    $events->dispatch(new InvokingTool('run', 'call', $agent, $tool, ['type' => 'quote']));
+    $result = $tool->handle(new Request(['type' => 'quote', 'label' => 'From an agent']));
+    $events->dispatch(new ToolInvoked('run', 'call', $agent, $tool, ['type' => 'quote'], $result, 1.0));
+
+    $quote = Cart::query()->sole();
+
+    expect((string) $result)->toContain('From an agent')
+        ->and($quote->source)->toBe('cortex')
+        ->and($quote->sources)->toBe(['cortex'])
+        ->and(Polycart::create('cart')->source)->toBe('code');
+});
+
+it('reports whether the integration is active', function (): void {
+    $integration = app(CortexIntegration::class);
+
+    expect($integration->active())->toBeTrue();
+
+    config()->set('polycart.cortex.enabled', false);
+
+    expect($integration->active())->toBeFalse()
+        ->and($integration->description('list-carts'))->toBeNull()
+        ->and($integration->instructions())->toBeNull();
+});
