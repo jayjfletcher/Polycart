@@ -9,10 +9,17 @@ use Illuminate\Http\JsonResponse;
 use JayI\Polycart\Actions\ActiveCartAction;
 use JayI\Polycart\Http\Request;
 use JayI\Polycart\Http\Resources\CartResource;
+use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Support\Morphs;
 
 final class ActiveCartRequest extends Request
 {
+    public function authorize(): bool
+    {
+        // Resolving the active cart starts one when there is none.
+        return parent::authorize() && $this->allows('create', Cart::class);
+    }
+
     public function rules(): array
     {
         $rules = ActiveCartAction::rules();

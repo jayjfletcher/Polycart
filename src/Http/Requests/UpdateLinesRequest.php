@@ -12,7 +12,7 @@ final class UpdateLinesRequest extends CartRequest
 {
     public function authorize(): bool
     {
-        return $this->allows('update', $this->cart());
+        return $this->allowsEach('update', $this->linesNamed(data_get($this->input('lines'), '*.id')));
     }
 
     public function rules(): array

@@ -7,10 +7,16 @@ namespace JayI\Polycart\Mcp\Requests;
 use JayI\Polycart\Actions\ListCartTypesAction;
 use JayI\Polycart\Http\Resources\CartTypeResource;
 use JayI\Polycart\Mcp\Request;
+use JayI\Polycart\Models\Cart;
 use Laravel\Mcp\ResponseFactory;
 
 final class ListCartTypesMcpRequest extends Request
 {
+    protected function authorize(): bool
+    {
+        return parent::authorize() && $this->allows('viewAny', Cart::class);
+    }
+
     protected function rules(): array
     {
         return ListCartTypesAction::rules();

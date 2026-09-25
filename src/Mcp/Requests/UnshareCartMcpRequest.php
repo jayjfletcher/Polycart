@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace JayI\Polycart\Mcp\Requests;
 
 use JayI\Polycart\Actions\UnshareCartAction;
+use JayI\Polycart\Models\CartMember;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 
@@ -12,7 +13,7 @@ final class UnshareCartMcpRequest extends CartRequest
 {
     protected function authorize(): bool
     {
-        return $this->allows('share', $this->cart());
+        return $this->allows('delete', $this->member());
     }
 
     protected function rules(): array
@@ -25,13 +26,18 @@ final class UnshareCartMcpRequest extends CartRequest
 
     protected function handle(array $validated): ResponseFactory
     {
-        $cart = $this->cart();
+        $member = $this->member();
 
+        app(UnshareCartAction::class)->execute($this->cart(), $member);
+
+        return Response::structured(['removed' => $member->id]);
+    }
+
+    private function member(): CartMember
+    {
         /** @var string $id */
-        $id = $validated['member'];
+        $id = $this->get('member');
 
-        app(UnshareCartAction::class)->execute($cart, $cart->members()->findOrFail($id));
-
-        return Response::structured(['removed' => $id]);
+        return $this->cart()->members()->findOrFail($id);
     }
 }

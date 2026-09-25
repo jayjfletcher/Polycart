@@ -96,7 +96,7 @@ $user->can('checkout', $cart);                // through CartPolicy
 Gate::forUser($user)->allows('checkout', $cart);
 ```
 
-You don't have to write a policy method for it. The bundled `CartPolicy` answers any ability it has no method for by looking it up in the type's roles.
+You don't have to write a policy method for it. The bundled `CartPolicy` answers any ability it has no method for by looking it up in the type's roles. The cart's owner passes every ability.
 
 This is how types without a checkout differ from types with one. A quote type simply has no `checkout` ability anywhere, so `can('checkout', $quote)` is always false.
 
@@ -223,38 +223,63 @@ public function checkout(Request $request, Cart $order)
 
 ## What the API and MCP check
 
-With `polycart.authorization` on, which is the default:
+With `polycart.authorization` on, which is the default, each call is checked against the policy `polycart.policies` gives the model it touches:
 
 | Operation | HTTP | MCP | Ability |
 | --- | --- | --- | --- |
-| List types | `GET /types` | `list-cart-types` | Signed in |
-| List carts | `GET /carts` | `list-carts` | Only accessible carts are returned |
-| Create or get active cart | `POST /carts`, `POST /carts/active` | `create-cart`, `active-cart` | Signed in. The user becomes the owner. `update` on the parent when `parent_id` is given. |
+| List types | `GET /types` | `list-cart-types` | `viewAny` on `Cart` |
+| List carts | `GET /carts` | `list-carts` | `viewAny` on `Cart`. Only accessible carts are returned. |
+| Create or get active cart | `POST /carts`, `POST /carts/active` | `create-cart`, `active-cart` | `create` on `Cart`. The user becomes the owner. `update` on the parent when `parent_id` is given. |
 | Show a cart | `GET /carts/{cart}` | `show-cart` | `view` |
 | Update, clear | `PATCH /carts/{cart}`, `POST .../clear` | `update-cart`, `clear-cart` | `update` |
-| Lines | `POST/PATCH/DELETE .../lines` | `add-lines`, `update-lines`, `remove-lines` | `update` |
+| Lines | `POST/PATCH/DELETE .../lines` | `add-lines`, `update-lines`, `remove-lines` | `create` on `CartLine` for the cart, then `update` or `delete` on each named line |
 | Delete | `DELETE /carts/{cart}` | `delete-cart` | `delete` |
 | Change status | `POST .../status` | `transition-cart` | `transitionAbility($from, $to)` |
 | Convert | `POST .../convert` | `convert-cart` | `conversionAbility($to)` |
 | Merge | `POST .../merge` | `merge-carts` | `update` on **both** carts |
-| Members, visibility | `.../members`, `.../visibility` | `list-members` (`view`), `share-cart`, `unshare-cart`, `set-visibility` (`share`) | as listed |
+| Members | `.../members` | `list-members`, `share-cart`, `unshare-cart` | `viewAny` and `create` on `CartMember` for the cart, `delete` on the member |
+| Activity | `.../activity` | `list-activity` | `viewAny` on `CartActivity` for the cart |
+| Visibility | `.../visibility` | `set-visibility` | `share` |
 
 A failed check returns `403` over HTTP and `Unauthorized.` over MCP. Turn `polycart.authorization` off only for trusted server-to-server callers.
 
-## Replacing the policy
+## Policies
 
-Polycart registers `JayI\Polycart\Access\CartPolicy` for `Cart` and every subclass. There are three ways to change it:
+Polycart registers a policy for each of its models from `polycart.policies`:
 
-- **Per ability:** add a method with the ability's name to a subclass of `CartPolicy`. It then takes precedence over the role lookup for that ability only.
-- **Whole policy:** register your own in a service provider. Application providers boot after package providers, so yours wins:
+```php
+'policies' => [
+    Cart::class => \JayI\Polycart\Policies\CartPolicy::class,
+    CartLine::class => \JayI\Polycart\Policies\CartLinePolicy::class,
+    CartMember::class => \JayI\Polycart\Policies\CartMemberPolicy::class,
+    CartActivity::class => \JayI\Polycart\Policies\CartActivityPolicy::class,
+],
+```
+
+What the bundled policies allow:
+
+- **`CartPolicy`**: a cart's owner may do anything with it. Everyone else gets what their role on the cart grants. Anyone signed in passes `viewAny` and `create`. The `Cart` entry also covers every type's subclass.
+- **`CartLinePolicy`**: reading lines needs `view` on the cart. Adding, changing or removing them needs `update`.
+- **`CartMemberPolicy`**: listing members needs `view` on the cart. Sharing, changing a role or unsharing needs `share`.
+- **`CartActivityPolicy`**: reading the log needs `view` on the cart. No ability changes it.
+
+The line, member and activity policies ask the Gate about the cart, so they follow whichever cart policy is registered.
+
+### Replacing a policy
+
+- **Per ability:** extend a bundled policy and add or override the method for that ability. Point its model at your class in `polycart.policies`.
+- **Whole policy:** point the model at your own class:
 
   ```php
-  Gate::policy(\JayI\Polycart\Models\Cart::class, App\Policies\CartPolicy::class);
+  'policies' => [
+      Cart::class => App\Policies\CartPolicy::class,
+      // ...
+  ],
   ```
 
 - **For one typed model:** Laravel's policy discovery finds `App\Policies\QuotePolicy` for `App\Models\Quote` before falling back to the base policy.
 
-The API and MCP go through the Gate, so a replaced policy applies there too.
+The API and MCP check every call through the Gate, so a replaced policy applies there too.
 
 ## Examples
 

@@ -238,7 +238,7 @@ Someone's role on a cart is the **strongest** of:
 $cart->roleFor($user);                   // 'editor', or null for no access
 $cart->allows($user, 'update');          // does their role grant this ability?
 
-$user->can('view', $cart);               // through the bundled CartPolicy
+$user->can('view', $cart);               // through the policy in polycart.policies
 $user->can('checkout', $cart);           // any ability the type defines
 $user->can('transition', [$cart, 'processing']);
 $user->can('convert', [$cart, 'order']);

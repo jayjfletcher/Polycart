@@ -16,7 +16,7 @@ final class DestroyLinesRequest extends CartRequest
 {
     public function authorize(): bool
     {
-        return $this->allows('update', $this->cart());
+        return $this->allowsEach('delete', $this->linesNamed($this->input('lines')));
     }
 
     public function rules(): array

@@ -8,7 +8,6 @@ use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Models\Cart;
 
 /**
  * How the JSON API and MCP tools decide whether the caller may act.
@@ -48,14 +47,18 @@ final class Authorizer
     }
 
     /**
+     * Whether the user may perform an ability on a model, or on a model class
+     * for abilities such as `viewAny` and `create`.
+     *
+     * @param  Model|class-string<Model>  $subject
      * @param  array<int, mixed>  $arguments
      */
-    public function can(?Authenticatable $user, string $ability, Cart $cart, array $arguments = []): bool
+    public function can(?Authenticatable $user, string $ability, Model|string $subject, array $arguments = []): bool
     {
         if (! $this->enabled()) {
             return true;
         }
 
-        return $user !== null && $this->gate->forUser($user)->allows($ability, [$cart, ...$arguments]);
+        return $user !== null && $this->gate->forUser($user)->allows($ability, [$subject, ...$arguments]);
     }
 }

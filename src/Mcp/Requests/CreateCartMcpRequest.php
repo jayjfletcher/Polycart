@@ -16,7 +16,7 @@ final class CreateCartMcpRequest extends Request
 {
     protected function authorize(): bool
     {
-        if (! parent::authorize()) {
+        if (! parent::authorize() || ! $this->allows('create', Cart::class)) {
             return false;
         }
 

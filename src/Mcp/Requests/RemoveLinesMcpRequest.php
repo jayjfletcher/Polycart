@@ -13,7 +13,7 @@ final class RemoveLinesMcpRequest extends CartRequest
 {
     protected function authorize(): bool
     {
-        return $this->allows('update', $this->cart());
+        return $this->allowsEach('delete', $this->linesNamed($this->get('lines')));
     }
 
     protected function rules(): array

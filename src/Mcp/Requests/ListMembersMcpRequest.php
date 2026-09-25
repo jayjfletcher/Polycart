@@ -6,13 +6,14 @@ namespace JayI\Polycart\Mcp\Requests;
 
 use JayI\Polycart\Actions\ListMembersAction;
 use JayI\Polycart\Http\Resources\CartMemberResource;
+use JayI\Polycart\Models\CartMember;
 use Laravel\Mcp\ResponseFactory;
 
 final class ListMembersMcpRequest extends CartRequest
 {
     protected function authorize(): bool
     {
-        return $this->allows('view', $this->cart());
+        return $this->allows('viewAny', CartMember::class, [$this->cart()]);
     }
 
     protected function rules(): array

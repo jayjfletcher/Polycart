@@ -7,12 +7,10 @@ namespace JayI\Polycart;
 use Atrium\Atrium\Facades\Atrium;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use JayI\Polycart\Access\CartPolicy;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Contracts\PriceResolver;
 use JayI\Polycart\Cortex\CortexIntegration;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Pricing\PurchasablePriceResolver;
 use JayI\Polycart\Support\SourceContext;
 use JayI\Polycart\Types\CartTypeRegistry;
@@ -43,9 +41,7 @@ class PolycartServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Registered for the base model, so it covers every type's subclass.
-        Gate::policy(Cart::class, CartPolicy::class);
-
+        $this->registerPolicies();
         $this->registerRoutes();
         $this->registerMcpServer();
         $this->registerAtriumPlugin();
@@ -76,6 +72,20 @@ class PolycartServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../lang' => $this->app->langPath('vendor/polycart'),
         ], ['polycart', 'polycart-lang']);
+    }
+
+    /**
+     * The Cart policy is registered for the base model, so it covers every
+     * type's subclass.
+     */
+    private function registerPolicies(): void
+    {
+        /** @var array<class-string, class-string> $policies */
+        $policies = $this->app->make('config')->get('polycart.policies', []);
+
+        foreach ($policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
     }
 
     /**

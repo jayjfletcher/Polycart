@@ -7,12 +7,13 @@ namespace JayI\Polycart\Http\Requests;
 use Illuminate\Http\JsonResponse;
 use JayI\Polycart\Actions\ListActivityAction;
 use JayI\Polycart\Http\Resources\CartActivityResource;
+use JayI\Polycart\Models\CartActivity;
 
 final class IndexActivityRequest extends CartRequest
 {
     public function authorize(): bool
     {
-        return $this->allows('view', $this->cart());
+        return $this->allows('viewAny', CartActivity::class, [$this->cart()]);
     }
 
     public function rules(): array

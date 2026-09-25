@@ -6,6 +6,7 @@ namespace JayI\Polycart\Mcp\Requests;
 
 use JayI\Polycart\Actions\AddLinesAction;
 use JayI\Polycart\Http\Resources\CartLineResource;
+use JayI\Polycart\Models\CartLine;
 use JayI\Polycart\Support\LineInput;
 use Laravel\Mcp\ResponseFactory;
 
@@ -13,7 +14,7 @@ final class AddLinesMcpRequest extends CartRequest
 {
     protected function authorize(): bool
     {
-        return $this->allows('update', $this->cart());
+        return $this->allows('create', CartLine::class, [$this->cart()]);
     }
 
     protected function rules(): array

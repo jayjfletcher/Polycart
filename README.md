@@ -344,7 +344,7 @@ With `polycart.authorization` on (the default), every call acts as the authentic
 
 - Lists show only the carts that user can access.
 - New carts are owned by that user.
-- Every change goes through the Gate using the role the cart's type gives the user.
+- Every call goes through the Gate, using the policies in `polycart.policies`. By default a cart's owner may do anything with it and everyone else gets what their role grants. Point a model at your own policy class to replace it.
 
 Turn authorization off only for trusted server-to-server use.
 

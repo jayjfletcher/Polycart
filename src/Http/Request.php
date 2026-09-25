@@ -7,7 +7,6 @@ namespace JayI\Polycart\Http;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use JayI\Polycart\Access\Authorizer;
-use JayI\Polycart\Models\Cart;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -18,7 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
  * implementation rather than two that drift.
  *
  * With `polycart.authorization` on, every request acts as the authenticated
- * user and each change goes through the Gate.
+ * user and each call is checked against the
+ * policies in `polycart.policies`.
  */
 abstract class Request extends FormRequest
 {
@@ -54,10 +54,29 @@ abstract class Request extends FormRequest
     }
 
     /**
+     * Check an ability against the model's policy from `polycart.policies`.
+     *
+     * @param  Model|class-string<Model>  $subject
      * @param  array<int, mixed>  $arguments
      */
-    protected function allows(string $ability, Cart $cart, array $arguments = []): bool
+    protected function allows(string $ability, Model|string $subject, array $arguments = []): bool
     {
-        return $this->authorizer()->can($this->user(), $ability, $cart, $arguments);
+        return $this->authorizer()->can($this->user(), $ability, $subject, $arguments);
+    }
+
+    /**
+     * Check an ability against every model given; an empty list passes.
+     *
+     * @param  iterable<int, Model>  $models
+     */
+    protected function allowsEach(string $ability, iterable $models): bool
+    {
+        foreach ($models as $model) {
+            if (! $this->allows($ability, $model)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -2,6 +2,14 @@
 
 declare(strict_types=1);
 
+use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Models\CartActivity;
+use JayI\Polycart\Models\CartLine;
+use JayI\Polycart\Models\CartMember;
+use JayI\Polycart\Policies\CartActivityPolicy;
+use JayI\Polycart\Policies\CartLinePolicy;
+use JayI\Polycart\Policies\CartMemberPolicy;
+use JayI\Polycart\Policies\CartPolicy;
 use JayI\Polycart\Types\ShoppingCart;
 
 return [
@@ -97,6 +105,26 @@ return [
     */
 
     'authorization' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Policies
+    |--------------------------------------------------------------------------
+    |
+    | The policy the Gate uses for each model. The JSON API and MCP tools
+    | check every call against these. By default a cart's owner may do
+    | anything, everyone else gets what their role grants, and lines, members
+    | and activity follow their cart. Point a model at your own class to
+    | replace its policy; the Cart entry covers every cart type's subclass.
+    |
+    */
+
+    'policies' => [
+        Cart::class => CartPolicy::class,
+        CartLine::class => CartLinePolicy::class,
+        CartMember::class => CartMemberPolicy::class,
+        CartActivity::class => CartActivityPolicy::class,
+    ],
 
     /*
     |--------------------------------------------------------------------------

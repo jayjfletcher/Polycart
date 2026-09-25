@@ -7,13 +7,14 @@ namespace JayI\Polycart\Http\Requests;
 use Illuminate\Http\JsonResponse;
 use JayI\Polycart\Actions\AddLinesAction;
 use JayI\Polycart\Http\Resources\CartLineResource;
+use JayI\Polycart\Models\CartLine;
 use JayI\Polycart\Support\LineInput;
 
 final class StoreLinesRequest extends CartRequest
 {
     public function authorize(): bool
     {
-        return $this->allows('update', $this->cart());
+        return $this->allows('create', CartLine::class, [$this->cart()]);
     }
 
     public function rules(): array

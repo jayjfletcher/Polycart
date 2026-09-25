@@ -6,6 +6,7 @@ namespace JayI\Polycart\Mcp\Requests;
 
 use JayI\Polycart\Actions\ShareCartAction;
 use JayI\Polycart\Http\Resources\CartMemberResource;
+use JayI\Polycart\Models\CartMember;
 use JayI\Polycart\Support\Morphs;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
@@ -14,7 +15,7 @@ final class ShareCartMcpRequest extends CartRequest
 {
     protected function authorize(): bool
     {
-        return $this->allows('share', $this->cart());
+        return $this->allows('create', CartMember::class, [$this->cart()]);
     }
 
     protected function rules(): array

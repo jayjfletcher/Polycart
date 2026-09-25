@@ -13,7 +13,7 @@ final class UpdateLinesMcpRequest extends CartRequest
 {
     protected function authorize(): bool
     {
-        return $this->allows('update', $this->cart());
+        return $this->allowsEach('update', $this->linesNamed(data_get($this->get('lines'), '*.id')));
     }
 
     protected function rules(): array
