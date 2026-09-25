@@ -14,7 +14,7 @@ For how people become members, and how teams and organizations fit in, see [Scop
 - [Converting between types](#converting-between-types)
 - [Checking permissions](#checking-permissions)
 - [What the API and MCP check](#what-the-api-and-mcp-check)
-- [Replacing the policy](#replacing-the-policy)
+- [Policies](#policies)
 - [Examples](#examples)
 
 ## Roles and abilities
@@ -238,7 +238,7 @@ With `polycart.authorization` on, which is the default, each call is checked aga
 | Convert | `POST .../convert` | `convert-cart` | `conversionAbility($to)` |
 | Merge | `POST .../merge` | `merge-carts` | `update` on **both** carts |
 | Members | `.../members` | `list-members`, `share-cart`, `unshare-cart` | `viewAny` and `create` on `CartMember` for the cart, `delete` on the member |
-| Activity | `.../activity` | `list-activity` | `viewAny` on `CartActivity` for the cart |
+| Activity | `.../activity` | `list-cart-activity` | `viewAny` on `CartActivity` for the cart |
 | Visibility | `.../visibility` | `set-visibility` | `share` |
 
 A failed check returns `403` over HTTP and `Unauthorized.` over MCP. Turn `polycart.authorization` off only for trusted server-to-server callers.

@@ -34,7 +34,6 @@ Keep the package's bundled Boost skill accurate, concise, and focused on helping
 - `resources/boost/skills/`
 - `src/*ServiceProvider.php`
 - `src/Facades/`
-- `src/Console/Commands/`
 - `config/*.php`
 - `routes/*.php`
 - `database/migrations/`

@@ -319,7 +319,7 @@ Both extend `PolycartException`, so JSON callers get `422` with the message.
 
 | Table | Holds |
 | --- | --- |
-| `polycart_carts` | `scope_type`, `scope_id` (anchor), `boundary_type`, `boundary_id`, `visibility`, and `source` (where the cart was created; see the README) |
+| `polycart_carts` | `scope_type`, `scope_id` (anchor), `boundary_type`, `boundary_id`, `visibility`, and `source` (where the cart was created; see [Sources and activity](sources-and-activity.md)) |
 | `polycart_cart_paths` | One row per level of each cart's chain: `cart_id`, `scope_type`, `scope_id`, `depth`. Written once, never changed. |
 | `polycart_cart_members` | `cart_id`, `member_type`, `member_id`, `role`. Unique per cart and member. |
 

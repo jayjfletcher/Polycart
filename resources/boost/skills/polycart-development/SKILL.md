@@ -78,12 +78,12 @@ php artisan migrate
 - JSON API: set `polycart.routes.enabled` to `true` and put your auth middleware in `polycart.routes.middleware`.
 - List the models callers may name in `polycart.owners`, `polycart.scopes` and `polycart.purchasables`, keyed by alias.
 - With `polycart.authorization` on (the default), every call acts as the signed-in user and is checked against the policies in `polycart.policies`. By default the cart's owner may do anything and everyone else gets what their role grants. Swap a policy by pointing its model at your own class there.
-- MCP: enable `polycart.mcp.web` or `polycart.mcp.local`. The tools match the API one-to-one: `list-cart-types`, `list-carts`, `show-cart`, `create-cart`, `active-cart`, `update-cart`, `delete-cart`, `clear-cart`, `transition-cart`, `convert-cart`, `merge-carts`, `add-lines`, `update-lines`, `remove-lines`, `list-members`, `share-cart`, `unshare-cart`, `set-visibility`.
+- MCP: enable `polycart.mcp.web` or `polycart.mcp.local`. The tools match the API one-to-one: `list-cart-types`, `list-carts`, `show-cart`, `create-cart`, `active-cart`, `update-cart`, `delete-cart`, `clear-cart`, `transition-cart`, `convert-cart`, `merge-carts`, `add-lines`, `update-lines`, `remove-lines`, `list-members`, `share-cart`, `unshare-cart`, `set-visibility`, `list-cart-activity`.
 - Atrium: install `jayi/atrium`. Polycart adds Carts and Cart types pages, two widgets, and search. Set `polycart.ui.enabled` to `false` to turn this off.
 
 ### 8. Record where carts come from and what happened to them
 
-- Every cart records a `source`. The package sets `api`, `mcp` or `atrium` itself; everything else gets `polycart.default_source` (`code`).
+- Every cart records a `source`. The package sets `api`, `mcp`, `atrium` or `cortex` itself; everything else gets `polycart.default_source` (`code`).
 - Tag your own work with `Polycart::usingSource('import', fn () => ...)`, or tag routes with the `JayI\Polycart\Http\Middleware\CartSource::class.':web'` middleware.
 - Every change made through the package is logged in `$cart->activities` with its action, source, actor and context. `$cart->sources` lists every source that has touched the cart. Copies and merges carry history with them.
 - Record your own events with `$cart->recordActivity('exported', [...])`.

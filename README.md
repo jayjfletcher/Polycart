@@ -31,7 +31,9 @@ php artisan vendor:publish --tag="polycart-config"
 php artisan migrate
 ```
 
-The migrations create `polycart_carts` and `polycart_cart_lines`. Prices are stored as integers in minor units (cents).
+The migrations create `polycart_carts`, `polycart_cart_lines`, `polycart_cart_members`, `polycart_cart_paths` and `polycart_cart_activities`. Prices are stored as integers in minor units (cents).
+
+To customise the Atrium dashboard's views or strings, publish them with the `polycart-views` or `polycart-lang` tag. The `polycart` tag publishes everything at once.
 
 ## Defining types
 
@@ -443,7 +445,7 @@ Cart::query()->fromSource('api')->get();
 
 ## Events
 
-Every event carries ids, never models:
+Every event carries the models involved. Events for a removed line or member carry ids, because the row is gone:
 
 - **Model events:** every Eloquent hook of every model, one class per hook, such as `CartCreatingEvent`, `CartLineDeletedEvent` or `CartMemberSavedEvent`. Cart subclasses fire the `Cart*` events.
 - **Action events:** a start and a finish event for every action, such as `LineAddingActionEvent` and `LineAddedActionEvent`, or `CartConvertingActionEvent` and `CartConvertedActionEvent`. Start fires before the work. Finish fires after the transaction commits, and only on success.

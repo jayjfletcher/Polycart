@@ -73,9 +73,10 @@ return [
     |
     | The models the JSON API and MCP tools may name, keyed by the alias a
     | caller uses. Owners are people (users); scopes are the levels of your
-    | tree (teams, organizations) and implement CartScope. Nothing outside these lists can be reached through them,
-    | so a caller can never make the package load an arbitrary class. Code
-    | that calls the package directly is not limited by them.
+    | tree (teams, organizations) and implement CartScope. Nothing outside
+    | these lists can be reached through them, so a caller can never make
+    | the package load an arbitrary class. Code that calls the package
+    | directly is not limited by them.
     |
     */
 
