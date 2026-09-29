@@ -21,6 +21,7 @@ That is all: Polycart notices Cortex's service provider and registers itself. Co
     'enabled' => true,          // false leaves Cortex alone
     'server' => 'polycart',     // the server's name in Cortex
     'tools' => null,            // null for every tool, or a list of names
+    'tags' => ['polycart'],     // the tags the tools are grouped under in Cortex
 ],
 ```
 
@@ -34,7 +35,7 @@ Registration is lazy. It happens the first time Cortex's registries are used, so
 
 ## Giving an agent the cart tools
 
-In Cortex, give the agent the tools by name, from the dashboard, the API or MCP. The agent then calls them like any other tool:
+In Cortex, give the agent the tools by name, from the dashboard, the API or MCP. The tools are tagged `polycart`, so filter the tool picker by that tag to find them all. The agent then calls them like any other tool:
 
 > "Start a quote for the Acme lobby with 12 of product 42 and share it with the estimating team."
 

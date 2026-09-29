@@ -36,6 +36,20 @@ it('offers every cart tool to Cortex agents', function (): void {
         ->and($tools->get('create-cart'))->toBeInstanceOf(AgentTool::class);
 });
 
+it('tags the cart tools in Cortex', function (): void {
+    $tools = app(ToolRegistry::class);
+
+    expect($tools->tagsFor('add-lines'))->toBe(['polycart'])
+        ->and(array_column($tools->all('polycart'), 'name'))->toContain('list-carts', 'convert-cart');
+});
+
+it('tags the cart tools with the tags in config', function (): void {
+    config()->set('polycart.cortex.tags', ['sales', 'carts']);
+    app()->forgetInstance(ToolRegistry::class);
+
+    expect(app(ToolRegistry::class)->tagsFor('show-cart'))->toBe(['carts', 'sales']);
+});
+
 it('offers only the tools listed in config', function (): void {
     config()->set('polycart.cortex.tools', ['list-carts', 'show-cart']);
     app()->forgetInstance(ToolRegistry::class);

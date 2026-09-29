@@ -398,12 +398,12 @@ The JSON API, the MCP tools and the dashboard all call the same action classes a
 
 When [`jayi/cortex`](https://github.com/jayjfletcher/cortex) is installed, Polycart connects to it:
 
-- Every MCP tool joins Cortex's tool registry, so **Cortex agents can manage carts**. They go through the same validation, authorization and add pipeline as MCP clients.
+- Every MCP tool joins Cortex's tool registry, tagged `polycart`, so **Cortex agents can manage carts**. They go through the same validation, authorization and add pipeline as MCP clients.
 - The server is registered as `polycart`, so its **instructions and each tool's description can be overridden** with Cortex's versioned, publishable content.
 - Changes an agent makes record **`cortex` as their source**.
 
 ```php
-'cortex' => ['enabled' => true, 'server' => 'polycart', 'tools' => null],   // or a list of tool names
+'cortex' => ['enabled' => true, 'server' => 'polycart', 'tools' => null, 'tags' => ['polycart']],   // tools: or a list of names
 ```
 
 **Full guide:** [Cortex](docs/cortex.md).

@@ -29,7 +29,8 @@ use Laravel\Mcp\Server\Tool;
  *   overridden with versioned, publishable content.
  * - Each tool is registered in Cortex's tool registry under its own name,
  *   so Cortex agents can manage carts, and its description can be
- *   overridden the same way.
+ *   overridden the same way. The tools are tagged, so they are grouped
+ *   together in Cortex's tool lists and pickers.
  * - Changes an agent makes through a tool record `cortex` as their source.
  *
  * Cortex is optional. Nothing here runs unless its service provider is
@@ -73,7 +74,7 @@ final class CortexIntegration
                 $tool = $container->make($class);
 
                 if ($tool instanceof Tool && ! $tools->has($tool->name())) {
-                    $tools->register($tool->name(), $class);
+                    $tools->register($tool->name(), $class, $this->tags());
                 }
             }
         });
@@ -122,6 +123,19 @@ final class CortexIntegration
     public function serverName(): string
     {
         return $this->config->string('polycart.cortex.server', 'polycart');
+    }
+
+    /**
+     * The tags the tools are grouped under in Cortex.
+     *
+     * @return list<string>
+     */
+    public function tags(): array
+    {
+        /** @var list<string> $tags */
+        $tags = $this->config->get('polycart.cortex.tags', ['polycart']);
+
+        return $tags;
     }
 
     /**

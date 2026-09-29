@@ -94,6 +94,7 @@ php artisan migrate
 
 - Install `jayi/cortex`. Polycart registers its MCP server as `polycart` and every MCP tool in Cortex's tool registry automatically.
 - Limit the tools with `polycart.cortex.tools` (a list of names), or turn it off with `polycart.cortex.enabled`.
+- The tools are tagged `polycart` in Cortex's tool pickers; change the tags with `polycart.cortex.tags`.
 - Override the server instructions and tool descriptions in Cortex; the published versions are served to MCP clients and agents.
 - Agent changes record `cortex` as their source.
 

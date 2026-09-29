@@ -173,7 +173,8 @@ return [
     | When jayi/cortex is installed, the MCP server is registered with it, so
     | its instructions can be overridden, and the tools join its registry,
     | so Cortex agents can manage carts. Set `tools` to a list of tool names,
-    | such as ['list-carts', 'show-cart'], to offer only some of them.
+    | such as ['list-carts', 'show-cart'], to offer only some of them. The
+    | tools are grouped in Cortex under `tags`.
     |
     */
 
@@ -181,6 +182,7 @@ return [
         'enabled' => true,
         'server' => 'polycart',
         'tools' => null,
+        'tags' => ['polycart'],
     ],
 
     /*
