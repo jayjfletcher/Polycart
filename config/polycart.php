@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use JayI\Polycart\Features\PolycartSupportFeature;
 use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Models\CartActivity;
 use JayI\Polycart\Models\CartLine;
@@ -191,12 +192,33 @@ return [
     |--------------------------------------------------------------------------
     |
     | When jayi/atrium is installed, Polycart adds its pages, widgets, and
-    | search to the Atrium dashboard, behind Atrium's own authorization.
+    | search to the Atrium dashboard, behind Atrium's own authorization. Each
+    | page, navigation item and control is then shown only when the policies
+    | above allow its action, as the JSON API checks it.
     |
     */
 
     'ui' => [
         'enabled' => true,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Atrium Features
+    |--------------------------------------------------------------------------
+    |
+    | Features that switch Polycart in Atrium on and off as a whole: its
+    | navigation, widgets, search and pages. With jayi/pennantplus installed,
+    | PolycartSupportFeature is on until its global value is set; without it,
+    | the class does not exist and is skipped. Point this at a subclass or at
+    | your own feature, or empty it to never check one.
+    |
+    */
+
+    'atrium' => [
+        'features' => [
+            PolycartSupportFeature::class,
+        ],
     ],
 
 ];

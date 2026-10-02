@@ -185,7 +185,7 @@ Cart responses include both `source` and `sources`. Reading the log needs the `v
 
 ## In the Atrium dashboard
 
-The cart page shows the creating source and every source that has touched the cart, followed by an **Activity** timeline with the latest 25 entries. Each entry shows its action, source, actor and context. The cart list has a source column and filter.
+The cart page shows the creating source and every source that has touched the cart, followed by an **Activity** timeline with the latest 25 entries. The timeline is shown when the signed-in user may read the log (`viewAny` on `CartActivity`), as in the JSON API. Each entry shows its action, source, actor and context. The cart list has a source column and filter.
 
 ## Storage and pruning
 

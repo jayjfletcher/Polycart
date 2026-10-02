@@ -30,12 +30,4 @@ final class Format
 
         return $cart->session_key === null ? '—' : __('polycart::polycart.guest');
     }
-
-    /**
-     * Expired carts read as a warning; everything else is neutral.
-     */
-    public static function variant(Cart $cart): string
-    {
-        return $cart->isExpired() ? 'warning' : 'info';
-    }
 }

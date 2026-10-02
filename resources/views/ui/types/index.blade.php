@@ -23,9 +23,14 @@
                     </x-atrium::table.cell>
                     <x-atrium::table.cell>
                         @if ($type->statuses())
-                            @foreach ($type->statuses()::cases() as $status)
-                                <x-atrium::badge>{{ $status->value }}</x-atrium::badge>
-                            @endforeach
+                            <div class="flex flex-wrap items-center gap-3">
+                                @foreach ($type->statuses()::cases() as $status)
+                                    <span class="inline-flex items-center gap-1 text-sm">
+                                        <x-atrium::status-dot :variant="\JayI\Polycart\Atrium\Badges::forStatus((string) $status->value)" :label="$status->value" data-status="{{ $status->value }}" />
+                                        {{ $status->value }}
+                                    </span>
+                                @endforeach
+                            </div>
                         @else
                             <span class="opacity-60">—</span>
                         @endif
@@ -45,7 +50,7 @@
                             <x-atrium::badge variant="warning">{{ __('polycart::polycart.requires_price') }}</x-atrium::badge>
                         @endif
                         @if ($type->requiresParent())
-                            <x-atrium::badge variant="info">{{ __('polycart::polycart.requires_parent') }}</x-atrium::badge>
+                            <x-atrium::badge variant="primary">{{ __('polycart::polycart.requires_parent') }}</x-atrium::badge>
                         @endif
                         @unless ($type->mergesLines())
                             <x-atrium::badge>{{ __('polycart::polycart.separate_lines') }}</x-atrium::badge>

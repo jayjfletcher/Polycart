@@ -417,7 +417,38 @@ When [`jayi/atrium`](https://github.com/jayjfletcher/Atrium) is installed, Polyc
 - **Widgets:** *Carts by type* and *Recent carts*.
 - **Search:** find carts from Atrium's search.
 
+The screens follow Atrium's screen conventions: actions are icon buttons (the label is the tooltip), each navigation item has an icon, and a cart's status is a coloured dot with the status on hover. `JayI\Polycart\Atrium\Badges` picks the colour by the status's meaning: `info` only for pending or awaiting states such as `pending` and `submitted`, `success` for done or active, `warning` for held, `danger` for failed or refused, `neutral` for over (and for any expired cart), and `primary` for anything else.
+
+### Permissions
+
+With `polycart.authorization` on (the default), the dashboard asks the policies in `polycart.policies` exactly what the JSON API asks, for the signed-in user:
+
+| Shown / allowed when | Ability |
+| --- | --- |
+| Carts and Cart types navigation, pages, widgets and search | `viewAny` on `Cart` |
+| Opening a cart | `view` on the cart |
+| Clear, the Details card (label and meta) | `update` on the cart |
+| Delete | `delete` on the cart |
+| Each status in **Move to** | `transition` on the cart, with that status |
+| Each type in **Convert to** | `convert` on the cart, with that type |
+| Changing a line's quantity / removing a line | `update` / `delete` on the line |
+| Visibility | `share` on the cart |
+| Adding a member / removing one | `create` on `CartMember` with the cart / `delete` on the member |
+| The Activity card | `viewAny` on `CartActivity` with the cart |
+
+A control is hidden unless its action would be allowed, and the action itself answers 403 otherwise. Lists, widgets and search hold only the carts the user can access, as the JSON API's list does. In your own Blade views, `@polycartCan('update', $cart) ... @endpolycartCan` asks the same question. With `polycart.authorization` off, everything is shown and allowed.
+
+### Switching it off
+
 Set `polycart.ui.enabled` to `false` to leave the dashboard out.
+
+With [`jayi/pennantplus`](https://github.com/jayjfletcher/PennantPlus) installed, the `JayI\Polycart\Features\PolycartSupportFeature` Pennant feature switches Polycart in Atrium on and off as a whole: its navigation, widgets, search and pages, which answer 404 while it is off. It is on until its global value is set, and only its global value counts; per-user access stays with the policies.
+
+```php
+Feature::for(null)->deactivate(PolycartSupportFeature::class);
+```
+
+The features checked come from `polycart.atrium.features`. Point it at a subclass to change the default, at your own feature, or empty it. A class that cannot be loaded, such as `PolycartSupportFeature` without jayi/pennantplus, is skipped.
 
 ## Sources and activity
 

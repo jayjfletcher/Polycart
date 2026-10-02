@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace JayI\Polycart;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use JayI\Atrium\Facades\Atrium;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Contracts\PriceResolver;
 use JayI\Polycart\Cortex\CortexIntegration;
+use JayI\Polycart\Http\Ui\ScreenAccess;
 use JayI\Polycart\Mcp\PolycartServer;
 use JayI\Polycart\Pricing\PurchasablePriceResolver;
 use JayI\Polycart\Support\SourceContext;
@@ -50,6 +52,10 @@ class PolycartServiceProvider extends ServiceProvider
         $this->app->make(CortexIntegration::class)->register();
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'polycart');
+
+        // Dashboard views show a control only when its action is allowed,
+        // asked exactly as the controller asks it.
+        Blade::if('polycartCan', ScreenAccess::allows(...));
 
         $this->loadTranslationsFrom(__DIR__.'/../lang', 'polycart');
 

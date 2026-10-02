@@ -7,10 +7,12 @@ use JayI\Polycart\Tests\Fixtures\Models\Organization;
 use JayI\Polycart\Tests\Fixtures\Models\Person;
 use JayI\Polycart\Tests\Fixtures\Models\Product;
 use JayI\Polycart\Tests\Fixtures\Models\Team;
+use JayI\Polycart\Tests\PennantPlusTestCase;
 use JayI\Polycart\Tests\TestCase;
 
 uses(TestCase::class)->in('Feature', 'Unit');
 uses(CortexTestCase::class)->in('Cortex');
+uses(PennantPlusTestCase::class)->in('PennantPlus');
 
 function product(?int $price = 1000, string $sku = 'LOCK-1', ?int $stock = null): Product
 {

@@ -22,8 +22,8 @@
                 <x-atrium::form.input name="source" :label="__('polycart::polycart.source')" :value="$filters['source'] ?? null" wrapper="w-32" />
                 <x-atrium::form.input name="search" :label="__('polycart::polycart.search')" :value="$filters['search'] ?? null" wrapper="w-56" />
 
-                <x-atrium::button type="submit" data-testid="filter-carts">{{ __('polycart::polycart.filter') }}</x-atrium::button>
-                <x-atrium::button variant="ghost" :href="route('atrium.polycart.carts.index')">{{ __('polycart::polycart.clear_filters') }}</x-atrium::button>
+                <x-atrium::icon-button icon="funnel" :label="__('polycart::polycart.filter')" variant="primary" type="submit" data-testid="filter-carts" />
+                <x-atrium::icon-button icon="x-mark" :label="__('polycart::polycart.clear_filters')" variant="ghost" :href="route('atrium.polycart.carts.index')" data-testid="reset-filters" />
             </form>
         </x-atrium::card>
 
@@ -53,7 +53,7 @@
                         <x-atrium::table.cell><x-atrium::badge variant="primary">{{ $cart->type }}</x-atrium::badge></x-atrium::table.cell>
                         <x-atrium::table.cell>
                             @if ($cart->status)
-                                <x-atrium::badge :variant="Format::variant($cart)">{{ $cart->status }}</x-atrium::badge>
+                                @include('polycart::ui.partials.cart-status', ['cart' => $cart])
                             @else
                                 <span class="opacity-60">—</span>
                             @endif

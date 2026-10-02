@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Atrium;
 
+use Error;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use JayI\Atrium\Navigation\NavItem;
 use JayI\Atrium\Plugins\Plugin;
 use JayI\Atrium\Search\SearchResult;
 use JayI\Atrium\Search\SearchSource;
+use JayI\Atrium\Support\Icons;
 use JayI\Atrium\Widgets\WidgetDefinition;
 use JayI\Polycart\Enums\CartSource;
 use JayI\Polycart\Http\Middleware\CartSource as CartSourceMiddleware;
 use JayI\Polycart\Http\Ui\CartTypeUiController;
 use JayI\Polycart\Http\Ui\CartUiController;
+use JayI\Polycart\Http\Ui\ScreenAccess;
 use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Types\CartTypeRegistry;
 
@@ -22,7 +28,9 @@ use JayI\Polycart\Types\CartTypeRegistry;
  * Registers Polycart inside the Atrium dashboard.
  *
  * Widgets declared here are offered in Atrium's picker. None is ever placed
- * on a dashboard automatically; that is always a user's choice.
+ * on a dashboard automatically; that is always a user's choice. Navigation,
+ * widgets and search are shown only to users the cart policies let list
+ * carts, and list only the carts they can access, as the JSON API does.
  */
 class PolycartPlugin extends Plugin
 {
@@ -36,11 +44,39 @@ class PolycartPlugin extends Plugin
         return 'Polycart';
     }
 
+    /**
+     * Features from `polycart.atrium.features` that switch Polycart in Atrium
+     * on and off as a whole. A feature class that cannot be loaded, such as
+     * PolycartSupportFeature without jayi/pennantplus, is skipped.
+     *
+     * @return array<int, string>
+     */
+    public function features(): array
+    {
+        $features = config('polycart.atrium.features', []);
+
+        return array_values(array_filter(
+            is_array($features) ? $features : [],
+            fn (mixed $feature): bool => is_string($feature) && (! str_contains($feature, '\\') || self::loadable($feature)),
+        ));
+    }
+
     public function navigation(): array
     {
         return [
-            NavItem::make(__('polycart::polycart.carts'))->route('atrium.polycart.carts.index')->group('Polycart')->sort(10),
-            NavItem::make(__('polycart::polycart.types'))->route('atrium.polycart.types.index')->group('Polycart')->sort(20),
+            NavItem::make(__('polycart::polycart.carts'))
+                ->icon(Icons::svg('shopping-cart'))
+                ->route('atrium.polycart.carts.index')
+                ->group('Polycart')
+                ->sort(10)
+                ->authorize(fn (Request $request): bool => self::mayList($request->user())),
+
+            NavItem::make(__('polycart::polycart.types'))
+                ->icon(Icons::svg('rectangle-stack'))
+                ->route('atrium.polycart.types.index')
+                ->group('Polycart')
+                ->sort(20)
+                ->authorize(fn (Request $request): bool => self::mayList($request->user())),
         ];
     }
 
@@ -82,10 +118,11 @@ class PolycartPlugin extends Plugin
                 ->description(__('polycart::polycart.widget_carts_by_type_description'))
                 ->defaultSize(6, 2)
                 ->view('polycart::ui.widgets.carts-by-type')
+                ->authorize(fn (Request $request): bool => self::mayList($request->user()))
                 ->resolve(fn (): array => [
                     'counts' => collect(array_keys(app(CartTypeRegistry::class)->all()))
                         ->mapWithKeys(fn (string $type): array => [
-                            $type => Cart::query()->ofType($type)->unexpired()->count(),
+                            $type => self::visible()->ofType($type)->unexpired()->count(),
                         ])
                         ->all(),
                 ]),
@@ -95,17 +132,23 @@ class PolycartPlugin extends Plugin
                 ->description(__('polycart::polycart.widget_recent_carts_description'))
                 ->defaultSize(6, 2)
                 ->view('polycart::ui.widgets.recent-carts')
+                ->authorize(fn (Request $request): bool => self::mayList($request->user()))
                 ->resolve(fn (): array => [
-                    'carts' => Cart::query()->withCount('lines')->latest('updated_at')->limit(5)->get(),
+                    'carts' => self::visible()->withCount('lines')->latest('updated_at')->limit(5)->get(),
                 ]),
         ];
     }
 
+    /**
+     * The closures are static and resolve what they need when they run,
+     * because Atrium may serialize them into a child process.
+     */
     public function search(): ?SearchSource
     {
         return SearchSource::make('polycart')
             ->label('Polycart')
-            ->using(fn (string $query): array => Cart::query()
+            ->authorize(static fn (Request $request): bool => self::mayList($request->user()))
+            ->using(static fn (string $query): array => self::visible()
                 ->where(fn (Builder $builder): Builder => $builder
                     ->where('label', 'like', '%'.$query.'%')
                     ->orWhere('id', 'like', $query.'%'))
@@ -117,5 +160,39 @@ class PolycartPlugin extends Plugin
                     route('atrium.polycart.carts.show', $cart),
                 )->subtitle($cart->type.($cart->status === null ? '' : ' · '.$cart->status))->group(__('polycart::polycart.carts')))
                 ->all());
+    }
+
+    /**
+     * Whether a user may list carts: the JSON API's `viewAny` check.
+     */
+    private static function mayList(mixed $user): bool
+    {
+        return ScreenAccess::allowsUser($user instanceof Authenticatable ? $user : null, 'viewAny', Cart::class);
+    }
+
+    /**
+     * Carts the signed-in user can access; every cart with authorization off.
+     *
+     * @return Builder<Cart>
+     */
+    private static function visible(): Builder
+    {
+        $user = auth()->user();
+        $actor = ScreenAccess::actor($user instanceof Authenticatable ? $user : null);
+
+        return Cart::query()->when($actor, fn (Builder $query, Model $actor): Builder => $query->accessibleBy($actor));
+    }
+
+    /**
+     * Whether a class can be loaded. A class whose parent is missing, such as
+     * a feature extending PennantPlus without it installed, cannot.
+     */
+    private static function loadable(string $class): bool
+    {
+        try {
+            return class_exists($class);
+        } catch (Error) {
+            return false;
+        }
     }
 }

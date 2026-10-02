@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Http\Ui;
 
+use BackedEnum;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -24,7 +25,9 @@ use JayI\Polycart\Actions\UpdateCartAction;
 use JayI\Polycart\Actions\UpdateLineAction;
 use JayI\Polycart\Enums\Visibility;
 use JayI\Polycart\Exceptions\PolycartException;
+use JayI\Polycart\Http\Ui\Concerns\AuthorizesScreens;
 use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Models\CartActivity;
 use JayI\Polycart\Models\CartLine;
 use JayI\Polycart\Models\CartMember;
 use JayI\Polycart\Support\Morphs;
@@ -32,21 +35,27 @@ use JayI\Polycart\Types\CartTypeRegistry;
 
 /**
  * The dashboard pages. Every change goes through the same Action the JSON
- * API and MCP tools call, so a refusal here is the refusal they would give.
+ * API and MCP tools call, after the same policy check their requests make,
+ * so a refusal here is the refusal they would give. The views hide each
+ * control with that check (`@polycartCan`), so they cannot drift apart.
  */
 final class CartUiController
 {
+    use AuthorizesScreens;
+
     public function index(Request $request): View
     {
         // Filters are validated by the Action's own rules, so the page and the
         // JSON API accept exactly the same query.
+        $this->authorizeScreen('viewAny', Cart::class);
+
         $filters = $request->validate(ListCartsAction::rules());
 
         /** @var view-string $view */
         $view = 'polycart::ui.carts.index';
 
         return view($view, [
-            'carts' => app(ListCartsAction::class)->execute($filters),
+            'carts' => app(ListCartsAction::class)->execute($filters, ScreenAccess::actor()),
             'filters' => $filters,
             'types' => array_keys(app(CartTypeRegistry::class)->all()),
         ]);
@@ -54,18 +63,28 @@ final class CartUiController
 
     public function show(Cart $cart): View
     {
+        $this->authorizeScreen('view', $cart);
+
         $cart = app(ShowCartAction::class)->execute($cart);
         $type = app(CartTypeRegistry::class)->has($cart->type) ? $cart->cartType() : null;
+        $canSeeActivity = ScreenAccess::allows('viewAny', CartActivity::class, [$cart]);
 
         /** @var view-string $view */
         $view = 'polycart::ui.carts.show';
 
         return view($view, [
             'cart' => $cart->load(['parent', 'children', 'paths']),
-            'activity' => app(ListActivityAction::class)->execute($cart, ['per_page' => 25]),
+            'activity' => $canSeeActivity ? app(ListActivityAction::class)->execute($cart, ['per_page' => 25]) : null,
             'type' => $type,
-            'nextStatuses' => $type?->nextStatuses($cart->currentStatus()) ?? [],
-            'conversions' => $type?->convertsTo() ?? [],
+            // Only the moves the type allows from here, and the user may make.
+            'nextStatuses' => array_values(array_filter(
+                $type?->nextStatuses($cart->currentStatus()) ?? [],
+                fn (BackedEnum $status): bool => ScreenAccess::allows('transition', $cart, [(string) $status->value]),
+            )),
+            'conversions' => array_values(array_filter(
+                $type?->convertsTo() ?? [],
+                fn (string $to): bool => ScreenAccess::allows('convert', $cart, [$to]),
+            )),
             'roles' => array_keys($type?->roles() ?? []),
             'memberTypes' => [...array_keys(config()->array('polycart.owners')), ...array_keys(config()->array('polycart.scopes'))],
             'visibilities' => Visibility::cases(),
@@ -74,6 +93,8 @@ final class CartUiController
 
     public function update(Request $request, Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('update', $cart);
+
         $data = $request->validate(['label' => ['nullable', 'string', 'max:191'], 'meta' => ['nullable', 'json']]);
 
         // Meta arrives from the form as a JSON string.
@@ -84,6 +105,8 @@ final class CartUiController
 
     public function destroy(Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('delete', $cart);
+
         app(DeleteCartAction::class)->execute($cart);
 
         return redirect()
@@ -93,11 +116,15 @@ final class CartUiController
 
     public function clear(Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('update', $cart);
+
         return $this->attempt($cart, fn (): mixed => app(ClearCartAction::class)->execute($cart), 'cart_cleared');
     }
 
     public function transition(Request $request, Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('transition', $cart, [$request->string('status')->toString()]);
+
         /** @var array{status: string} $data */
         $data = $request->validate(TransitionCartAction::rules());
 
@@ -106,6 +133,8 @@ final class CartUiController
 
     public function convert(Request $request, Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('convert', $cart, [$request->string('to')->toString()]);
+
         /** @var array{to: string} $data */
         $data = $request->validate(ConvertCartAction::rules());
 
@@ -122,6 +151,8 @@ final class CartUiController
 
     public function updateLine(Request $request, Cart $cart, CartLine $line): RedirectResponse
     {
+        $this->authorizeScreen('update', $line);
+
         /** @var array{quantity: int|string, unit_price?: int|string|null} $data */
         $data = $request->validate(UpdateLineAction::rules());
 
@@ -134,6 +165,8 @@ final class CartUiController
 
     public function removeLine(Cart $cart, CartLine $line): RedirectResponse
     {
+        $this->authorizeScreen('delete', $line);
+
         return $this->attempt($cart, function () use ($line): void {
             app(RemoveLineAction::class)->execute($line);
         }, 'line_removed');
@@ -141,6 +174,8 @@ final class CartUiController
 
     public function visibility(Request $request, Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('share', $cart);
+
         /** @var array{visibility: string} $data */
         $data = $request->validate(SetVisibilityAction::rules());
 
@@ -149,6 +184,8 @@ final class CartUiController
 
     public function share(Request $request, Cart $cart): RedirectResponse
     {
+        $this->authorizeScreen('create', CartMember::class, [$cart]);
+
         /** @var array{member_type: string, member_id: string, role: string} $data */
         $data = $request->validate(ShareCartAction::rules());
 
@@ -161,6 +198,8 @@ final class CartUiController
 
     public function unshare(Cart $cart, CartMember $member): RedirectResponse
     {
+        $this->authorizeScreen('delete', $member);
+
         return $this->attempt($cart, function () use ($cart, $member): void {
             app(UnshareCartAction::class)->execute($cart, $member);
         }, 'cart_unshared');

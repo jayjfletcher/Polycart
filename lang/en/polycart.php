@@ -67,6 +67,7 @@ return [
     'source' => 'Source',
     'status' => 'Status',
     'status_changed' => 'Status changed.',
+    'status_expired' => ':status (expired)',
     'statuses' => 'Statuses',
     'subtotal' => 'Subtotal',
     'total' => 'Total',

@@ -80,6 +80,9 @@ php artisan migrate
 - With `polycart.authorization` on (the default), every call acts as the signed-in user and is checked against the policies in `polycart.policies`. By default the cart's owner may do anything and everyone else gets what their role grants. Swap a policy by pointing its model at your own class there.
 - MCP: enable `polycart.mcp.web` or `polycart.mcp.local`. The tools match the API one-to-one: `list-cart-types`, `list-carts`, `show-cart`, `create-cart`, `active-cart`, `update-cart`, `delete-cart`, `clear-cart`, `transition-cart`, `convert-cart`, `merge-carts`, `add-lines`, `update-lines`, `remove-lines`, `list-members`, `share-cart`, `unshare-cart`, `set-visibility`, `list-cart-activity`.
 - Atrium: install `jayi/atrium`. Polycart adds Carts and Cart types pages, two widgets, and search. Set `polycart.ui.enabled` to `false` to turn this off.
+- The dashboard checks the same policies as the JSON API for the signed-in user: navigation, widgets and search need `viewAny` on `Cart`, and each control is shown only when its action is allowed (`update`, `delete`, `share`, `transition`/`convert` with the target, `update`/`delete` on a line or member). Lists hold only the carts the user can access. Use `@polycartCan('update', $cart)` in your own views to ask the same question. With `polycart.authorization` off, everything is allowed.
+- Statuses show as Atrium status dots coloured by `JayI\Polycart\Atrium\Badges` (`info` only for pending/awaiting states); actions are icon buttons.
+- With `jayi/pennantplus`, `JayI\Polycart\Features\PolycartSupportFeature` switches Polycart in Atrium off globally (`Feature::for(null)->deactivate(...)`); the list lives in `polycart.atrium.features`, and classes that cannot be loaded are skipped.
 
 ### 8. Record where carts come from and what happened to them
 
