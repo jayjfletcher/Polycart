@@ -6,7 +6,7 @@ namespace JayI\Polycart\Http;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
-use JayI\Polycart\Access\Authorizer;
+use JayI\Polycart\Support\Authorizer;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

@@ -6,8 +6,8 @@ use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use JayI\Atrium\Domains\Plugins\Services\PluginRegistry;
 use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
 use JayI\Polycart\Atrium\PolycartPlugin;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
 beforeEach(function (): void {
@@ -74,7 +74,7 @@ it('moves, converts, and refuses from the dashboard', function (): void {
 
     $response = $this->post(route('atrium.polycart.carts.convert', $quote), ['to' => 'order', 'copy' => '1']);
 
-    $order = Cart::query()->ofType('order')->firstOrFail();
+    $order = CartModel::query()->ofType('order')->firstOrFail();
 
     $response->assertRedirect(route('atrium.polycart.carts.show', $order));
 });
@@ -98,7 +98,7 @@ it('edits lines and details, then clears and deletes', function (): void {
     expect($cart->lines()->count())->toBe(0);
 
     $this->delete(route('atrium.polycart.carts.destroy', $cart))->assertRedirect(route('atrium.polycart.carts.index'));
-    expect(Cart::query()->find($cart->id))->toBeNull();
+    expect(CartModel::query()->find($cart->id))->toBeNull();
 });
 
 it('lists the cart types', function (): void {

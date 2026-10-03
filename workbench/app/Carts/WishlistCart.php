@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Workbench\App\Carts;
 
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * Things someone wants later, shared read-only with whoever buys them.

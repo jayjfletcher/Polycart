@@ -63,12 +63,12 @@ function parityGaps(string $directory): array
 {
     $actions = array_map(
         fn (string $path): string => basename($path, '.php'),
-        (array) glob(dirname(__DIR__).'/src/Actions/*.php'),
+        (array) glob(dirname(__DIR__).'/src/Domains/*/Actions/*.php'),
     );
 
     $surface = implode("\n", array_map(
         fn (string $path): string => (string) file_get_contents($path),
-        (array) glob(dirname(__DIR__).'/src/'.$directory.'/*.php'),
+        (array) glob(dirname(__DIR__).'/src/Domains/*/'.$directory.'/*.php'),
     ));
 
     return array_values(array_filter(

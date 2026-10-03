@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Events\Action\CartCreatedActionEvent;
+use JayI\Polycart\Domains\Cart\Events\CartCreatedActionEvent;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Models\Quote;
 use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
 use JayI\Polycart\Tests\Fixtures\Types\RetailCart;
@@ -38,8 +38,8 @@ it('hydrates each row as the model its type names', function (): void {
     $cart = Polycart::create('cart', user());
 
     expect($quote)->toBeInstanceOf(Quote::class)
-        ->and(Cart::query()->find($quote->id))->toBeInstanceOf(Quote::class)
-        ->and(Cart::query()->find($cart->id))->not->toBeInstanceOf(Quote::class)
+        ->and(CartModel::query()->find($quote->id))->toBeInstanceOf(Quote::class)
+        ->and(CartModel::query()->find($cart->id))->not->toBeInstanceOf(Quote::class)
         ->and(Polycart::find($quote->id))->toBeInstanceOf(Quote::class);
 });
 
@@ -50,7 +50,7 @@ it('scopes a pinned subclass to its own type', function (): void {
     $quote = Quote::query()->create();
 
     expect(Quote::query()->count())->toBe(2)
-        ->and(Cart::query()->count())->toBe(3)
+        ->and(CartModel::query()->count())->toBe(3)
         ->and($quote->type)->toBe('quote')
         ->and($quote->reference())->toStartWith('Q-');
 });
@@ -135,10 +135,10 @@ it('filters carts by owner, type and status', function (): void {
     Polycart::create('quote', $user)->add(product())->cart->transitionTo(QuoteStatus::Submitted);
     Polycart::create('quote', user());
 
-    expect(Cart::query()->ownedBy($user)->count())->toBe(2)
-        ->and(Cart::query()->ofType('quote')->count())->toBe(2)
-        ->and(Cart::query()->ofType('cart', 'quote')->ownedBy($user)->count())->toBe(2)
-        ->and(Cart::query()->whereStatus(QuoteStatus::Submitted)->count())->toBe(1);
+    expect(CartModel::query()->ownedBy($user)->count())->toBe(2)
+        ->and(CartModel::query()->ofType('quote')->count())->toBe(2)
+        ->and(CartModel::query()->ofType('cart', 'quote')->ownedBy($user)->count())->toBe(2)
+        ->and(CartModel::query()->whereStatus(QuoteStatus::Submitted)->count())->toBe(1);
 });
 
 it('prunes carts once they are past their expiry and the grace period', function (): void {
@@ -149,9 +149,9 @@ it('prunes carts once they are past their expiry and the grace period', function
     Carbon::setTestNow('2026-03-20 12:00:00');
     $fresh = Polycart::create('cart', user());
 
-    $this->artisan('model:prune', ['--model' => [Cart::class]])->assertSuccessful();
+    $this->artisan('model:prune', ['--model' => [CartModel::class]])->assertSuccessful();
 
-    expect(Cart::withTrashed()->find($stale->id))->toBeNull()
-        ->and(Cart::query()->find($quote->id))->not->toBeNull()
-        ->and(Cart::query()->find($fresh->id))->not->toBeNull();
+    expect(CartModel::withTrashed()->find($stale->id))->toBeNull()
+        ->and(CartModel::query()->find($quote->id))->not->toBeNull()
+        ->and(CartModel::query()->find($fresh->id))->not->toBeNull();
 });

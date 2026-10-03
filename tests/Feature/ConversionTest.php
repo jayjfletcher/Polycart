@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Events\Action\CartConvertedActionEvent;
-use JayI\Polycart\Exceptions\InvalidConversionException;
-use JayI\Polycart\Exceptions\LineRejectedException;
+use JayI\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
+use JayI\Polycart\Domains\Cart\Exceptions\InvalidConversionException;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Models\Quote;
 use JayI\Polycart\Tests\Fixtures\Models\Service;
 use JayI\Polycart\Tests\Fixtures\Types\OrderStatus;
@@ -51,7 +51,7 @@ it('retypes a cart in place', function (): void {
         ->and($order->type)->toBe('order')
         ->and($order->currentStatus())->toBe(OrderStatus::Pending)
         ->and($order->expires_at)->toBeNull()
-        ->and(Cart::query()->count())->toBe(1);
+        ->and(CartModel::query()->count())->toBe(1);
 });
 
 it('refuses a conversion the source type does not offer', function (): void {
@@ -66,6 +66,6 @@ it('refuses to carry lines the target cannot hold and writes nothing', function 
     try {
         $cart->convertTo('quote');
     } finally {
-        expect(Cart::query()->count())->toBe(1);
+        expect(CartModel::query()->count())->toBe(1);
     }
 })->throws(LineRejectedException::class, 'needs a unit price');

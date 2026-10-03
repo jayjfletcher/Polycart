@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Events\Action\CartsMergedActionEvent;
+use JayI\Polycart\Domains\Cart\Events\CartsMergedActionEvent;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 
 it('moves a guest cart into the customer\'s cart at login', function (): void {
     Event::fake([CartsMergedActionEvent::class]);
@@ -24,7 +24,7 @@ it('moves a guest cart into the customer\'s cart at login', function (): void {
     expect($mine->lines)->toHaveCount(2)
         ->and($mine->lines->first()?->quantity)->toBe(3)
         ->and($mine->lines->last()?->unit_price)->toBe(300)
-        ->and(Cart::query()->find($guest->id))->toBeNull();
+        ->and(CartModel::query()->find($guest->id))->toBeNull();
 
     Event::assertDispatched(CartsMergedActionEvent::class, fn (CartsMergedActionEvent $event): bool => $event->from->is($guest) && $event->into->is($mine));
 });

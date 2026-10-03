@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use JayI\Polycart\Concerns\HasCarts;
-use JayI\Polycart\Contracts\CartParticipant;
+use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
+use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
 
 /**
  * @property int $id

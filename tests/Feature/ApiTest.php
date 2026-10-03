@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Models\Service;
 use Workbench\Database\Factories\UserFactory;
 
@@ -90,7 +90,7 @@ it('shows, updates and deletes a cart', function (): void {
 
     $this->deleteJson("/polycart/carts/{$cart->id}")->assertNoContent();
 
-    expect(Cart::query()->find($cart->id))->toBeNull();
+    expect(CartModel::query()->find($cart->id))->toBeNull();
 
     $this->getJson("/polycart/carts/{$cart->id}")->assertNotFound();
 });

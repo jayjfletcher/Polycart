@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace JayI\Polycart\Tests\Fixtures\Types;
 
 use Carbon\CarbonInterval;
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 final class RetailCart extends CartType
 {

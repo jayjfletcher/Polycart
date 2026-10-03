@@ -10,6 +10,12 @@ This repository is a Laravel package. Keep the package focused, idiomatic, and e
 - Prefer explicit Laravel package code over helper abstractions unless the extension point is real.
 - Keep tests focused on observable package behavior through public APIs, service provider wiring, commands, routes, published resources, and documentation promises.
 
+## Architecture
+
+- Code lives in domain modules under `src/Domains/{Domain}` (Cart, CartLine, CartType, Sharing, Scope, Activity), mirroring the `mono` domain-module standard. Each domain has a `{Domain}ServiceProvider` (extending `JayI\Polycart\Support\ServiceProvider`) registered by `src/Domains/DomainServiceProvider.php`, its own `routes.php`, and only the subdirectories it uses.
+- Models are named `{Entity}Model`; their pre-domain class names are kept as morph aliases in each domain provider. Model events derive from `{Entity}{Hook}Event` in the model's domain `Events` namespace.
+- Cross-domain code stays outside the domains: `Polycart`, the facade, `Http\Request`, `Mcp\Request`/`Tool`/`PolycartServer`, `Support/`, `Cortex/`, and `Atrium/` (dashboard screens, `ScreenAccess`, `PolycartSupportFeature`).
+
 ## Quick Commands
 
 - Full validation: `composer test`

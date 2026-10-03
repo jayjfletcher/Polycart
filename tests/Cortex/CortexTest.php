@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 use JayI\Cortex\Domains\McpServer\Actions\CreateMcpInstructionVersionAction;
-use JayI\Cortex\Domains\Tool\Actions\CreateToolDescriptionVersionAction;
-use JayI\Cortex\Facades\Cortex;
 use JayI\Cortex\Domains\McpServer\Services\McpServerRegistry;
+use JayI\Cortex\Domains\Tool\Actions\CreateToolDescriptionVersionAction;
 use JayI\Cortex\Domains\Tool\Services\ToolRegistry;
+use JayI\Cortex\Facades\Cortex;
 use JayI\Polycart\Cortex\CortexIntegration;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Models\Cart;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Tool as AgentTool;
 use Laravel\Ai\Events\InvokingTool;
@@ -84,7 +84,7 @@ it('lets an agent run a cart tool, recording cortex as the source', function ():
     $result = $tool->handle(new Request(['type' => 'quote', 'label' => 'From an agent']));
     $events->dispatch(new ToolInvoked('run', 'call', $agent, $tool, ['type' => 'quote'], $result, 1.0));
 
-    $quote = Cart::query()->sole();
+    $quote = CartModel::query()->sole();
 
     expect((string) $result)->toContain('From an agent')
         ->and($quote->source)->toBe('cortex')

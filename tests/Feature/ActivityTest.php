@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Testing\Fluent\AssertableJson;
-use JayI\Polycart\Actions\DeleteCartAction;
-use JayI\Polycart\Actions\UpdateCartAction;
-use JayI\Polycart\Enums\Activity;
-use JayI\Polycart\Enums\Visibility;
+use JayI\Polycart\Domains\Activity\Enums\Activity;
+use JayI\Polycart\Domains\Activity\Mcp\Tools\ListActivityTool;
+use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
+use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
+use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\ConvertCartTool;
-use JayI\Polycart\Mcp\Tools\ListActivityTool;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Models\CartActivity;
 use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
 /**
  * @return array<int, string>
  */
-function actions(Cart $cart): array
+function actions(CartModel $cart): array
 {
     return $cart->activities()->pluck('action')->all();
 }
@@ -69,7 +69,7 @@ it('records the signed-in user as the actor', function (): void {
 
 it('keeps every source that touches a cart, once, in order', function (): void {
     $cartId = $this->postJson('/polycart/carts', ['type' => 'cart'])->json('data.id');
-    $cart = Cart::query()->findOrFail($cartId);
+    $cart = CartModel::query()->findOrFail($cartId);
 
     Polycart::usingSource('import', fn (): mixed => $cart->add(product()));
     $this->postJson("/polycart/carts/{$cartId}/lines", ['lines' => [['unit_price' => 100]]])->assertCreated();
@@ -85,7 +85,7 @@ it('carries the history of an API cart into the order MCP made from it', functio
 
     PolycartServer::tool(ConvertCartTool::class, ['cart' => $cartId, 'to' => 'order', 'copy' => $copy])->assertOk();
 
-    $order = Cart::query()->ofType('order')->sole();
+    $order = CartModel::query()->ofType('order')->sole();
 
     expect($order->source)->toBe('mcp')
         ->and($order->sources)->toBe(['api', 'mcp'])
@@ -93,12 +93,12 @@ it('carries the history of an API cart into the order MCP made from it', functio
 
     $copy
         ? expect(actions($order))->toBe(['created', 'line_added', 'created', 'converted', 'converted_from'])
-            ->and(Cart::query()->findOrFail($cartId)->sources)->toBe(['api', 'mcp'])
+            ->and(CartModel::query()->findOrFail($cartId)->sources)->toBe(['api', 'mcp'])
         : expect(actions($order))->toBe(['created', 'line_added', 'converted']);
 })->with(['copied' => true, 'in place' => false]);
 
 it('carries a merged cart\'s history into the cart it joins', function (): void {
-    $guest = Polycart::usingSource('web', fn (): Cart => Polycart::create('cart', 'session-1'));
+    $guest = Polycart::usingSource('web', fn (): CartModel => Polycart::create('cart', 'session-1'));
     Polycart::usingSource('web', fn (): mixed => $guest->add(product()));
 
     $mine = Polycart::create('cart');
@@ -107,13 +107,13 @@ it('carries a merged cart\'s history into the cart it joins', function (): void 
     // The guest's web visit came first, so it is listed first.
     expect($mine->fresh()?->sources)->toBe(['web', 'code'])
         ->and(actions($mine))->toContain('merged')
-        ->and(Cart::withTrashed()->findOrFail($guest->id)->activities()->pluck('action')->last())->toBe('merged_into');
+        ->and(CartModel::withTrashed()->findOrFail($guest->id)->activities()->pluck('action')->last())->toBe('merged_into');
 });
 
 it('lets the application record its own events', function (): void {
     $cart = Polycart::create('cart');
 
-    $entry = Polycart::usingSource('erp', fn (): CartActivity => $cart->recordActivity('exported', ['reference' => 'SO-1']));
+    $entry = Polycart::usingSource('erp', fn (): CartActivityModel => $cart->recordActivity('exported', ['reference' => 'SO-1']));
 
     expect($entry->action)->toBe('exported')
         ->and($entry->source)->toBe('erp')
@@ -127,8 +127,8 @@ it('finds carts any source has touched', function (): void {
     Polycart::usingSource('mcp', fn (): mixed => $touched->add(product()));
     Polycart::create('cart');
 
-    expect(Cart::query()->touchedBy('mcp')->pluck('id')->all())->toBe([$touched->id])
-        ->and(Cart::query()->touchedBy('code')->count())->toBe(2);
+    expect(CartModel::query()->touchedBy('mcp')->pluck('id')->all())->toBe([$touched->id])
+        ->and(CartModel::query()->touchedBy('code')->count())->toBe(2);
 
     $this->getJson('/polycart/carts?touched_by=mcp')->assertOk()->assertJsonCount(1, 'data');
 });

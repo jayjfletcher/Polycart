@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace JayI\Polycart\Tests\Fixtures\Types;
 
 use Illuminate\Database\Eloquent\Model;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 use JayI\Polycart\Tests\Fixtures\Models\Product;
-use JayI\Polycart\Types\CartType;
 
 /**
  * Holds only catalogue products, lists every add separately, and keeps only

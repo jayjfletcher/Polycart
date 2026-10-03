@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
+use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
+use JayI\Polycart\Domains\Activity\Policies\CartActivityPolicy;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
+use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy;
+use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use JayI\Polycart\Domains\Sharing\Policies\CartMemberPolicy;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Mcp\Tools\RemoveLinesTool;
-use JayI\Polycart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Mcp\Tools\UpdateCartTool;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Models\CartActivity;
-use JayI\Polycart\Models\CartLine;
-use JayI\Polycart\Models\CartMember;
-use JayI\Polycart\Policies\CartActivityPolicy;
-use JayI\Polycart\Policies\CartLinePolicy;
-use JayI\Polycart\Policies\CartMemberPolicy;
-use JayI\Polycart\Policies\CartPolicy;
 use JayI\Polycart\PolycartServiceProvider;
 use JayI\Polycart\Tests\Fixtures\Models\Quote;
 use JayI\Polycart\Tests\Fixtures\Policies\KeepLinesPolicy;
@@ -48,11 +48,11 @@ function usePolicies(array $policies): void
 }
 
 it('registers the policies from the config', function (): void {
-    expect(Gate::getPolicyFor(Cart::class))->toBeInstanceOf(CartPolicy::class)
+    expect(Gate::getPolicyFor(CartModel::class))->toBeInstanceOf(CartPolicy::class)
         ->and(Gate::getPolicyFor(Quote::class))->toBeInstanceOf(CartPolicy::class)
-        ->and(Gate::getPolicyFor(CartLine::class))->toBeInstanceOf(CartLinePolicy::class)
-        ->and(Gate::getPolicyFor(CartMember::class))->toBeInstanceOf(CartMemberPolicy::class)
-        ->and(Gate::getPolicyFor(CartActivity::class))->toBeInstanceOf(CartActivityPolicy::class);
+        ->and(Gate::getPolicyFor(CartLineModel::class))->toBeInstanceOf(CartLinePolicy::class)
+        ->and(Gate::getPolicyFor(CartMemberModel::class))->toBeInstanceOf(CartMemberPolicy::class)
+        ->and(Gate::getPolicyFor(CartActivityModel::class))->toBeInstanceOf(CartActivityPolicy::class);
 });
 
 it('lets the owner do anything with their cart', function (): void {
@@ -76,22 +76,22 @@ it('checks lines, members and activity against their cart', function (): void {
     Polycart::share($cart, $this->bob, 'viewer');
     $member = $cart->members()->where('member_id', (string) $this->bob->id)->firstOrFail();
 
-    expect($this->bob->can('viewAny', [CartLine::class, $cart]))->toBeTrue()
+    expect($this->bob->can('viewAny', [CartLineModel::class, $cart]))->toBeTrue()
         ->and($this->bob->can('view', $line))->toBeTrue()
-        ->and($this->bob->can('create', [CartLine::class, $cart]))->toBeFalse()
+        ->and($this->bob->can('create', [CartLineModel::class, $cart]))->toBeFalse()
         ->and($this->bob->can('update', $line))->toBeFalse()
         ->and($this->bob->can('delete', $line))->toBeFalse()
-        ->and($this->bob->can('viewAny', [CartMember::class, $cart]))->toBeTrue()
+        ->and($this->bob->can('viewAny', [CartMemberModel::class, $cart]))->toBeTrue()
         ->and($this->bob->can('delete', $member))->toBeFalse()
-        ->and($this->bob->can('viewAny', [CartActivity::class, $cart]))->toBeTrue()
+        ->and($this->bob->can('viewAny', [CartActivityModel::class, $cart]))->toBeTrue()
         ->and($this->ann->can('update', $line))->toBeTrue()
-        ->and($this->ann->can('create', [CartMember::class, $cart]))->toBeTrue()
+        ->and($this->ann->can('create', [CartMemberModel::class, $cart]))->toBeTrue()
         ->and($this->ann->can('delete', $member))->toBeTrue()
         ->and($this->ann->can('update', $cart->activities()->firstOrFail()))->toBeFalse();
 });
 
 it('uses a cart policy swapped in the config, for carts and their lines', function (): void {
-    usePolicies([Cart::class => ReadOnlyCartPolicy::class]);
+    usePolicies([CartModel::class => ReadOnlyCartPolicy::class]);
 
     $cart = Polycart::create('cart', $this->ann, scope: $this->sales);
 
@@ -105,7 +105,7 @@ it('uses a cart policy swapped in the config, for carts and their lines', functi
 });
 
 it('checks each named line against a line policy swapped in the config', function (): void {
-    usePolicies([CartLine::class => KeepLinesPolicy::class]);
+    usePolicies([CartLineModel::class => KeepLinesPolicy::class]);
 
     $cart = Polycart::create('cart', $this->ann, scope: $this->sales);
     $line = $cart->add(product());

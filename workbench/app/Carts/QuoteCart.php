@@ -6,9 +6,9 @@ namespace Workbench\App\Carts;
 
 use BackedEnum;
 use Carbon\CarbonInterval;
-use JayI\Polycart\Enums\Visibility;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Support\CartType;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 
 /**
  * A priced quote a manager approves before it goes to the customer.
@@ -70,7 +70,7 @@ class QuoteCart extends CartType
         return ['order'];
     }
 
-    public function convertedFrom(Cart $cart, Cart $source): void
+    public function convertedFrom(CartModel $cart, CartModel $source): void
     {
         $cart->meta = [...$cart->meta ?? [], 'quote_number' => 'Q-'.strtoupper(substr($cart->id, -6))];
     }

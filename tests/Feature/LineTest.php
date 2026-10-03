@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Actions\UpdateLineAction;
-use JayI\Polycart\Contracts\PriceResolver;
-use JayI\Polycart\Events\Action\LineAddedActionEvent;
-use JayI\Polycart\Events\Action\LineRemovedActionEvent;
-use JayI\Polycart\Events\Action\LineUpdatedActionEvent;
-use JayI\Polycart\Exceptions\LineRejectedException;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Actions\UpdateLineAction;
+use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
+use JayI\Polycart\Domains\CartLine\Events\LineRemovedActionEvent;
+use JayI\Polycart\Domains\CartLine\Events\LineUpdatedActionEvent;
+use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Models\Service;
 
 it('adds a purchasable at its own price', function (): void {
@@ -77,7 +77,7 @@ it('leaves a purchasable that cannot price itself unpriced', function (): void {
 it('prices through a bound resolver', function (): void {
     app()->instance(PriceResolver::class, new class implements PriceResolver
     {
-        public function price(Cart $cart, Model $purchasable, array $options): int
+        public function price(CartModel $cart, Model $purchasable, array $options): int
         {
             return 42;
         }

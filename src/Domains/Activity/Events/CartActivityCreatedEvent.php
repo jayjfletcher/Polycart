@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace JayI\Polycart\Domains\Activity\Events;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use JayI\Polycart\Contracts\ModelLifecycleEvent;
+use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
+
+/**
+ * The CartActivityModel `created` Eloquent event.
+ */
+final class CartActivityCreatedEvent implements ModelLifecycleEvent
+{
+    use Dispatchable;
+    use SerializesModels;
+
+    public function __construct(public CartActivityModel $activity) {}
+
+    public function model(): Model
+    {
+        return $this->activity;
+    }
+
+    public function hook(): string
+    {
+        return 'created';
+    }
+}

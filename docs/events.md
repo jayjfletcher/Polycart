@@ -22,13 +22,13 @@ Each model fires a class-based event for every Eloquent hook that applies to it:
 
 | Model | Events |
 | --- | --- |
-| `Cart` | all 15: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, `trashed`, `forceDeleting`, `forceDeleted`, `replicating` |
-| `CartLine`, `CartMember`, `CartPath`, `CartActivity` | the 10 that apply to models without soft deletes: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `replicating` |
+| `CartModel` | all 15: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, `trashed`, `forceDeleting`, `forceDeleted`, `replicating` |
+| `CartLineModel`, `CartMemberModel`, `CartPathModel`, `CartActivityModel` | the 10 that apply to models without soft deletes: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `replicating` |
 
-They live in `JayI\Polycart\Events\Model` and are named `{Model}{Hook}Event`, for example `CartCreatingEvent` or `CartLineDeletedEvent`. The model is a typed property: `$event->cart`, `$event->line`, `$event->member`, `$event->path`, `$event->activity`. It is also available as `$event->model()`, alongside `$event->hook()`.
+They live in the `Events` namespace of the model's domain, such as `JayI\Polycart\Domains\CartLine\Events`, and are named `{Entity}{Hook}Event`, the entity being the model's name less its `Model` suffix, for example `CartCreatingEvent` or `CartLineDeletedEvent`. The model is a typed property: `$event->cart`, `$event->line`, `$event->member`, `$event->path`, `$event->activity`. It is also available as `$event->model()`, alongside `$event->hook()`.
 
 ```php
-use JayI\Polycart\Events\Model\CartLineSavingEvent;
+use JayI\Polycart\Domains\CartLine\Events\CartLineSavingEvent;
 
 Event::listen(CartLineSavingEvent::class, function (CartLineSavingEvent $event) {
     $event->line->meta = [...$event->line->meta, 'checked_at' => now()->toIso8601String()];
@@ -39,10 +39,10 @@ About how they fire:
 
 - **Synchronous:** they fire when Eloquent fires the hook, as Eloquent's own events do.
 - **Cancelling:** a `creating`, `updating`, `saving`, `deleting`, `restoring` or `forceDeleting` listener that returns `false` stops the operation.
-- **Subclasses:** a cart that hydrates as a subclass, such as your `Quote extends Cart`, fires the `Cart*` events. A listener sees every cart, whatever its class.
+- **Subclasses:** a cart that hydrates as a subclass, such as your `Quote extends CartModel`, fires the `Cart*` events. A listener sees every cart, whatever its class.
 - **Your own mapping:** entries you declare on a subclass's `$dispatchesEvents` win over the derived ones.
 
-The mapping is done by the `DispatchesModelEvents` trait (`JayI\Polycart\Models\Concerns`). It is the same convention the rest of your application may already use.
+The mapping is done by the `DispatchesModelEvents` trait (`JayI\Polycart\Support\Models\Concerns`). It is the same convention the rest of your application may already use.
 
 ## Action events
 
@@ -52,8 +52,8 @@ Every action dispatches two events:
 2. **A finish event** (`…edActionEvent`, e.g. `LineAddedActionEvent`), once the action has succeeded. It carries the result.
 
 ```php
-use JayI\Polycart\Events\Action\CartConvertedActionEvent;
-use JayI\Polycart\Events\Action\LineAddingActionEvent;
+use JayI\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
+use JayI\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
 
 Event::listen(LineAddingActionEvent::class, function (LineAddingActionEvent $event) {
     Log::info('Adding to cart', ['cart' => $event->cart->id, 'quantity' => $event->quantity]);
@@ -69,7 +69,7 @@ Event::listen(CartConvertedActionEvent::class, function (CartConvertedActionEven
 - **Failure:** an action that throws fires its start event and no finish event.
 - **Nesting:** actions that call other actions fire both sets. Adding a batch fires `LinesAddingActionEvent`, then a `LineAdding`/`LineAdded` pair for each line, then `LinesAddedActionEvent`.
 
-Action events live in `JayI\Polycart\Events\Action`.
+Action events live in the `Events` namespace of their domain, such as `JayI\Polycart\Domains\Cart\Events`.
 
 ## Listening to a whole family
 
@@ -140,7 +140,7 @@ Notes on particular events:
 ## Testing
 
 ```php
-use JayI\Polycart\Events\Action\LineAddedActionEvent;
+use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
 
 Event::fake([LineAddedActionEvent::class]);
 

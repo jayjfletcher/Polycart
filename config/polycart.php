@@ -2,27 +2,27 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Features\PolycartSupportFeature;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Models\CartActivity;
-use JayI\Polycart\Models\CartLine;
-use JayI\Polycart\Models\CartMember;
-use JayI\Polycart\Policies\CartActivityPolicy;
-use JayI\Polycart\Policies\CartLinePolicy;
-use JayI\Polycart\Policies\CartMemberPolicy;
-use JayI\Polycart\Policies\CartPolicy;
-use JayI\Polycart\Types\ShoppingCart;
+use JayI\Polycart\Atrium\Features\PolycartSupportFeature;
+use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
+use JayI\Polycart\Domains\Activity\Policies\CartActivityPolicy;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
+use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy;
+use JayI\Polycart\Domains\CartType\Support\ShoppingCart;
+use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use JayI\Polycart\Domains\Sharing\Policies\CartMemberPolicy;
 
 return [
 
     /*
     |--------------------------------------------------------------------------
-    | Cart Types
+    | CartModel Types
     |--------------------------------------------------------------------------
     |
     | Every kind of cart your application keeps — a shopping cart, a saved
     | cart, a quote, an order, a project — keyed by the string stored in the
-    | carts table. Each class extends JayI\Polycart\Types\CartType and holds
+    | carts table. Each class extends JayI\Polycart\Domains\CartType\Support\CartType and holds
     | that kind's rules. Entries here win over types a package registers.
     |
     */
@@ -117,15 +117,15 @@ return [
     | check every call against these. By default a cart's owner may do
     | anything, everyone else gets what their role grants, and lines, members
     | and activity follow their cart. Point a model at your own class to
-    | replace its policy; the Cart entry covers every cart type's subclass.
+    | replace its policy; the CartModel entry covers every cart type's subclass.
     |
     */
 
     'policies' => [
-        Cart::class => CartPolicy::class,
-        CartLine::class => CartLinePolicy::class,
-        CartMember::class => CartMemberPolicy::class,
-        CartActivity::class => CartActivityPolicy::class,
+        CartModel::class => CartPolicy::class,
+        CartLineModel::class => CartLinePolicy::class,
+        CartMemberModel::class => CartMemberPolicy::class,
+        CartActivityModel::class => CartActivityPolicy::class,
     ],
 
     /*

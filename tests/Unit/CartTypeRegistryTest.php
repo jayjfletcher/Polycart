@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Exceptions\CartTypeCollisionException;
-use JayI\Polycart\Exceptions\UnknownCartTypeException;
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Exceptions\CartTypeCollisionException;
+use JayI\Polycart\Domains\CartType\Exceptions\UnknownCartTypeException;
+use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
 use JayI\Polycart\Tests\Fixtures\Models\Product;
 use JayI\Polycart\Tests\Fixtures\Models\Quote;
 use JayI\Polycart\Tests\Fixtures\Types\OrderCart;
 use JayI\Polycart\Tests\Fixtures\Types\QuoteCart;
 use JayI\Polycart\Tests\Fixtures\Types\SavedCart;
-use JayI\Polycart\Types\CartTypeRegistry;
 
 it('lets a package register a type at runtime', function (): void {
     $registry = app(CartTypeRegistry::class);
@@ -59,6 +59,6 @@ it('names the model a type hydrates as', function (): void {
     $registry = app(CartTypeRegistry::class);
 
     expect($registry->model('quote'))->toBe(Quote::class)
-        ->and($registry->model('order'))->toBe(Cart::class)
+        ->and($registry->model('order'))->toBe(CartModel::class)
         ->and($registry->model('nope'))->toBeNull();
 });

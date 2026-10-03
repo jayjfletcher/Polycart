@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace JayI\Polycart\Tests\Fixtures\Stages;
 
 use Closure;
-use JayI\Polycart\Pipeline\PendingLine;
+use JayI\Polycart\Domains\CartLine\Support\PendingLine;
 
 /**
  * Configured from the stage list: `ApplyBulkDiscount::class.':10,20'` takes

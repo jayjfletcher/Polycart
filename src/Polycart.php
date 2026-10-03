@@ -7,17 +7,17 @@ namespace JayI\Polycart;
 use BackedEnum;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Actions\ActiveCartAction;
-use JayI\Polycart\Actions\ConvertCartAction;
-use JayI\Polycart\Actions\CreateCartAction;
-use JayI\Polycart\Actions\MergeCartsAction;
-use JayI\Polycart\Actions\ShareCartAction;
-use JayI\Polycart\Actions\UnshareCartAction;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Models\CartMember;
-use JayI\Polycart\Support\SourceContext;
-use JayI\Polycart\Types\CartType;
-use JayI\Polycart\Types\CartTypeRegistry;
+use JayI\Polycart\Domains\Activity\Services\SourceContext;
+use JayI\Polycart\Domains\Cart\Actions\ActiveCartAction;
+use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
+use JayI\Polycart\Domains\Cart\Actions\CreateCartAction;
+use JayI\Polycart\Domains\Cart\Actions\MergeCartsAction;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use JayI\Polycart\Domains\CartType\Support\CartType;
+use JayI\Polycart\Domains\Sharing\Actions\ShareCartAction;
+use JayI\Polycart\Domains\Sharing\Actions\UnshareCartAction;
+use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * The public entry point.
@@ -51,7 +51,7 @@ final class Polycart
      * @param  array<string, mixed>  $attributes  Any of label, meta, parent_id.
      * @param  Model|null  $scope  The level of the tree it lives in, such as a team.
      */
-    public function create(string $type, Model|string|null $owner = null, array $attributes = [], ?Model $scope = null): Cart
+    public function create(string $type, Model|string|null $owner = null, array $attributes = [], ?Model $scope = null): CartModel
     {
         return $this->creator->execute($type, $owner, $attributes, $scope);
     }
@@ -63,7 +63,7 @@ final class Polycart
      * initial status. Once it moves on — checked out, submitted — the next
      * call starts a fresh one. Each scope has its own active cart.
      */
-    public function active(string $type, Model|string $owner, ?Model $scope = null): Cart
+    public function active(string $type, Model|string $owner, ?Model $scope = null): CartModel
     {
         return $this->activator->execute($type, $owner, $scope);
     }
@@ -85,12 +85,12 @@ final class Polycart
      * Share a cart with someone, or a whole scope such as a team, inside the
      * cart's boundary.
      */
-    public function share(Cart $cart, Model $member, string $role): CartMember
+    public function share(CartModel $cart, Model $member, string $role): CartMemberModel
     {
         return app(ShareCartAction::class)->execute($cart, $member, $role);
     }
 
-    public function unshare(Cart $cart, Model $member): void
+    public function unshare(CartModel $cart, Model $member): void
     {
         $membership = $cart->members()
             ->where('member_type', $member->getMorphClass())
@@ -103,15 +103,15 @@ final class Polycart
     /**
      * Find a cart of any type, hydrated as its type's model.
      */
-    public function find(string $id): ?Cart
+    public function find(string $id): ?CartModel
     {
-        return Cart::query()->find($id);
+        return CartModel::query()->find($id);
     }
 
     /**
      * Turn a cart into another type, copying it unless `copy` is false.
      */
-    public function convert(Cart $cart, string $to, bool $copy = true): Cart
+    public function convert(CartModel $cart, string $to, bool $copy = true): CartModel
     {
         return $this->converter->execute($cart, $to, $copy);
     }
@@ -119,7 +119,7 @@ final class Polycart
     /**
      * Move every line of one cart into another and delete the first.
      */
-    public function merge(Cart $from, Cart $into): Cart
+    public function merge(CartModel $from, CartModel $into): CartModel
     {
         return $this->merger->execute($from, $into);
     }

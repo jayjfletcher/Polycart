@@ -1,5 +1,5 @@
 @use(JayI\Polycart\Atrium\Format)
-@use(JayI\Polycart\Models\CartMember)
+@use(JayI\Polycart\Domains\Sharing\Models\CartMemberModel)
 
 <x-atrium::layout :title="$cart->label ?? $cart->id">
     <x-atrium::page-header :title="$cart->label ?? $cart->id">
@@ -232,7 +232,7 @@
                     </ul>
                 @endif
 
-                @polycartCan('create', CartMember::class, [$cart])
+                @polycartCan('create', CartMemberModel::class, [$cart])
                 @if ($cart->isScoped() && $type?->shareable() && $memberTypes !== [])
                     <form method="POST" action="{{ route('atrium.polycart.carts.members.store', $cart) }}" class="flex flex-wrap items-end gap-2">
                         @csrf

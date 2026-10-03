@@ -6,20 +6,20 @@ use Closure;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use JayI\Polycart\Actions\AddLinesAction;
-use JayI\Polycart\Actions\ConvertCartAction;
-use JayI\Polycart\Actions\CreateCartAction;
-use JayI\Polycart\Actions\MergeCartsAction;
-use JayI\Polycart\Actions\RemoveLineAction;
-use JayI\Polycart\Actions\SetVisibilityAction;
-use JayI\Polycart\Actions\ShareCartAction;
-use JayI\Polycart\Actions\TransitionCartAction;
-use JayI\Polycart\Actions\UpdateCartAction;
-use JayI\Polycart\Actions\UpdateLineAction;
-use JayI\Polycart\Enums\CartSource;
-use JayI\Polycart\Enums\Visibility;
+use JayI\Polycart\Domains\Activity\Enums\CartSource;
+use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
+use JayI\Polycart\Domains\Cart\Actions\CreateCartAction;
+use JayI\Polycart\Domains\Cart\Actions\MergeCartsAction;
+use JayI\Polycart\Domains\Cart\Actions\TransitionCartAction;
+use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Actions\AddLinesAction;
+use JayI\Polycart\Domains\CartLine\Actions\RemoveLineAction;
+use JayI\Polycart\Domains\CartLine\Actions\UpdateLineAction;
+use JayI\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
+use JayI\Polycart\Domains\Sharing\Actions\ShareCartAction;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use Workbench\App\Carts\CartStatus;
 use Workbench\App\Carts\OrderStatus;
 use Workbench\App\Carts\QuoteStatus;
@@ -87,7 +87,7 @@ class DatabaseSeeder extends Seeder
 
         // Ada's lobby cart: shared with Grace, open to the team, and joined
         // by the lines she added as a guest before signing in.
-        $lobby = $this->step($ada, 12, CartSource::Atrium, fn (): Cart => $create->execute('cart', $ada, [
+        $lobby = $this->step($ada, 12, CartSource::Atrium, fn (): CartModel => $create->execute('cart', $ada, [
             'label' => 'HQ lobby refresh',
             'meta' => ['site' => 'Acme HQ', 'floor' => 'Ground'],
         ], $sales));
@@ -100,12 +100,12 @@ class DatabaseSeeder extends Seeder
         $this->step($ada, 11, CartSource::Atrium, fn () => $visibility->execute($lobby, Visibility::Scope));
         $this->lines($grace, 9, CartSource::Api, $lobby, [['DS-050', 6]]);
 
-        $guest = $this->step(null, 3, CartSource::Api, fn (): Cart => $create->execute('cart', 'guest-7f3a9c'));
+        $guest = $this->step(null, 3, CartSource::Api, fn (): CartModel => $create->execute('cart', 'guest-7f3a9c'));
         $this->lines(null, 3, CartSource::Api, $guest, [['HG-020', 12], ['LV-100', 2, ['finish' => 'brass']]]);
         $this->step($ada, 2, CartSource::Api, fn () => app(MergeCartsAction::class)->execute($guest, $lobby));
 
         // Grace's cart is at the payment step.
-        $warehouse = $this->step($grace, 5, CartSource::Api, fn (): Cart => $create->execute('cart', $grace, [
+        $warehouse = $this->step($grace, 5, CartSource::Api, fn (): CartModel => $create->execute('cart', $grace, [
             'label' => 'Warehouse side doors',
         ], $sales));
         $this->lines($grace, 5, CartSource::Api, $warehouse, [['EX-900', 2], ['CY-030', 4], ['HG-020', 4]]);
@@ -113,48 +113,48 @@ class DatabaseSeeder extends Seeder
 
         // Linus checked out: his cart became an order, which was paid,
         // fulfilled, and then reordered as a fresh cart.
-        $server = $this->step($linus, 40, CartSource::Atrium, fn (): Cart => $create->execute('cart', $linus, [
+        $server = $this->step($linus, 40, CartSource::Atrium, fn (): CartModel => $create->execute('cart', $linus, [
             'label' => 'Server room access',
             'meta' => ['site' => 'Acme DC1'],
         ], $operations));
         $this->lines($linus, 40, CartSource::Atrium, $server, [['CR-480', 2], ['SL-399', 1], ['DC-400', 2]]);
         $this->step($linus, 39, CartSource::Atrium, fn () => $transition->execute($server, CartStatus::CheckingOut));
-        $serverOrder = $this->step($linus, 39, CartSource::Atrium, fn (): Cart => $convert->execute($server, 'order'));
+        $serverOrder = $this->step($linus, 39, CartSource::Atrium, fn (): CartModel => $convert->execute($server, 'order'));
         $this->step($linus, 39, CartSource::Atrium, fn () => $transition->execute($server, CartStatus::CheckedOut));
         $this->step($linus, 39, CartSource::Atrium, fn () => $share->execute($serverOrder, $ada, 'buyer'));
         $this->step($ada, 38, CartSource::Atrium, fn () => $transition->execute($serverOrder, OrderStatus::Paid));
         $this->step($admin, 34, CartSource::Atrium, fn () => $transition->execute($serverOrder, OrderStatus::Fulfilled));
-        $reorder = $this->step($linus, 4, CartSource::Mcp, fn (): Cart => $convert->execute($serverOrder, 'cart'));
+        $reorder = $this->step($linus, 4, CartSource::Mcp, fn (): CartModel => $convert->execute($serverOrder, 'cart'));
         $this->step($linus, 4, CartSource::Mcp, fn () => $update->execute($reorder, ['label' => 'Server room access (reorder)']));
 
         // Alan gave up on his cart; Margaret's ran past its lifetime.
-        $abandoned = $this->step($alan, 22, CartSource::Api, fn (): Cart => $create->execute('cart', $alan, [
+        $abandoned = $this->step($alan, 22, CartSource::Api, fn (): CartModel => $create->execute('cart', $alan, [
             'label' => 'Spare cylinders',
         ], $purchasing));
         $this->lines($alan, 22, CartSource::Api, $abandoned, [['CY-030', 10], ['KP-210', 2]]);
         $this->step($alan, 20, CartSource::Code, fn () => $transition->execute($abandoned, CartStatus::Abandoned));
 
-        $stale = $this->step($margaret, 48, CartSource::Atrium, fn (): Cart => $create->execute('cart', $margaret, [
+        $stale = $this->step($margaret, 48, CartSource::Atrium, fn (): CartModel => $create->execute('cart', $margaret, [
             'label' => 'Fire door audit fixes',
         ], $facilities));
         $this->lines($margaret, 47, CartSource::Atrium, $stale, [['DC-400', 8], ['KP-210', 8], ['HG-020', 8]]);
 
         // Ken shops on his own, through an agent.
-        $home = $this->step($ken, 1, CartSource::Mcp, fn (): Cart => $create->execute('cart', $ken, ['label' => 'Home office']));
+        $home = $this->step($ken, 1, CartSource::Mcp, fn (): CartModel => $create->execute('cart', $ken, ['label' => 'Home office']));
         $this->lines($ken, 1, CartSource::Mcp, $home, [['SL-399', 1], ['DS-050', 2]]);
 
         // The demo user's own cart.
-        $own = $this->step($admin, 0, CartSource::Atrium, fn (): Cart => $create->execute('cart', $admin, ['label' => 'Showroom samples'], $sales));
+        $own = $this->step($admin, 0, CartSource::Atrium, fn (): CartModel => $create->execute('cart', $admin, ['label' => 'Showroom samples'], $sales));
         $this->lines($admin, 0, CartSource::Atrium, $own, [['LV-100', 1], ['LV-100', 1, ['finish' => 'brass']], ['KP-210', 1]]);
 
         // Quotes. The clinic quote started as Ada's cart, retyped in place,
         // and waits on the demo user's approval.
-        $clinicCart = $this->step($ada, 9, CartSource::Atrium, fn (): Cart => $create->execute('cart', $ada, [
+        $clinicCart = $this->step($ada, 9, CartSource::Atrium, fn (): CartModel => $create->execute('cart', $ada, [
             'label' => 'Riverside clinic access control',
             'meta' => ['customer' => 'Riverside Clinic', 'po_number' => 'RC-2210'],
         ], $sales));
         $this->lines($ada, 9, CartSource::Atrium, $clinicCart, [['CR-480', 6], ['EX-900', 3], ['SL-399', 4]]);
-        $clinic = $this->step($ada, 8, CartSource::Atrium, fn (): Cart => $convert->execute($clinicCart, 'quote', copy: false));
+        $clinic = $this->step($ada, 8, CartSource::Atrium, fn (): CartModel => $convert->execute($clinicCart, 'quote', copy: false));
         $this->custom($ada, 8, $clinic, 'Installation labour (2 technicians, 3 days)', 288000);
         $this->step($ada, 8, CartSource::Atrium, fn () => $share->execute($clinic, $grace, 'contributor'));
         $this->step($ada, 8, CartSource::Atrium, fn () => $share->execute($clinic, $admin, 'approver'));
@@ -196,7 +196,7 @@ class DatabaseSeeder extends Seeder
         $this->step($margaret, 29, CartSource::Atrium, fn () => $transition->execute($offices, QuoteStatus::Approved));
         $this->step($margaret, 28, CartSource::Atrium, fn () => $transition->execute($offices, QuoteStatus::Sent));
         $this->step($margaret, 21, CartSource::Api, fn () => $transition->execute($offices, QuoteStatus::Accepted));
-        $officesOrder = $this->step($margaret, 21, CartSource::Api, fn (): Cart => $convert->execute($offices, 'order'));
+        $officesOrder = $this->step($margaret, 21, CartSource::Api, fn (): CartModel => $convert->execute($offices, 'order'));
         $this->step($margaret, 21, CartSource::Atrium, fn () => $share->execute($officesOrder, $alan, 'buyer'));
         $this->step($margaret, 21, CartSource::Atrium, fn () => $visibility->execute($officesOrder, Visibility::Boundary));
 
@@ -219,34 +219,34 @@ class DatabaseSeeder extends Seeder
         $this->step($ada, 49, CartSource::Atrium, fn () => $transition->execute($kiosk, QuoteStatus::Approved));
         $this->step($linus, 48, CartSource::Atrium, fn () => $transition->execute($kiosk, QuoteStatus::Sent));
         $this->step($linus, 46, CartSource::Atrium, fn () => $transition->execute($kiosk, QuoteStatus::Accepted));
-        $kioskOrder = $this->step($linus, 46, CartSource::Atrium, fn (): Cart => $convert->execute($kiosk, 'order', copy: false));
+        $kioskOrder = $this->step($linus, 46, CartSource::Atrium, fn (): CartModel => $convert->execute($kiosk, 'order', copy: false));
         $this->step($linus, 45, CartSource::Atrium, fn () => $transition->execute($kioskOrder, OrderStatus::Paid));
         $this->step($admin, 31, CartSource::Atrium, fn () => $transition->execute($kioskOrder, OrderStatus::Refunded));
 
         // An order cancelled before payment.
-        $garage = $this->step($ken, 16, CartSource::Api, fn (): Cart => $create->execute('order', $ken, ['label' => 'Garage side door']));
+        $garage = $this->step($ken, 16, CartSource::Api, fn (): CartModel => $create->execute('order', $ken, ['label' => 'Garage side door']));
         $this->lines($ken, 16, CartSource::Api, $garage, [['LV-100', 1], ['DC-400', 1]]);
         $this->step($ken, 15, CartSource::Api, fn () => $transition->execute($garage, OrderStatus::Cancelled));
 
         // Wishlists: one shared with the team, one open to the whole
         // organization, one private, and one that became a cart.
-        $wishes = $this->step($grace, 20, CartSource::Atrium, fn (): Cart => $create->execute('wishlist', $grace, ['label' => 'Showroom wishlist'], $sales));
+        $wishes = $this->step($grace, 20, CartSource::Atrium, fn (): CartModel => $create->execute('wishlist', $grace, ['label' => 'Showroom wishlist'], $sales));
         $this->lines($grace, 20, CartSource::Atrium, $wishes, [['SL-399', 2], ['CR-480', 1], ['LV-100', 4, ['finish' => 'brass']]]);
         $this->step($grace, 19, CartSource::Atrium, fn () => $share->execute($wishes, $sales, 'viewer'));
 
-        $standards = $this->step($margaret, 12, CartSource::Atrium, fn (): Cart => $create->execute('wishlist', $margaret, [
+        $standards = $this->step($margaret, 12, CartSource::Atrium, fn (): CartModel => $create->execute('wishlist', $margaret, [
             'label' => 'Globex approved hardware',
             'meta' => ['department' => 'Facilities'],
         ], $facilities));
         $this->lines($margaret, 12, CartSource::Atrium, $standards, [['LV-100', 1], ['CY-030', 1], ['DC-400', 1], ['EX-900', 1]]);
         $this->step($margaret, 12, CartSource::Atrium, fn () => $visibility->execute($standards, Visibility::Boundary));
 
-        $someday = $this->step($ken, 6, CartSource::Mcp, fn (): Cart => $create->execute('wishlist', $ken, ['label' => 'Someday']));
+        $someday = $this->step($ken, 6, CartSource::Mcp, fn (): CartModel => $create->execute('wishlist', $ken, ['label' => 'Someday']));
         $this->lines($ken, 6, CartSource::Mcp, $someday, [['CR-480', 1], ['SL-399', 2]]);
 
-        $lab = $this->step($alan, 8, CartSource::Atrium, fn (): Cart => $create->execute('wishlist', $alan, ['label' => 'Lab upgrades'], $purchasing));
+        $lab = $this->step($alan, 8, CartSource::Atrium, fn (): CartModel => $create->execute('wishlist', $alan, ['label' => 'Lab upgrades'], $purchasing));
         $this->lines($alan, 8, CartSource::Atrium, $lab, [['KP-210', 4], ['SL-399', 1]]);
-        $this->step($alan, 2, CartSource::Atrium, fn (): Cart => $convert->execute($lab, 'cart'));
+        $this->step($alan, 2, CartSource::Atrium, fn (): CartModel => $convert->execute($lab, 'cart'));
     }
 
     private function user(string $name, string $email): User
@@ -293,9 +293,9 @@ class DatabaseSeeder extends Seeder
      * @param  array<string, mixed>  $meta
      * @param  array<int, array{0: string, 1: int, 2?: array<string, mixed>}>  $lines
      */
-    private function quote(User $owner, int $daysAgo, Team $team, string $label, array $meta, array $lines): Cart
+    private function quote(User $owner, int $daysAgo, Team $team, string $label, array $meta, array $lines): CartModel
     {
-        $quote = $this->step($owner, $daysAgo, CartSource::Atrium, fn (): Cart => app(CreateCartAction::class)->execute('quote', $owner, [
+        $quote = $this->step($owner, $daysAgo, CartSource::Atrium, fn (): CartModel => app(CreateCartAction::class)->execute('quote', $owner, [
             'label' => $label,
             'meta' => $meta,
         ], $team));
@@ -310,7 +310,7 @@ class DatabaseSeeder extends Seeder
      *
      * @param  array<int, array{0: string, 1: int, 2?: array<string, mixed>}>  $lines
      */
-    private function lines(?User $actor, int $daysAgo, CartSource $source, Cart $cart, array $lines): void
+    private function lines(?User $actor, int $daysAgo, CartSource $source, CartModel $cart, array $lines): void
     {
         $this->step($actor, $daysAgo, $source, fn () => app(AddLinesAction::class)->execute($cart, array_map(fn (array $line): array => [
             'purchasable' => $this->products[$line[0]],
@@ -323,7 +323,7 @@ class DatabaseSeeder extends Seeder
      * A line priced by hand: a service with no product, or a product priced
      * on request.
      */
-    private function custom(User $actor, int $daysAgo, Cart $cart, string $description, int $unitPrice, int $quantity = 1, ?Product $product = null): void
+    private function custom(User $actor, int $daysAgo, CartModel $cart, string $description, int $unitPrice, int $quantity = 1, ?Product $product = null): void
     {
         $this->step($actor, $daysAgo, CartSource::Atrium, fn () => app(AddLinesAction::class)->execute($cart, [[
             'purchasable' => $product,

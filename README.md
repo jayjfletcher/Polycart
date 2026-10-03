@@ -37,11 +37,11 @@ To customise the Atrium dashboard's views or strings, publish them with the `pol
 
 ## Defining types
 
-A type extends `JayI\Polycart\Types\CartType` and overrides only what makes it different. Every method has a permissive default.
+A type extends `JayI\Polycart\Domains\CartType\Support\CartType` and overrides only what makes it different. Every method has a permissive default.
 
 ```php
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 enum QuoteStatus: string
 {
@@ -66,7 +66,7 @@ class QuoteCart extends CartType
     }
 
     // Keep only the header fields a quote cares about.
-    public function convertedFrom(Cart $cart, Cart $source): void
+    public function convertedFrom(CartModel $cart, CartModel $source): void
     {
         $cart->meta = array_intersect_key($source->meta ?? [], array_flip(['po_number']));
     }
@@ -88,7 +88,7 @@ A package can register its own types from a service provider with `Polycart::typ
 
 | Method | Default | Purpose |
 | --- | --- | --- |
-| `model()` | `Cart::class` | Model class that rows of this type hydrate as |
+| `model()` | `CartModel::class` | Model class that rows of this type hydrate as |
 | `statuses()` / `transitions()` | none / any move | This type's own lifecycle, as a string-backed enum |
 | `lifetime()` | never expires | A `CarbonInterval`, pushed back on every change |
 | `parents()` / `requiresParent()` | any / false | Where the type may sit in a tree |
@@ -101,17 +101,17 @@ A package can register its own types from a service provider with `Polycart::typ
 
 ## Typed models
 
-Point a type at a subclass of `Cart` to give it its own relations and methods. A subclass pins itself to its key with `$cartType`:
+Point a type at a subclass of `CartModel` to give it its own relations and methods. A subclass pins itself to its key with `$cartType`:
 
 ```php
-class Quote extends Cart
+class Quote extends CartModel
 {
     protected static ?string $cartType = 'quote';
 }
 
 Quote::query()->get();     // only quotes
 Quote::create();           // type is 'quote'
-Cart::find($id);           // a Quote instance when the row is a quote
+CartModel::find($id);      // a Quote instance when the row is a quote
 ```
 
 ## Using carts
@@ -119,7 +119,7 @@ Cart::find($id);           // a Quote instance when the row is a quote
 Add `HasCarts` to anything that owns carts, such as a user, a team or a customer:
 
 ```php
-use JayI\Polycart\Concerns\HasCarts;
+use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
 
 class User extends Authenticatable
 {
@@ -213,12 +213,12 @@ A refused line writes nothing. The API answers `422` with `{message, reason, lin
 
 ### Pricing
 
-A line added without `unitPrice` is priced by the type's `price()`, which defers to the bound `JayI\Polycart\Contracts\PriceResolver`. By default the resolver asks models that implement `Purchasable`:
+A line added without `unitPrice` is priced by the type's `price()`, which defers to the bound `JayI\Polycart\Domains\CartLine\Contracts\PriceResolver`. By default the resolver asks models that implement `Purchasable`:
 
 ```php
 class Product extends Model implements Purchasable
 {
-    public function unitPriceFor(Cart $cart, array $options): ?int
+    public function unitPriceFor(CartModel $cart, array $options): ?int
     {
         return $this->price_cents;
     }
@@ -238,7 +238,7 @@ $quote->transitionTo(QuoteStatus::Submitted);
 $quote->currentStatus();                         // QuoteStatus::Submitted
 $quote->hasStatus('submitted');                  // true
 
-Cart::ofType('quote')->whereStatus(QuoteStatus::Submitted)->get();
+CartModel::ofType('quote')->whereStatus(QuoteStatus::Submitted)->get();
 ```
 
 A status that belongs to another type, or a move that is not in `transitions()`, throws `InvalidTransitionException`.
@@ -290,7 +290,7 @@ $cart->setVisibility(Visibility::Scope);         // the whole team can see it
 
 $user->can('update', $cart);
 $user->accessibleCarts()->get();
-Cart::query()->inScope($organization)->get();
+CartModel::query()->inScope($organization)->get();
 ```
 
 - New carts are private to their creator.
@@ -425,7 +425,7 @@ With `polycart.authorization` on (the default), the dashboard asks the policies 
 
 | Shown / allowed when | Ability |
 | --- | --- |
-| Carts and Cart types navigation, pages, widgets and search | `viewAny` on `Cart` |
+| Carts and Cart types navigation, pages, widgets and search | `viewAny` on `CartModel` |
 | Opening a cart | `view` on the cart |
 | Clear, the Details card (label and meta) | `update` on the cart |
 | Delete | `delete` on the cart |
@@ -433,8 +433,8 @@ With `polycart.authorization` on (the default), the dashboard asks the policies 
 | Each type in **Convert to** | `convert` on the cart, with that type |
 | Changing a line's quantity / removing a line | `update` / `delete` on the line |
 | Visibility | `share` on the cart |
-| Adding a member / removing one | `create` on `CartMember` with the cart / `delete` on the member |
-| The Activity card | `viewAny` on `CartActivity` with the cart |
+| Adding a member / removing one | `create` on `CartMemberModel` with the cart / `delete` on the member |
+| The Activity card | `viewAny` on `CartActivityModel` with the cart |
 
 A control is hidden unless its action would be allowed, and the action itself answers 403 otherwise. Lists, widgets and search hold only the carts the user can access, as the JSON API's list does. In your own Blade views, `@polycartCan('update', $cart) ... @endpolycartCan` asks the same question. With `polycart.authorization` off, everything is shown and allowed.
 
@@ -454,13 +454,13 @@ Support and operations staff often need to see and fix any cart, not only the on
 Gate::define('manage-carts', fn (User $user): bool => $user->is_support);
 ```
 
-An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines, members and activity: viewing, editing, deleting, moving to any status the cart's type allows, converting, sharing and the activity log. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `JayI\Polycart\Http\Ui\ScreenAccess::operator($user)` tells you whether a user is one.
+An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines, members and activity: viewing, editing, deleting, moving to any status the cart's type allows, converting, sharing and the activity log. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `JayI\Polycart\Atrium\ScreenAccess::operator($user)` tells you whether a user is one.
 
 ### Switching it off
 
 Set `polycart.ui.enabled` to `false` to leave the dashboard out.
 
-With [`jayi/pennantplus`](https://github.com/jayjfletcher/PennantPlus) installed, the `JayI\Polycart\Features\PolycartSupportFeature` Pennant feature switches Polycart in Atrium on and off as a whole: its navigation, widgets, search and pages, which answer 404 while it is off. It is on until its global value is set, and only its global value counts; per-user access stays with the policies.
+With [`jayi/pennantplus`](https://github.com/jayjfletcher/PennantPlus) installed, the `JayI\Polycart\Atrium\Features\PolycartSupportFeature` Pennant feature switches Polycart in Atrium on and off as a whole: its navigation, widgets, search and pages, which answer 404 while it is off. It is on until its global value is set, and only its global value counts; per-user access stays with the policies.
 
 ```php
 Feature::for(null)->deactivate(PolycartSupportFeature::class);
@@ -486,8 +486,8 @@ $cart->sources;                                                  // ['api', 'mcp
 $cart->activities;                                               // oldest first
 $cart->recordActivity('exported', ['reference' => 'SO-1042']);    // your own events
 
-Cart::query()->touchedBy('mcp')->get();
-Cart::query()->fromSource('api')->get();
+CartModel::query()->touchedBy('mcp')->get();
+CartModel::query()->fromSource('api')->get();
 ```
 
 **Full guide:** [Sources and activity](docs/sources-and-activity.md). It covers setting sources, every recorded action and its context, how history travels through conversions and merges, the API and MCP, the dashboard, storage, and what is not recorded.
@@ -507,8 +507,23 @@ Every event carries the models involved. Events for a removed line or member car
 A cart whose type has a `lifetime()` gets an `expires_at`. It is pruned `polycart.prune_after_days` days after it expires:
 
 ```php
-Schedule::command('model:prune', ['--model' => [\JayI\Polycart\Models\Cart::class]])->daily();
+Schedule::command('model:prune', ['--model' => [\JayI\Polycart\Domains\Cart\Models\CartModel::class]])->daily();
 ```
+
+## Package layout
+
+The code is organised into domain modules under `src/Domains/{Domain}` (`JayI\Polycart\Domains\{Domain}`), each with its own service provider, routes and only the folders it uses (`Models/`, `Policies/`, `Resources/`, `Actions/`, `Events/`, `Http/`, `Mcp/`, `Contracts/`, `Services/`, `Support/`, ...):
+
+| Domain | Holds |
+| --- | --- |
+| `Cart` | `CartModel`, its lifecycle actions (create, update, transition, convert, merge, clear, delete), `HasCarts` |
+| `CartLine` | `CartLineModel`, the add pipeline and its stages, pricing (`PriceResolver`, `Purchasable`) |
+| `CartType` | `CartType`, `ShoppingCart` and the `CartTypeRegistry` |
+| `Sharing` | `CartMemberModel`, sharing and visibility, `CartAccess` |
+| `Scope` | `CartPathModel`, the `ScopeTree`, `CartScope` and `CartParticipant` |
+| `Activity` | `CartActivityModel`, the `ActivityRecorder`, sources (`CartSource`, `SourceContext`) |
+
+Cross-domain code stays outside the domains: the `Polycart` entry point and facade, the base `Http\Request`, `Mcp\Request` and `Mcp\Tool`, the MCP server, `Support/` (authorization, morph lookups, base policy and model events), the Cortex integration and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain.
 
 ## Testing
 

@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Events\Action\CartTransitionedActionEvent;
-use JayI\Polycart\Exceptions\InvalidTransitionException;
+use JayI\Polycart\Domains\Cart\Events\CartTransitionedActionEvent;
+use JayI\Polycart\Domains\Cart\Exceptions\InvalidTransitionException;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Tests\Fixtures\Types\OrderStatus;
 use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;

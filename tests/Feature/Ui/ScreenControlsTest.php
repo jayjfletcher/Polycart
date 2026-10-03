@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use JayI\Atrium\Domains\Navigation\Services\NavigationRegistry;
 use JayI\Atrium\Domains\Navigation\Data\NavItem;
+use JayI\Atrium\Domains\Navigation\Services\NavigationRegistry;
 use JayI\Polycart\Atrium\PolycartPlugin;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Policies\CartPolicy;
 use JayI\Polycart\Tests\Fixtures\Models\Person;
 use JayI\Polycart\Tests\Fixtures\Models\Team;
 
@@ -62,7 +62,7 @@ function testId(string $id): string
 /**
  * Someone in the cart's team, shared in with a role, or not at all.
  */
-function member(Team $team, Cart $cart, ?string $role = null): Person
+function member(Team $team, CartModel $cart, ?string $role = null): Person
 {
     $person = person($team);
 
@@ -86,7 +86,7 @@ it('shows the navigation to users who may list carts, with icons', function (): 
 });
 
 it('hides the navigation, widgets and search, and refuses the pages, without viewAny', function (): void {
-    Gate::policy(Cart::class, NoListingCartPolicy::class);
+    Gate::policy(CartModel::class, NoListingCartPolicy::class);
 
     expect(polycartNavigation($this->ann))->not->toContain('Carts')->not->toContain('Cart types');
 
@@ -177,7 +177,7 @@ it('shows an editor the controls for changing content only', function (): void {
 
     $this->delete(route('atrium.polycart.carts.destroy', $this->cart))->assertForbidden();
     $this->put(route('atrium.polycart.carts.visibility', $this->cart), ['visibility' => 'scope'])->assertForbidden();
-    expect(Cart::query()->find($this->cart->id))->not->toBeNull();
+    expect(CartModel::query()->find($this->cart->id))->not->toBeNull();
 });
 
 it('shows the owner every control', function (): void {
@@ -188,7 +188,7 @@ it('shows the owner every control', function (): void {
     }
 
     $this->delete(route('atrium.polycart.carts.destroy', $this->cart))->assertRedirect(route('atrium.polycart.carts.index'));
-    expect(Cart::query()->find($this->cart->id))->toBeNull();
+    expect(CartModel::query()->find($this->cart->id))->toBeNull();
 });
 
 it('offers only the moves the viewer may make, and refuses the others', function (): void {

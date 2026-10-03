@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Workbench\App\Carts;
 
 use BackedEnum;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * A placed order: a buyer pays, the owner fulfils or refunds it.
@@ -51,7 +51,7 @@ class OrderCart extends CartType
         return ['cart'];
     }
 
-    public function convertedFrom(Cart $cart, Cart $source): void
+    public function convertedFrom(CartModel $cart, CartModel $source): void
     {
         $cart->meta = [...$cart->meta ?? [], 'order_number' => 'SO-'.strtoupper(substr($cart->id, -6))];
     }

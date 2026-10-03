@@ -15,7 +15,10 @@ arch('the package source declares strict types')
     ->toUseStrictTypes();
 
 arch('actions are final and declare their own validation rules')
-    ->expect('JayI\Polycart\Actions')
+    ->expect(array_map(
+        fn (string $domain): string => 'JayI\\Polycart\\Domains\\'.basename($domain).'\Actions',
+        (array) glob(dirname(__DIR__).'/src/Domains/*/Actions', GLOB_ONLYDIR),
+    ))
     ->classes()
     ->toBeFinal()
     ->toHaveMethod('rules')
@@ -34,8 +37,15 @@ arch('every MCP request has a tool on the server')
         $server = (string) file_get_contents(dirname(__DIR__).'/src/Mcp/PolycartServer.php');
 
         return array_values(array_filter(
-            array_map(fn (string $path): string => basename($path, 'McpRequest.php'), (array) glob(dirname(__DIR__).'/src/Mcp/Requests/*McpRequest.php')),
+            array_map(fn (string $path): string => basename($path, 'McpRequest.php'), (array) glob(dirname(__DIR__).'/src/Domains/*/Mcp/Requests/*McpRequest.php')),
             fn (string $name): bool => ! str_contains($server, $name.'Tool::class'),
         ));
     })
     ->toBeEmpty();
+
+arch('domain models are named for their entity and end in Model')
+    ->expect(array_map(
+        fn (string $domain): string => 'JayI\\Polycart\\Domains\\'.basename($domain).'\Models',
+        (array) glob(dirname(__DIR__).'/src/Domains/*/Models', GLOB_ONLYDIR),
+    ))
+    ->toHaveSuffix('Model');

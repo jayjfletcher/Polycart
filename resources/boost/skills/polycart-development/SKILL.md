@@ -30,7 +30,7 @@ php artisan migrate
 
 ### 2. Define one type per kind of cart
 
-- Extend `JayI\Polycart\Types\CartType` and override only what differs. The overridable methods are:
+- Extend `JayI\Polycart\Domains\CartType\Support\CartType` and override only what differs. The overridable methods are:
   - `statuses()` and `transitions()`
   - `requiresPrice()`, `accepts()` and `price()`
   - `convertsTo()` and `convertedFrom()`
@@ -41,17 +41,17 @@ php artisan migrate
   - `validate()`
 - Statuses are a string-backed enum. The first case is the initial status.
 - Register the type in `config/polycart.php` under `types` as `'key' => Class::class`. From a package, use `Polycart::types()->register()`.
-- Optionally return a `Cart` subclass from `model()`, and set `protected static ?string $cartType = 'key';` on that subclass.
+- Optionally return a `CartModel` subclass from `model()`, and set `protected static ?string $cartType = 'key';` on that subclass.
 
 ### 3. Give owners carts
 
-- Add `JayI\Polycart\Concerns\HasCarts` to the owner model. `$user->cart('quote')` returns the active cart and creates one when there is none.
+- Add `JayI\Polycart\Domains\Cart\Concerns\HasCarts` to the owner model. `$user->cart('quote')` returns the active cart and creates one when there is none.
 - Guests: call `Polycart::active('cart', session()->getId())`. At login, call `Polycart::merge($guestCart, $user->cart())`.
 
 ### 4. Teams, organizations and sharing (optional)
 
-- Implement `JayI\Polycart\Contracts\CartScope::parentCartScope()` on each tree level (team → organization → null).
-- Implement `JayI\Polycart\Contracts\CartParticipant::cartScopes()` on users, returning the teams they are on directly.
+- Implement `JayI\Polycart\Domains\Scope\Contracts\CartScope::parentCartScope()` on each tree level (team → organization → null).
+- Implement `JayI\Polycart\Domains\Scope\Contracts\CartParticipant::cartScopes()` on users, returning the teams they are on directly.
 - Start carts in a scope: `$user->cart(scope: $team)` or `Polycart::create('quote', $user, scope: $team)`. The cart is locked to that tree.
 - Share: `Polycart::share($cart, $userOrTeam, 'editor')`. Only members inside the cart's top-level scope can be added. Remove with `Polycart::unshare($cart, $member)`.
 - Visibility: `$cart->setVisibility(Visibility::Scope|Boundary)`.
@@ -66,7 +66,7 @@ php artisan migrate
 - A stage takes `handle(PendingLine $line, Closure $next)` and refuses with `$line->reject($message, $reason)`. Catch `LineRejectedException`, which has `reason` and `index`.
 - Remove: `$cart->remove($line)` or `$cart->clear()`. Change a quantity with `$cart->updateLine($line, $qty)`. Change or remove several lines at once, all or nothing, with `$cart->updateLines([...])` and `$cart->removeLines([...])`. The API and MCP only change lines in batches (`PATCH`/`DELETE .../lines`, `update-lines`, `remove-lines`).
 - Totals: `$cart->subtotal()` returns integer minor units.
-- Pricing: implement `JayI\Polycart\Contracts\Purchasable::unitPriceFor()` on the model, or bind `JayI\Polycart\Contracts\PriceResolver`.
+- Pricing: implement `JayI\Polycart\Domains\CartLine\Contracts\Purchasable::unitPriceFor()` on the model, or bind `JayI\Polycart\Domains\CartLine\Contracts\PriceResolver`.
 
 ### 6. Move and convert
 
@@ -80,19 +80,19 @@ php artisan migrate
 - With `polycart.authorization` on (the default), every call acts as the signed-in user and is checked against the policies in `polycart.policies`. By default the cart's owner may do anything and everyone else gets what their role grants. Swap a policy by pointing its model at your own class there.
 - MCP: enable `polycart.mcp.web` or `polycart.mcp.local`. The tools match the API one-to-one: `list-cart-types`, `list-carts`, `show-cart`, `create-cart`, `active-cart`, `update-cart`, `delete-cart`, `clear-cart`, `transition-cart`, `convert-cart`, `merge-carts`, `add-lines`, `update-lines`, `remove-lines`, `list-members`, `share-cart`, `unshare-cart`, `set-visibility`, `list-cart-activity`.
 - Atrium: install `jayi/atrium`. Polycart adds Carts and Cart types pages, two widgets, and search. Set `polycart.ui.enabled` to `false` to turn this off.
-- The dashboard checks the same policies as the JSON API for the signed-in user: navigation, widgets and search need `viewAny` on `Cart`, and each control is shown only when its action is allowed (`update`, `delete`, `share`, `transition`/`convert` with the target, `update`/`delete` on a line or member). Lists hold only the carts the user can access. Use `@polycartCan('update', $cart)` in your own views to ask the same question. With `polycart.authorization` off, everything is allowed.
+- The dashboard checks the same policies as the JSON API for the signed-in user: navigation, widgets and search need `viewAny` on `CartModel`, and each control is shown only when its action is allowed (`update`, `delete`, `share`, `transition`/`convert` with the target, `update`/`delete` on a line or member). Lists hold only the carts the user can access. Use `@polycartCan('update', $cart)` in your own views to ask the same question. With `polycart.authorization` off, everything is allowed.
 - `polycart.atrium.show_all` (default `false`) makes dashboard operators: `true` for everyone who can open Atrium, or a Gate ability name such as `'manage-carts'`. Operators see every cart in the dashboard's lists, widgets and search and may take every action on it; `ScreenAccess::operator($user)` reports it. The JSON API and MCP are unaffected.
 - Polycart adds the Tailwind utilities its screens need beyond Atrium's stylesheet from `resources/css/atrium.css` via `Atrium::css(..., 'polycart')`; `tests/Feature/Ui/StylesTest.php` fails when a view uses a class neither defines.
 - Statuses show as Atrium status dots coloured by `JayI\Polycart\Atrium\Badges` (`info` only for pending/awaiting states); actions are icon buttons.
-- With `jayi/pennantplus`, `JayI\Polycart\Features\PolycartSupportFeature` switches Polycart in Atrium off globally (`Feature::for(null)->deactivate(...)`); the list lives in `polycart.atrium.features`, and classes that cannot be loaded are skipped.
+- With `jayi/pennantplus`, `JayI\Polycart\Atrium\Features\PolycartSupportFeature` switches Polycart in Atrium off globally (`Feature::for(null)->deactivate(...)`); the list lives in `polycart.atrium.features`, and classes that cannot be loaded are skipped.
 
 ### 8. Record where carts come from and what happened to them
 
 - Every cart records a `source`. The package sets `api`, `mcp`, `atrium` or `cortex` itself; everything else gets `polycart.default_source` (`code`).
-- Tag your own work with `Polycart::usingSource('import', fn () => ...)`, or tag routes with the `JayI\Polycart\Http\Middleware\CartSource::class.':web'` middleware.
+- Tag your own work with `Polycart::usingSource('import', fn () => ...)`, or tag routes with the `JayI\Polycart\Domains\Activity\Http\Middleware\CartSource::class.':web'` middleware.
 - Every change made through the package is logged in `$cart->activities` with its action, source, actor and context. `$cart->sources` lists every source that has touched the cart. Copies and merges carry history with them.
 - Record your own events with `$cart->recordActivity('exported', [...])`.
-- Query with `Cart::query()->fromSource('mcp')` (creating source) or `->touchedBy('mcp')` (any touch).
+- Query with `CartModel::query()->fromSource('mcp')` (creating source) or `->touchedBy('mcp')` (any touch).
 - Write changes through the package's methods, not raw Eloquent updates, or they are not logged.
 
 ### 9. Let Cortex agents manage carts (optional)

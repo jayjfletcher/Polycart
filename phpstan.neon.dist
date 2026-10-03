@@ -4,6 +4,5 @@ parameters:
         - src
         - config
         - database
-        - routes
         - workbench/app
     tmpDir: build/phpstan

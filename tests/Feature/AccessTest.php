@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 use Illuminate\Testing\Fluent\AssertableJson;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use JayI\Polycart\Domains\Sharing\Mcp\Tools\ListMembersTool;
+use JayI\Polycart\Domains\Sharing\Mcp\Tools\SetVisibilityTool;
+use JayI\Polycart\Domains\Sharing\Mcp\Tools\ShareCartTool;
+use JayI\Polycart\Domains\Sharing\Mcp\Tools\UnshareCartTool;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Mcp\Tools\CreateCartTool;
-use JayI\Polycart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Mcp\Tools\ListMembersTool;
-use JayI\Polycart\Mcp\Tools\SetVisibilityTool;
-use JayI\Polycart\Mcp\Tools\ShareCartTool;
-use JayI\Polycart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Mcp\Tools\TransitionCartTool;
-use JayI\Polycart\Mcp\Tools\UnshareCartTool;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Models\Person;
 use JayI\Polycart\Tests\Fixtures\Models\Team;
 
@@ -45,7 +45,7 @@ it('starts carts owned by the signed-in user, whatever the body says', function 
         ->assertJsonPath('data.visibility', 'private')
         ->json('data.id');
 
-    expect(Cart::query()->findOrFail($id)->roleFor($ann))->toBe('owner');
+    expect(CartModel::query()->findOrFail($id)->roleFor($ann))->toBe('owner');
 
     $this->actingAs($ann)
         ->postJson('/polycart/carts', ['type' => 'cart', 'scope_type' => 'team', 'scope_id' => (string) team($this->acme, 'Ops')->id])
@@ -160,7 +160,7 @@ it('starts carts over MCP as the signed-in user in their scope', function (): vo
             ->where('scope_id', (string) $this->sales->id)
             ->etc());
 
-    $order = Cart::query()->ofType('order')->firstOrFail();
+    $order = CartModel::query()->ofType('order')->firstOrFail();
 
     PolycartServer::actingAs($this->ann)->tool(TransitionCartTool::class, ['cart' => $order->id, 'status' => 'processing'])->assertOk();
 });

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Tests\Fixtures\Types;
 
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 use JayI\Polycart\Tests\Fixtures\Models\Quote;
-use JayI\Polycart\Types\CartType;
 
 final class QuoteCart extends CartType
 {
@@ -38,7 +38,7 @@ final class QuoteCart extends CartType
         return ['order'];
     }
 
-    public function convertedFrom(Cart $cart, Cart $source): void
+    public function convertedFrom(CartModel $cart, CartModel $source): void
     {
         $cart->meta = array_intersect_key($source->meta ?? [], array_flip(['po_number']));
     }

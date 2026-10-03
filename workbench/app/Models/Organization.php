@@ -7,7 +7,7 @@ namespace Workbench\App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use JayI\Polycart\Contracts\CartScope;
+use JayI\Polycart\Domains\Scope\Contracts\CartScope;
 
 /**
  * The top of the demo's tree: carts are never shared across organizations.

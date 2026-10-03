@@ -6,7 +6,7 @@ namespace JayI\Polycart\Tests\Fixtures\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JayI\Polycart\Contracts\CartScope;
+use JayI\Polycart\Domains\Scope\Contracts\CartScope;
 
 /**
  * @property int $id

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Atrium;
 
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * The one place Polycart's dashboard decides a status's colour.
@@ -28,7 +28,7 @@ final class Badges
     /**
      * The colour of a cart's status dot.
      */
-    public static function forCart(Cart $cart): string
+    public static function forCart(CartModel $cart): string
     {
         return $cart->isExpired() ? 'neutral' : self::forStatus((string) $cart->status);
     }

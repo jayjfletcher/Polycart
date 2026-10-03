@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Exceptions\InvalidParentException;
+use JayI\Polycart\Domains\Cart\Exceptions\InvalidParentException;
 use JayI\Polycart\Facades\Polycart;
 
 it('nests carts and records the root of the tree', function (): void {

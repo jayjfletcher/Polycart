@@ -41,11 +41,11 @@ Every way of adding a line uses the same pipeline:
 | 2 | `CheckAccepted` | Refuses what the type's `accepts()` rejects |
 | 3 | `FindMatchingLine` | Finds and locks the line this add merges into, when the type `mergesLines()` |
 | 4 | `ResolvePrice` | Prices a new line through the type's `price()`, unless a price was given. A merge keeps the existing line's price unless a price was given. |
-| 5 | `BuildLine` | Builds the `CartLine` to write, without saving it. For a merge, that is the existing line with its quantity increased. |
+| 5 | `BuildLine` | Builds the `CartLineModel` to write, without saving it. For a merge, that is the existing line with its quantity increased. |
 | 6 | `ValidateLine` | Runs the type's `validate()`, such as its price requirement |
 | 7 | `WriteLine` | Saves the line |
 
-All of them live in `JayI\Polycart\Pipeline\Stages`.
+All of them live in `JayI\Polycart\Domains\CartLine\Support\Stages`.
 
 Where to put your own stages:
 
@@ -58,7 +58,7 @@ Where to put your own stages:
 
 ## The pending line
 
-`JayI\Polycart\Pipeline\PendingLine` is what the stages pass along.
+`JayI\Polycart\Domains\CartLine\Support\PendingLine` is what the stages pass along.
 
 **Fixed for the whole add** (readonly):
 
@@ -79,7 +79,7 @@ Where to put your own stages:
 | `unitPrice` | The unit price in minor units, or `null` |
 | `fingerprint` | Set by `PrepareLine` |
 | `existing` | The line this add merges into, set by `FindMatchingLine` |
-| `line` | The `CartLine` being written, set by `BuildLine` and saved by `WriteLine` |
+| `line` | The `CartLineModel` being written, set by `BuildLine` and saved by `WriteLine` |
 | `context` | A free array for passing notes between your own stages |
 
 **Helpers:**
@@ -96,8 +96,8 @@ A stage is a class with a `handle()` method that does its step and then calls `$
 
 ```php
 use Closure;
-use JayI\Polycart\Contracts\AddLineStage;
-use JayI\Polycart\Pipeline\PendingLine;
+use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use JayI\Polycart\Domains\CartLine\Support\PendingLine;
 
 final class CheckStock implements AddLineStage
 {
@@ -154,7 +154,7 @@ A stage must either call `$next($line)` or reject the line. One that returns wit
 $line->reject('This customer is on credit hold.', 'credit_hold');
 ```
 
-This throws a `JayI\Polycart\Exceptions\LineRejectedException` with:
+This throws a `JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException` with:
 
 - `getMessage()`: text for people
 - `$e->reason`: a stable code for programs, such as `out_of_stock`, so clients can branch without parsing the message
@@ -184,10 +184,10 @@ The package's own refusals have codes too:
 Override `addLineStages()` on the type. You can start from the defaults and slot stages in with two helpers, so your type keeps any stages the package adds later:
 
 ```php
-use JayI\Polycart\Pipeline\Stages\BuildLine;
-use JayI\Polycart\Pipeline\Stages\CheckAccepted;
-use JayI\Polycart\Pipeline\Stages\ResolvePrice;
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 class WholesaleCart extends CartType
 {

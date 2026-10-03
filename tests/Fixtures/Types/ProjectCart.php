@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Tests\Fixtures\Types;
 
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 final class ProjectCart extends CartType
 {

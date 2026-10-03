@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Enums\Visibility;
-use JayI\Polycart\Events\Action\CartSharedActionEvent;
-use JayI\Polycart\Events\Action\CartUnsharedActionEvent;
-use JayI\Polycart\Exceptions\InvalidScopeException;
-use JayI\Polycart\Exceptions\SharingException;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
+use JayI\Polycart\Domains\Sharing\Events\CartSharedActionEvent;
+use JayI\Polycart\Domains\Sharing\Events\CartUnsharedActionEvent;
+use JayI\Polycart\Domains\Sharing\Exceptions\SharingException;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Types\OrderStatus;
 
 it('records the whole tree a cart is created in and makes the creator its owner', function (): void {
@@ -207,8 +207,8 @@ it('finds carts anywhere under a scope', function (): void {
     Polycart::create('cart', scope: $ops);
     Polycart::create('cart', scope: team(organization('Globex')));
 
-    expect(Cart::query()->inScope($acme)->count())->toBe(2)
-        ->and(Cart::query()->inScope($sales)->count())->toBe(1);
+    expect(CartModel::query()->inScope($acme)->count())->toBe(2)
+        ->and(CartModel::query()->inScope($sales)->count())->toBe(1);
 });
 
 it('keeps a child cart in its parent\'s tree', function (): void {

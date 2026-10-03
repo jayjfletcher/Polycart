@@ -9,13 +9,10 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use JayI\Atrium\Facades\Atrium;
 use JayI\Polycart\Atrium\PolycartPlugin;
-use JayI\Polycart\Contracts\PriceResolver;
+use JayI\Polycart\Atrium\ScreenAccess;
 use JayI\Polycart\Cortex\CortexIntegration;
-use JayI\Polycart\Http\Ui\ScreenAccess;
+use JayI\Polycart\Domains\DomainServiceProvider;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Pricing\PurchasablePriceResolver;
-use JayI\Polycart\Support\SourceContext;
-use JayI\Polycart\Types\CartTypeRegistry;
 use Laravel\Mcp\Facades\Mcp;
 
 class PolycartServiceProvider extends ServiceProvider
@@ -27,15 +24,9 @@ class PolycartServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../config/polycart.php', 'polycart');
 
-        $this->app->singleton(CartTypeRegistry::class);
-
-        // Bind your own to price lines from an ERP or a price book.
-        $this->app->singleton(PriceResolver::class, PurchasablePriceResolver::class);
+        $this->app->register(DomainServiceProvider::class);
 
         $this->app->singleton(Polycart::class);
-
-        // Scoped, so a source never outlives the request or job that set it.
-        $this->app->scoped(SourceContext::class);
     }
 
     /**
@@ -44,7 +35,6 @@ class PolycartServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        $this->registerRoutes();
         $this->registerMcpServer();
         $this->registerAtriumPlugin();
 
@@ -92,19 +82,6 @@ class PolycartServiceProvider extends ServiceProvider
         foreach ($policies as $model => $policy) {
             Gate::policy($model, $policy);
         }
-    }
-
-    /**
-     * The JSON API is off until an application turns it on, because it can
-     * read and change every cart: put it behind your own auth middleware.
-     */
-    private function registerRoutes(): void
-    {
-        if ($this->app->make('config')->get('polycart.routes.enabled') !== true) {
-            return;
-        }
-
-        $this->loadRoutesFrom(__DIR__.'/../routes/polycart.php');
     }
 
     private function registerMcpServer(): void

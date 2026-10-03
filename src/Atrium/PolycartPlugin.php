@@ -14,15 +14,14 @@ use JayI\Atrium\Domains\Navigation\Data\NavItem;
 use JayI\Atrium\Domains\Plugins\Support\Plugin;
 use JayI\Atrium\Domains\Search\Data\SearchResult;
 use JayI\Atrium\Domains\Search\Data\SearchSource;
-use JayI\Atrium\Support\Icons;
 use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
-use JayI\Polycart\Enums\CartSource;
-use JayI\Polycart\Http\Middleware\CartSource as CartSourceMiddleware;
-use JayI\Polycart\Http\Ui\CartTypeUiController;
-use JayI\Polycart\Http\Ui\CartUiController;
-use JayI\Polycart\Http\Ui\ScreenAccess;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Types\CartTypeRegistry;
+use JayI\Atrium\Support\Icons;
+use JayI\Polycart\Atrium\Http\Controllers\CartTypeUiController;
+use JayI\Polycart\Atrium\Http\Controllers\CartUiController;
+use JayI\Polycart\Domains\Activity\Enums\CartSource;
+use JayI\Polycart\Domains\Activity\Http\Middleware\CartSource as CartSourceMiddleware;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
 
 /**
  * Registers Polycart inside the Atrium dashboard.
@@ -156,7 +155,7 @@ class PolycartPlugin extends Plugin
                 ->latest('updated_at')
                 ->limit(5)
                 ->get()
-                ->map(fn (Cart $cart): SearchResult => SearchResult::make(
+                ->map(fn (CartModel $cart): SearchResult => SearchResult::make(
                     $cart->label ?? $cart->id,
                     route('atrium.polycart.carts.show', $cart),
                 )->subtitle($cart->type.($cart->status === null ? '' : ' · '.$cart->status))->group(__('polycart::polycart.carts')))
@@ -168,21 +167,21 @@ class PolycartPlugin extends Plugin
      */
     private static function mayList(mixed $user): bool
     {
-        return ScreenAccess::allowsUser($user instanceof Authenticatable ? $user : null, 'viewAny', Cart::class);
+        return ScreenAccess::allowsUser($user instanceof Authenticatable ? $user : null, 'viewAny', CartModel::class);
     }
 
     /**
      * Carts the signed-in user can access; every cart for an operator or
      * with authorization off.
      *
-     * @return Builder<Cart>
+     * @return Builder<CartModel>
      */
     private static function visible(): Builder
     {
         $user = auth()->user();
         $actor = ScreenAccess::actor($user instanceof Authenticatable ? $user : null);
 
-        return Cart::query()->when($actor, fn (Builder $query, Model $actor): Builder => $query->accessibleBy($actor));
+        return CartModel::query()->when($actor, fn (Builder $query, Model $actor): Builder => $query->accessibleBy($actor));
     }
 
     /**

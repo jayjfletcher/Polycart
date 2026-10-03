@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Atrium;
 
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Display helpers shared by the dashboard pages and widgets.
@@ -22,7 +22,7 @@ final class Format
     /**
      * Who a cart belongs to: its owner, a guest session, or nobody.
      */
-    public static function owner(Cart $cart): string
+    public static function owner(CartModel $cart): string
     {
         if ($cart->owner_type !== null) {
             return class_basename($cart->owner_type).' #'.$cart->owner_id;

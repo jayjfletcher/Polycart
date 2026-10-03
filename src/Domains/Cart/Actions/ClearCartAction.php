@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+namespace JayI\Polycart\Domains\Cart\Actions;
+
+use JayI\Polycart\Domains\Activity\Enums\Activity;
+use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
+use JayI\Polycart\Domains\Cart\Events\CartClearedActionEvent;
+use JayI\Polycart\Domains\Cart\Events\CartClearingActionEvent;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Actions\RemoveLineAction;
+
+/**
+ * Remove every line from a cart.
+ */
+final class ClearCartAction
+{
+    public function __construct(private readonly RemoveLineAction $remove) {}
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function rules(): array
+    {
+        return [];
+    }
+
+    public function execute(CartModel $cart): CartModel
+    {
+        CartClearingActionEvent::dispatch($cart);
+
+        $result = $this->perform($cart);
+
+        CartClearedActionEvent::dispatch($result);
+
+        return $result;
+    }
+
+    private function perform(CartModel $cart): CartModel
+    {
+        foreach ($cart->lines()->get() as $line) {
+            $this->remove->execute($line);
+        }
+
+        app(ActivityRecorder::class)->record($cart, Activity::Cleared);
+
+        return $cart->unsetRelation('lines');
+    }
+}

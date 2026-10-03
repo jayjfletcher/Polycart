@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Tests\Fixtures\Models;
 
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 
-final class Quote extends Cart
+final class Quote extends CartModel
 {
     protected static ?string $cartType = 'quote';
 

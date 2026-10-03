@@ -4,25 +4,25 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Actions\DeleteCartAction;
-use JayI\Polycart\Actions\ListActivityAction;
-use JayI\Polycart\Actions\ListCartsAction;
-use JayI\Polycart\Actions\ListCartTypesAction;
-use JayI\Polycart\Actions\ListMembersAction;
-use JayI\Polycart\Actions\ShowCartAction;
-use JayI\Polycart\Actions\UpdateCartAction;
 use JayI\Polycart\Contracts\ActionFinishedEvent;
 use JayI\Polycart\Contracts\ActionStartingEvent;
 use JayI\Polycart\Contracts\ModelLifecycleEvent;
-use JayI\Polycart\Enums\Visibility;
-use JayI\Polycart\Events\Action\LineAddingActionEvent;
-use JayI\Polycart\Events\Action\LinesAddedActionEvent;
-use JayI\Polycart\Events\Action\LinesAddingActionEvent;
-use JayI\Polycart\Events\Model\CartCreatingEvent;
-use JayI\Polycart\Exceptions\LineRejectedException;
+use JayI\Polycart\Domains\Activity\Actions\ListActivityAction;
+use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
+use JayI\Polycart\Domains\Cart\Actions\ListCartsAction;
+use JayI\Polycart\Domains\Cart\Actions\ShowCartAction;
+use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use JayI\Polycart\Domains\Cart\Events\CartCreatingEvent;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
+use JayI\Polycart\Domains\CartLine\Events\LinesAddedActionEvent;
+use JayI\Polycart\Domains\CartLine\Events\LinesAddingActionEvent;
+use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use JayI\Polycart\Domains\CartType\Actions\ListCartTypesAction;
+use JayI\Polycart\Domains\Sharing\Actions\ListMembersAction;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Models\Cart;
-use JayI\Polycart\Models\CartLine;
 use JayI\Polycart\Tests\Fixtures\Models\Quote;
 use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
@@ -50,14 +50,14 @@ it('fires every lifecycle event of a cart', function (): void {
     $cart = Polycart::create('cart');
     $cart->label = 'Renamed';
     $cart->save();
-    Cart::query()->find($cart->id);
+    CartModel::query()->find($cart->id);
     $cart->replicate();
     $cart->delete();
     $cart->restore();
     $cart->forceDelete();
 
     $hooks = collect($seen)
-        ->filter(fn (ModelLifecycleEvent $event): bool => $event->model() instanceof Cart)
+        ->filter(fn (ModelLifecycleEvent $event): bool => $event->model() instanceof CartModel)
         ->map(fn (ModelLifecycleEvent $event): string => $event->hook())
         ->unique()
         ->values()
@@ -83,8 +83,8 @@ it('fires the lifecycle events of lines, members, paths and activity', function 
         ->unique();
 
     expect($models)->toContain(
-        'CartLine.creating', 'CartLine.created', 'CartLine.updating', 'CartLine.updated', 'CartLine.deleting', 'CartLine.deleted',
-        'CartMember.created', 'CartPath.created', 'CartActivity.created',
+        'CartLineModel.creating', 'CartLineModel.created', 'CartLineModel.updating', 'CartLineModel.updated', 'CartLineModel.deleting', 'CartLineModel.deleted',
+        'CartMemberModel.created', 'CartPathModel.created', 'CartActivityModel.created',
     );
 });
 
@@ -104,7 +104,7 @@ it('lets a creating listener stop a cart being created', function (): void {
     $cart = Polycart::create('cart');
 
     expect($cart->exists)->toBeFalse()
-        ->and(Cart::query()->count())->toBe(0);
+        ->and(CartModel::query()->count())->toBe(0);
 });
 
 it('starts and finishes every action once, in order', function (): void {
@@ -151,7 +151,7 @@ it('starts and finishes every action once, in order', function (): void {
 });
 
 it('gives every action exactly one start and one finish event', function (): void {
-    $actions = glob(dirname(__DIR__, 2).'/src/Actions/*Action.php') ?: [];
+    $actions = glob(dirname(__DIR__, 2).'/src/Domains/*/Actions/*Action.php') ?: [];
 
     $unpaired = [];
 
@@ -160,7 +160,7 @@ it('gives every action exactly one start and one finish event', function (): voi
         preg_match_all('/([A-Za-z]+ActionEvent)::dispatch/', $source, $matches);
 
         $kinds = array_map(
-            fn (string $event): string => is_subclass_of('JayI\\Polycart\\Events\\Action\\'.$event, ActionStartingEvent::class) ? 'start' : 'finish',
+            fn (string $event): string => is_subclass_of('JayI\\Polycart\\Domains\\'.basename(dirname($path, 2)).'\\Events\\'.$event, ActionStartingEvent::class) ? 'start' : 'finish',
             $matches[1],
         );
 
@@ -193,7 +193,7 @@ it('starts before the work and finishes only once it is committed', function ():
 
     expect($linesAtStart)->toBe(0)
         ->and($finished)->toHaveCount(1)
-        ->and($finished[0]->lines->first())->toBeInstanceOf(CartLine::class);
+        ->and($finished[0]->lines->first())->toBeInstanceOf(CartLineModel::class);
 });
 
 it('starts a failed action but never finishes it', function (): void {

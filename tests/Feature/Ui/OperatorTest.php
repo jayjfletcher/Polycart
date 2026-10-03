@@ -9,11 +9,11 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Testing\Fluent\AssertableJson;
 use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
 use JayI\Polycart\Atrium\PolycartPlugin;
+use JayI\Polycart\Atrium\ScreenAccess;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Http\Ui\ScreenAccess;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Models\Cart;
 use JayI\Polycart\Tests\Fixtures\Models\Person;
 
 /**
@@ -56,7 +56,7 @@ function operatorDashboard(Person $user): array
 
     $widgets = collect($plugin->widgets())->keyBy(fn (WidgetDefinition $widget): string => $widget->key);
 
-    /** @var array{carts: Collection<int, Cart>} $recent */
+    /** @var array{carts: Collection<int, CartModel>} $recent */
     $recent = $widgets['polycart.recent-carts']->resolveData();
     /** @var array{counts: array<string, int>} $counts */
     $counts = $widgets['polycart.carts-by-type']->resolveData();
@@ -113,7 +113,7 @@ it('shows every cart and allows every action to everyone with show_all on', func
         ->and($this->line->fresh()?->quantity)->toBe(5);
 
     $this->actingAs($this->bob)->delete(route('atrium.polycart.carts.destroy', $this->cart))->assertRedirect(route('atrium.polycart.carts.index'));
-    expect(Cart::query()->find($this->cart->id))->toBeNull();
+    expect(CartModel::query()->find($this->cart->id))->toBeNull();
 });
 
 it('makes only the users a gate ability allows operators', function (): void {
@@ -153,5 +153,5 @@ it('leaves the JSON API and MCP tools to the user\'s role with show_all on', fun
         ->assertOk()
         ->assertStructuredContent(fn (AssertableJson $json): AssertableJson => $json->has('data', 0)->etc());
 
-    expect(Cart::query()->find($this->cart->id)?->label)->toBe('Annes order');
+    expect(CartModel::query()->find($this->cart->id)?->label)->toBe('Annes order');
 });

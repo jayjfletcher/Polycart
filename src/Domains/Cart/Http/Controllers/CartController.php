@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+namespace JayI\Polycart\Domains\Cart\Http\Controllers;
+
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
+use JayI\Polycart\Domains\Cart\Http\Requests\ActiveCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\ClearCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\ConvertCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\DestroyCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\IndexCartsRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\MergeCartsRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\ShowCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\StoreCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\TransitionCartRequest;
+use JayI\Polycart\Domains\Cart\Http\Requests\UpdateCartRequest;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+
+final class CartController
+{
+    public function index(IndexCartsRequest $request): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function store(StoreCartRequest $request): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function active(ActiveCartRequest $request): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function show(ShowCartRequest $request, CartModel $cart): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function update(UpdateCartRequest $request, CartModel $cart): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function destroy(DestroyCartRequest $request, CartModel $cart): Response
+    {
+        return $request->persist();
+    }
+
+    public function clear(ClearCartRequest $request, CartModel $cart): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function transition(TransitionCartRequest $request, CartModel $cart): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function convert(ConvertCartRequest $request, CartModel $cart): JsonResponse
+    {
+        return $request->persist();
+    }
+
+    public function merge(MergeCartsRequest $request, CartModel $cart): JsonResponse
+    {
+        return $request->persist();
+    }
+}

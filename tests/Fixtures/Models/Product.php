@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace JayI\Polycart\Tests\Fixtures\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Contracts\Purchasable;
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Contracts\Purchasable;
 
 /**
  * @property int $id
@@ -20,7 +20,7 @@ final class Product extends Model implements Purchasable
 
     protected $guarded = [];
 
-    public function unitPriceFor(Cart $cart, array $options): ?int
+    public function unitPriceFor(CartModel $cart, array $options): ?int
     {
         $surcharge = ($options['finish'] ?? null) === 'gold' ? 500 : 0;
 

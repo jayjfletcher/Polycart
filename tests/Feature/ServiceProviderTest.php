@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 use Illuminate\Support\ServiceProvider;
-use JayI\Polycart\Contracts\PriceResolver;
+use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use JayI\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
 use JayI\Polycart\Polycart;
 use JayI\Polycart\PolycartServiceProvider;
-use JayI\Polycart\Pricing\PurchasablePriceResolver;
 
 it('resolves the entry point as a singleton', function (): void {
     expect(app(Polycart::class))->toBe(app(Polycart::class));

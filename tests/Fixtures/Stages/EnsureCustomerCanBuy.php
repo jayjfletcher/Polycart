@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace JayI\Polycart\Tests\Fixtures\Stages;
 
 use Closure;
-use JayI\Polycart\Contracts\AddLineStage;
-use JayI\Polycart\Pipeline\PendingLine;
+use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use JayI\Polycart\Domains\CartLine\Support\PendingLine;
 use JayI\Polycart\Tests\Fixtures\Models\Person;
 
 final class EnsureCustomerCanBuy implements AddLineStage

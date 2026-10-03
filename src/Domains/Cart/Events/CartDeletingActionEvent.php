@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace JayI\Polycart\Domains\Cart\Events;
+
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+use JayI\Polycart\Contracts\ActionStartingEvent;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+
+/**
+ * A cart is about to be deleted.
+ */
+final class CartDeletingActionEvent implements ActionStartingEvent
+{
+    use Dispatchable;
+    use SerializesModels;
+
+    public function __construct(
+        public CartModel $cart,
+    ) {}
+}

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace JayI\Polycart\Tests\Fixtures\Types;
 
 use Closure;
-use JayI\Polycart\Pipeline\PendingLine;
-use JayI\Polycart\Pipeline\Stages\BuildLine;
-use JayI\Polycart\Pipeline\Stages\CheckAccepted;
-use JayI\Polycart\Pipeline\Stages\PrepareLine;
-use JayI\Polycart\Pipeline\Stages\ResolvePrice;
+use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use JayI\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 use JayI\Polycart\Tests\Fixtures\Stages\ApplyBulkDiscount;
 use JayI\Polycart\Tests\Fixtures\Stages\CheckStock;
 use JayI\Polycart\Tests\Fixtures\Stages\EnsureCustomerCanBuy;
-use JayI\Polycart\Types\CartType;
 
 /**
  * A cart with its own add pipeline: customer rules, bulk pricing, stock.

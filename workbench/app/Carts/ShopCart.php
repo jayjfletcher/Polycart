@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Workbench\App\Carts;
 
 use Carbon\CarbonInterval;
-use JayI\Polycart\Types\CartType;
+use JayI\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * The demo's storefront cart: filled, checked out, or left behind.

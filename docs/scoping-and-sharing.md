@@ -46,7 +46,7 @@ Implement two interfaces. Polycart creates no users, teams or organizations; you
 ### `CartScope`: each level of the tree
 
 ```php
-use JayI\Polycart\Contracts\CartScope;
+use JayI\Polycart\Domains\Scope\Contracts\CartScope;
 
 class Organization extends Model implements CartScope
 {
@@ -70,8 +70,8 @@ Trees can be any depth: department → division → organization, and so on. Pol
 ### `CartParticipant`: the people
 
 ```php
-use JayI\Polycart\Concerns\HasCarts;
-use JayI\Polycart\Contracts\CartParticipant;
+use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
+use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
 
 class User extends Authenticatable implements CartParticipant
 {
@@ -215,7 +215,7 @@ Visibility widens access beyond members, but only inside the cart's own tree:
 People who see a cart only through its visibility get the type's `visibilityRole()`, which is its weakest role (`viewer` by default). If someone is also a member, they get the stronger of the two roles.
 
 ```php
-use JayI\Polycart\Enums\Visibility;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 
 $cart->setVisibility(Visibility::Scope);
 $cart->setVisibility('boundary');
@@ -249,13 +249,13 @@ Domain calls are **not** permission-checked. This includes `$cart->add()`, `Poly
 ## Querying
 
 ```php
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 
 $user->accessibleCarts()->ofType('quote')->get();     // everything this user can see
-Cart::query()->accessibleBy($user)->get();            // the same, from the model
+CartModel::query()->accessibleBy($user)->get();            // the same, from the model
 
-Cart::query()->inScope($acme)->get();                 // every cart anywhere under Acme
-Cart::query()->inScope($sales)->get();                // Sales carts only
+CartModel::query()->inScope($acme)->get();                 // every cart anywhere under Acme
+CartModel::query()->inScope($sales)->get();                // Sales carts only
 
 $cart->anchor;       // the scope it lives in (the Team model)
 $cart->boundary;     // the top of its tree (the Organization model)
@@ -295,13 +295,13 @@ The cart page shows the cart's chain, such as `Team #3 › Organization #1`, and
 - add a person or team with one of the type's roles
 - remove a member
 
-Refusals such as "outside" or "last owner" show as errors on the page. With `polycart.authorization` on, the dashboard applies the same per-user policies as the JSON API: the visibility control needs `share` on the cart, adding a member `create` on `CartMember`, and removing one `delete` on that member. A control the signed-in user may not use is not shown, and the cart list holds only the carts they can access. Operators (`polycart.atrium.show_all`) see every cart and every control.
+Refusals such as "outside" or "last owner" show as errors on the page. With `polycart.authorization` on, the dashboard applies the same per-user policies as the JSON API: the visibility control needs `share` on the cart, adding a member `create` on `CartMemberModel`, and removing one `delete` on that member. A control the signed-in user may not use is not shown, and the cart list holds only the carts they can access. Operators (`polycart.atrium.show_all`) see every cart and every control.
 
 ## Events and exceptions
 
 | Event | Fired when | Carries |
 | --- | --- | --- |
-| `CartSharingActionEvent` / `CartSharedActionEvent` | A member is added, or their role changes | start: `cart`, `member` (the model), `role`; finish: `cart`, `member` (the `CartMember`) |
+| `CartSharingActionEvent` / `CartSharedActionEvent` | A member is added, or their role changes | start: `cart`, `member` (the model), `role`; finish: `cart`, `member` (the `CartMemberModel`) |
 | `CartUnsharingActionEvent` / `CartUnsharedActionEvent` | A member is removed | start: `cart`, `member`; finish: `cart`, `memberType`, `memberId` |
 | `VisibilityChangingActionEvent` / `VisibilityChangedActionEvent` | Visibility changes | start: `cart`, `to`; finish: `cart`, `from`, `to` |
 

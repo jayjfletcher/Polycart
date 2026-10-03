@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 use Illuminate\Testing\Fluent\AssertableJson;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\DeleteCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\MergeCartsTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
+use JayI\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\UpdateLinesTool;
+use JayI\Polycart\Domains\CartType\Mcp\Tools\ListCartTypesTool;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\ActiveCartTool;
-use JayI\Polycart\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Mcp\Tools\ClearCartTool;
-use JayI\Polycart\Mcp\Tools\ConvertCartTool;
-use JayI\Polycart\Mcp\Tools\CreateCartTool;
-use JayI\Polycart\Mcp\Tools\DeleteCartTool;
-use JayI\Polycart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Mcp\Tools\ListCartTypesTool;
-use JayI\Polycart\Mcp\Tools\MergeCartsTool;
-use JayI\Polycart\Mcp\Tools\RemoveLinesTool;
-use JayI\Polycart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Mcp\Tools\TransitionCartTool;
-use JayI\Polycart\Mcp\Tools\UpdateCartTool;
-use JayI\Polycart\Mcp\Tools\UpdateLinesTool;
-use JayI\Polycart\Models\Cart;
 use Workbench\Database\Factories\UserFactory;
 
 it('lists the cart types', function (): void {
@@ -100,7 +100,7 @@ it('updates, clears and deletes a cart', function (): void {
 
     PolycartServer::tool(DeleteCartTool::class, ['cart' => $cart->id])->assertOk();
 
-    expect(Cart::query()->find($cart->id))->toBeNull();
+    expect(CartModel::query()->find($cart->id))->toBeNull();
 });
 
 it('transitions, converts and merges', function (): void {

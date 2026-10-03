@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Events\Action\LineAddedActionEvent;
-use JayI\Polycart\Exceptions\LineRejectedException;
+use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
+use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use JayI\Polycart\Domains\CartLine\Support\Stages\FindMatchingLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use JayI\Polycart\Domains\CartLine\Support\Stages\ValidateLine;
+use JayI\Polycart\Domains\CartLine\Support\Stages\WriteLine;
+use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Models\CartLine;
-use JayI\Polycart\Pipeline\Stages\BuildLine;
-use JayI\Polycart\Pipeline\Stages\CheckAccepted;
-use JayI\Polycart\Pipeline\Stages\FindMatchingLine;
-use JayI\Polycart\Pipeline\Stages\PrepareLine;
-use JayI\Polycart\Pipeline\Stages\ResolvePrice;
-use JayI\Polycart\Pipeline\Stages\ValidateLine;
-use JayI\Polycart\Pipeline\Stages\WriteLine;
 use JayI\Polycart\Tests\Fixtures\Models\Person;
 use JayI\Polycart\Tests\Fixtures\Stages\ApplyBulkDiscount;
 use JayI\Polycart\Tests\Fixtures\Stages\CheckStock;
 use JayI\Polycart\Tests\Fixtures\Stages\EnsureCustomerCanBuy;
-use JayI\Polycart\Types\CartTypeRegistry;
 
 it('sends lines through the default stages in order', function (): void {
     expect(app(CartTypeRegistry::class)->get('cart')->addLineStages())->toBe([
@@ -62,7 +62,7 @@ it('applies a configured stage to the price', function (): void {
 });
 
 it('runs closure stages', function (): void {
-    $line = Polycart::usingSource('pos', fn (): CartLine => Polycart::create('wholesale')->add(product()));
+    $line = Polycart::usingSource('pos', fn (): CartLineModel => Polycart::create('wholesale')->add(product()));
 
     expect($line->meta)->toBe(['added_via' => 'pos']);
 });
@@ -95,7 +95,7 @@ it('gives stages the signed-in customer', function (): void {
 it('undoes the write when a later stage refuses', function (): void {
     $cart = Polycart::create('audited');
 
-    expect(fn (): CartLine => $cart->add(product(), meta: ['fail_after_write' => true]))
+    expect(fn (): CartLineModel => $cart->add(product(), meta: ['fail_after_write' => true]))
         ->toThrow(LineRejectedException::class, 'The audit refused it.');
 
     expect($cart->lines()->count())->toBe(0);

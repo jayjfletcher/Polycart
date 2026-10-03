@@ -32,7 +32,7 @@ A source is a short string naming the surface a change came through. The package
 | `cortex` | A Cortex agent calling a cart tool. See [Cortex](cortex.md). |
 | `code` | Anything else. This is `polycart.default_source`, which you can change. |
 
-These are listed in `JayI\Polycart\Enums\CartSource`, but a source is stored as a plain string, so you can use your own (`web`, `import`, `pos`, `erp`) without changing the package.
+These are listed in `JayI\Polycart\Domains\Activity\Enums\CartSource`, but a source is stored as a plain string, so you can use your own (`web`, `import`, `pos`, `erp`) without changing the package.
 
 A cart has two source fields:
 
@@ -62,7 +62,7 @@ Polycart::usingSource('import', function () use ($rows) {
 **On your own routes**, with the middleware the package uses on its own routes:
 
 ```php
-use JayI\Polycart\Http\Middleware\CartSource;
+use JayI\Polycart\Domains\Activity\Http\Middleware\CartSource;
 
 Route::middleware(CartSource::class.':web')->group(function () {
     Route::post('/cart/lines', AddToCart::class);
@@ -106,7 +106,7 @@ foreach ($cart->activities as $entry) {    // oldest first
 
 ## What gets recorded
 
-Every change made through the package's actions is recorded, whichever surface it came through: code, the API, MCP or the dashboard. The actions are listed in `JayI\Polycart\Enums\Activity`.
+Every change made through the package's actions is recorded, whichever surface it came through: code, the API, MCP or the dashboard. The actions are listed in `JayI\Polycart\Domains\Activity\Enums\Activity`.
 
 | Action | When | Context |
 | --- | --- | --- |
@@ -162,11 +162,11 @@ Any string can be an action, and backed enums are accepted too.
 ## Querying
 
 ```php
-use JayI\Polycart\Models\Cart;
+use JayI\Polycart\Domains\Cart\Models\CartModel;
 
-Cart::query()->fromSource('api')->get();                    // created (or last converted) through the API
-Cart::query()->touchedBy('mcp')->get();                     // MCP touched it at any point
-Cart::query()->touchedBy('mcp', CartSource::Atrium)->get(); // either one
+CartModel::query()->fromSource('api')->get();                    // created (or last converted) through the API
+CartModel::query()->touchedBy('mcp')->get();                     // MCP touched it at any point
+CartModel::query()->touchedBy('mcp', CartSource::Atrium)->get(); // either one
 
 $cart->sources;                                             // ['api', 'mcp']
 $cart->activities()->where('source', 'mcp')->get();
@@ -185,7 +185,7 @@ Cart responses include both `source` and `sources`. Reading the log needs the `v
 
 ## In the Atrium dashboard
 
-The cart page shows the creating source and every source that has touched the cart, followed by an **Activity** timeline with the latest 25 entries. The timeline is shown when the signed-in user may read the log (`viewAny` on `CartActivity`), as in the JSON API. Each entry shows its action, source, actor and context. The cart list has a source column and filter.
+The cart page shows the creating source and every source that has touched the cart, followed by an **Activity** timeline with the latest 25 entries. The timeline is shown when the signed-in user may read the log (`viewAny` on `CartActivityModel`), as in the JSON API. Each entry shows its action, source, actor and context. The cart list has a source column and filter.
 
 ## Storage and pruning
 
