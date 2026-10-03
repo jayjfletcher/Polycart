@@ -120,7 +120,7 @@
                                 :label="__('polycart::polycart.convert_to')"
                                 :options="collect($conversions)->mapWithKeys(fn ($to) => [$to => $to])"
                                 wrapper="w-48" />
-                            <x-atrium::form.checkbox name="copy" :label="__('polycart::polycart.keep_original')" checked />
+                            <x-atrium::form.checkbox name="copy" :label="__('polycart::polycart.keep_original')" checked wrapper="w-fit shrink-0" />
                             <x-atrium::icon-button icon="arrows-right-left" :label="__('polycart::polycart.convert')" variant="primary" type="submit" data-testid="convert-cart" />
                         </form>
                     @endif

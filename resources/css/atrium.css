@@ -1,0 +1,24 @@
+/*
+ * Atrium ships one precompiled stylesheet built from its own views, so
+ * Tailwind utilities that only Polycart's screens use don't exist there.
+ * These fill that gap, written as Tailwind writes them. Added to the
+ * dashboard with Atrium::css(); tests/Feature/Ui/StylesTest.php keeps this
+ * list complete.
+ */
+.w-20 { width: calc(var(--spacing) * 20); }
+.w-32 { width: calc(var(--spacing) * 32); }
+.w-40 { width: calc(var(--spacing) * 40); }
+.w-48 { width: calc(var(--spacing) * 48); }
+.w-56 { width: calc(var(--spacing) * 56); }
+.w-72 { width: calc(var(--spacing) * 72); }
+.gap-6 { gap: calc(var(--spacing) * 6); }
+.gap-x-6 { column-gap: calc(var(--spacing) * 6); }
+.gap-y-3 { row-gap: calc(var(--spacing) * 3); }
+.font-mono { font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace); }
+.underline-offset-2 { text-underline-offset: 2px; }
+@media (hover: hover) {
+    .hover\:underline:hover { text-decoration-line: underline; }
+}
+@media (min-width: 40rem) {
+    .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

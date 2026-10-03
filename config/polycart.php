@@ -204,7 +204,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Atrium Features
+    | Atrium Features and Operators
     |--------------------------------------------------------------------------
     |
     | Features that switch Polycart in Atrium on and off as a whole: its
@@ -213,12 +213,21 @@ return [
     | the class does not exist and is skipped. Point this at a subclass or at
     | your own feature, or empty it to never check one.
     |
+    | `show_all` makes some users operators of the dashboard: they see every
+    | cart in its lists, widgets and search, and may take every action on
+    | it, whatever their role on the cart. Set it to true to make everyone
+    | who can open Atrium an operator, or to the name of a Gate ability,
+    | such as 'manage-carts', to make the users it allows operators. It
+    | applies to the dashboard only: the JSON API and MCP tools still act
+    | as the user's cart role allows.
+    |
     */
 
     'atrium' => [
         'features' => [
             PolycartSupportFeature::class,
         ],
+        'show_all' => false,
     ],
 
 ];

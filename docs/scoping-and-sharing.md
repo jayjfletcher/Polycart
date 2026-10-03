@@ -295,7 +295,7 @@ The cart page shows the cart's chain, such as `Team #3 › Organization #1`, and
 - add a person or team with one of the type's roles
 - remove a member
 
-Refusals such as "outside" or "last owner" show as errors on the page. With `polycart.authorization` on, the dashboard applies the same per-user policies as the JSON API: the visibility control needs `share` on the cart, adding a member `create` on `CartMember`, and removing one `delete` on that member. A control the signed-in user may not use is not shown, and the cart list holds only the carts they can access.
+Refusals such as "outside" or "last owner" show as errors on the page. With `polycart.authorization` on, the dashboard applies the same per-user policies as the JSON API: the visibility control needs `share` on the cart, adding a member `create` on `CartMember`, and removing one `delete` on that member. A control the signed-in user may not use is not shown, and the cart list holds only the carts they can access. Operators (`polycart.atrium.show_all`) see every cart and every control.
 
 ## Events and exceptions
 

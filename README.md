@@ -438,6 +438,24 @@ With `polycart.authorization` on (the default), the dashboard asks the policies 
 
 A control is hidden unless its action would be allowed, and the action itself answers 403 otherwise. Lists, widgets and search hold only the carts the user can access, as the JSON API's list does. In your own Blade views, `@polycartCan('update', $cart) ... @endpolycartCan` asks the same question. With `polycart.authorization` off, everything is shown and allowed.
 
+#### Operators: showing every cart
+
+Support and operations staff often need to see and fix any cart, not only the ones they hold a role on. `polycart.atrium.show_all` makes such users **operators** of the dashboard:
+
+```php
+'atrium' => [
+    'show_all' => false,          // default: everyone sees only the carts their role allows
+    // 'show_all' => true,        // everyone who can open Atrium is an operator
+    // 'show_all' => 'manage-carts', // users the Gate allows this ability are operators
+],
+```
+
+```php
+Gate::define('manage-carts', fn (User $user): bool => $user->is_support);
+```
+
+An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines, members and activity: viewing, editing, deleting, moving to any status the cart's type allows, converting, sharing and the activity log. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `JayI\Polycart\Http\Ui\ScreenAccess::operator($user)` tells you whether a user is one.
+
 ### Switching it off
 
 Set `polycart.ui.enabled` to `false` to leave the dashboard out.

@@ -30,7 +30,8 @@ use JayI\Polycart\Types\CartTypeRegistry;
  * Widgets declared here are offered in Atrium's picker. None is ever placed
  * on a dashboard automatically; that is always a user's choice. Navigation,
  * widgets and search are shown only to users the cart policies let list
- * carts, and list only the carts they can access, as the JSON API does.
+ * carts, and list only the carts they can access, as the JSON API does,
+ * or every cart for an operator (`polycart.atrium.show_all`).
  */
 class PolycartPlugin extends Plugin
 {
@@ -171,7 +172,8 @@ class PolycartPlugin extends Plugin
     }
 
     /**
-     * Carts the signed-in user can access; every cart with authorization off.
+     * Carts the signed-in user can access; every cart for an operator or
+     * with authorization off.
      *
      * @return Builder<Cart>
      */

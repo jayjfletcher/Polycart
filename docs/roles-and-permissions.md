@@ -243,6 +243,8 @@ With `polycart.authorization` on, which is the default, each call is checked aga
 
 A failed check returns `403` over HTTP and `Unauthorized.` over MCP. Turn `polycart.authorization` off only for trusted server-to-server callers.
 
+The Atrium dashboard asks the same questions, with one exception: users made operators by `polycart.atrium.show_all` (`true`, or a Gate ability's name) see every cart there and may take every action on it. The API and MCP never treat anyone as an operator.
+
 ## Policies
 
 Polycart registers a policy for each of its models from `polycart.policies`:

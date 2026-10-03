@@ -134,5 +134,8 @@ class PolycartServiceProvider extends ServiceProvider
         }
 
         Atrium::plugin(PolycartPlugin::class);
+
+        // Utilities Polycart's screens use that Atrium's stylesheet lacks.
+        Atrium::css((string) file_get_contents(__DIR__.'/../resources/css/atrium.css'), 'polycart');
     }
 }
