@@ -3,11 +3,14 @@ laravel: '@testbench'
 providers:
   - Laravel\Mcp\Server\McpServiceProvider
   - JayI\Atrium\AtriumServiceProvider
+  - JayI\Polycart\PolycartServiceProvider
   - Workbench\App\Providers\WorkbenchServiceProvider
 
 migrations:
-  - database/migrations
   - workbench/database/migrations
+  - database/migrations
+  # jayi/cortex is a dev dependency and auto-discovered, so the demo runs with it.
+  - vendor/jayi/cortex/database/migrations
   # jayi/pennantplus (dev dependency, auto-discovered) decides PolycartSupportFeature
   # through Pennant, whose features table lives here.
   - vendor/laravel/pennant/database/migrations
@@ -16,7 +19,10 @@ seeders:
   - Workbench\Database\Seeders\DatabaseSeeder
 
 workbench:
-  start: '/'
+  # Not '/': with a workbench user, Testbench sends a guest at '/' to log in
+  # and back to `start`, which would loop.
+  start: '/atrium/polycart/carts'
+  user: admin@example.com
   install: true
   health: false
   discovers:
@@ -33,6 +39,8 @@ workbench:
     - migrate-fresh
   assets:
     - laravel-assets
+    # Atrium's stylesheet and scripts, republished on every build.
+    - atrium-assets
   sync:
     - from: storage
       to: workbench/storage
