@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Testing\Fluent\AssertableJson;
-use JayI\Atrium\Widgets\WidgetDefinition;
+use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Http\Ui\ScreenAccess;

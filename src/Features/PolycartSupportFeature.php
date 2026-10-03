@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Features;
 
-use JayI\PennantPlus\OnLayeredFeature;
+use JayI\PennantPlus\Domains\Feature\Support\OnLayeredFeature;
 
 /**
  * Switches Polycart in Atrium on and off: its navigation, widgets, search

@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
-use JayI\Atrium\Plugins\PluginRegistry;
-use JayI\Atrium\Widgets\WidgetDefinition;
+use JayI\Atrium\Domains\Plugins\Services\PluginRegistry;
+use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Models\Cart;
