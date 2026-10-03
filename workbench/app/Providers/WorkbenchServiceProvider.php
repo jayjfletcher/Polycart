@@ -2,11 +2,14 @@
 
 namespace Workbench\App\Providers;
 
+use Illuminate\Contracts\Http\Kernel as HttpKernel;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use Workbench\App\Carts\OrderCart;
 use Workbench\App\Carts\QuoteCart;
 use Workbench\App\Carts\ShopCart;
 use Workbench\App\Carts\WishlistCart;
+use Workbench\App\Http\Middleware\SignInWorkbenchUser;
 use Workbench\App\Models\Organization;
 use Workbench\App\Models\Product;
 use Workbench\App\Models\Team;
@@ -45,6 +48,13 @@ class WorkbenchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Keep the workbench user signed in whatever URL is opened first.
+        $this->callAfterResolving(HttpKernel::class, function (HttpKernel $kernel): void {
+            if ($kernel instanceof Kernel) {
+                $kernel->appendMiddlewareToGroup('web', SignInWorkbenchUser::class);
+            }
+        });
+
         //
     }
 }
