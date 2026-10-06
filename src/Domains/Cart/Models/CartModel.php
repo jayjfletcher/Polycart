@@ -280,7 +280,7 @@ class CartModel extends Model
      * (`exported` becomes `cart.exported`). Without jayi/keen installed it
      * does nothing.
      *
-     * @deprecated Call `Keen::record($action)->on($cart)->with($context)->save()` instead.
+     * @deprecated Call `Keen::record($action)->source('polycart')->on($cart)->with($context)->save()` instead.
      *
      * @param  array<string, mixed>  $context
      */
@@ -292,7 +292,7 @@ class CartModel extends Model
 
         $action = $action instanceof BackedEnum ? (string) $action->value : $action;
 
-        Keen::record(str_contains($action, '.') ? $action : 'cart.'.$action)->on($this)->with($context)->save();
+        Keen::record(str_contains($action, '.') ? $action : 'cart.'.$action)->source('polycart')->on($this)->with($context)->save();
     }
 
     /**

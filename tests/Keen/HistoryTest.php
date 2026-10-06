@@ -114,14 +114,14 @@ it('serves a cart\'s history from the history endpoint and tool', function (): v
         ->assertSee('line.added');
 });
 
-it('records the application\'s own events through the deprecated recordActivity', function (): void {
+it('records the cart\'s own events in its history through the deprecated recordActivity', function (): void {
     $cart = Polycart::create('cart');
 
     $cart->recordActivity('exported', ['reference' => 'SO-1']);
 
     $entry = AuditEntryModel::query()->where('action', 'cart.exported')->sole();
 
-    expect($entry->source)->toBe('app')
+    expect($entry->source)->toBe('polycart')
         ->and($entry->subject_id)->toBe($cart->id)
         ->and($entry->context)->toMatchArray(['reference' => 'SO-1']);
 });

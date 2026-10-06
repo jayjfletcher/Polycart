@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\CartLine;
 
-use Illuminate\Database\Eloquent\Model;
 use JayI\Foundation\Audit\AuditHooks;
 use JayI\Foundation\Support\ServiceProvider;
 use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
@@ -27,8 +26,7 @@ class CartLineServiceProvider extends ServiceProvider
 
         // How the audit log (jayi/keen) names a line: a custom line by its
         // description, any other by what it is for.
-        $this->app->make(AuditHooks::class)->label(CartLineModel::class, fn (Model $line): ?string => match (true) {
-            ! $line instanceof CartLineModel => null,
+        $this->app->make(AuditHooks::class)->label(CartLineModel::class, fn (CartLineModel $line): string => match (true) {
             ! $line->isCustom() => class_basename((string) $line->purchasable_type).' #'.$line->purchasable_id,
             is_string($line->meta['description'] ?? null) => $line->meta['description'],
             default => $line->id,
