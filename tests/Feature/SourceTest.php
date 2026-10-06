@@ -4,56 +4,49 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
-use JayI\Polycart\Domains\Activity\Enums\CartSource;
-use JayI\Polycart\Domains\Activity\Http\Middleware\CartSource as CartSourceMiddleware;
+use JayI\Foundation\Support\Surface;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
+use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 use JayI\Polycart\Facades\Polycart;
 use JayI\Polycart\Mcp\PolycartServer;
 
-it('records code as the source of carts made directly', function (): void {
-    expect(Polycart::create('cart')->source)->toBe('code');
+it('records the surface of carts made directly', function (): void {
+    // The test runner is a console process, so Foundation's Surface says `cli`.
+    expect(Polycart::create('cart')->source)->toBe('cli');
 });
 
-it('uses the configured default source', function (): void {
-    config()->set('polycart.default_source', 'web');
-
-    expect(Polycart::create('cart')->source)->toBe('web');
-});
-
-it('stamps carts made inside a callback and restores the source after', function (): void {
+it('stamps carts made inside a callback and restores the surface after', function (): void {
     $imported = Polycart::usingSource('import', fn (): CartModel => Polycart::create('cart'));
-    $enum = Polycart::usingSource(CartSource::Atrium, fn (): CartModel => Polycart::create('cart'));
+    $enum = Polycart::usingSource(Visibility::Scope, fn (): CartModel => Polycart::create('cart'));
 
     expect($imported->source)->toBe('import')
-        ->and($enum->source)->toBe('atrium')
-        ->and(Polycart::create('cart')->source)->toBe('code');
+        ->and($enum->source)->toBe('scope')
+        ->and(Polycart::create('cart')->source)->toBe('cli');
 });
 
-it('restores the source when the callback throws', function (): void {
+it('restores the surface when the callback throws', function (): void {
     try {
         Polycart::usingSource('import', fn () => throw new RuntimeException('boom'));
     } catch (RuntimeException) {
         //
     }
 
-    expect(Polycart::create('cart')->source)->toBe('code');
+    expect(Polycart::create('cart')->source)->toBe('cli');
 });
 
 it('records carts made through the JSON API', function (): void {
     $this->postJson('/polycart/carts', ['type' => 'cart'])
         ->assertCreated()
-        ->assertJsonPath('data.source', 'api');
-
-    expect(Polycart::create('cart')->source)->toBe('code');
+        ->assertJsonPath('data.source', 'http');
 });
 
 it('records carts made through MCP', function (): void {
     PolycartServer::tool(CreateCartTool::class, ['type' => 'cart'])->assertOk();
 
     expect(CartModel::query()->sole()->source)->toBe('mcp')
-        ->and(Polycart::create('cart')->source)->toBe('code');
+        ->and(Polycart::create('cart')->source)->toBe('cli');
 });
 
 it('records copies made from the dashboard as the dashboard\'s', function (): void {
@@ -66,12 +59,13 @@ it('records copies made from the dashboard as the dashboard\'s', function (): vo
     $this->post(route('atrium.polycart.carts.convert', $cart), ['to' => 'quote', 'copy' => '1'])->assertRedirect();
 
     expect(CartModel::query()->ofType('quote')->sole()->source)->toBe('atrium')
-        ->and($cart->fresh()?->source)->toBe('code');
+        ->and($cart->fresh()?->source)->toBe('cli');
 });
 
-it('lets an application tag its own routes', function (): void {
-    Route::post('/checkout-web', fn (): string => Polycart::create('cart')->source ?? '')
-        ->middleware(CartSourceMiddleware::class.':web');
+it('lets an application name the surface of its own routes', function (): void {
+    app(Surface::class)->route('checkout.', 'web');
+
+    Route::post('/checkout-web', fn (): string => Polycart::create('cart')->source ?? '')->name('checkout.store');
 
     $this->post('/checkout-web')->assertSee('web');
 });
@@ -81,12 +75,12 @@ it('filters carts by source', function (): void {
     Polycart::usingSource('import', fn (): CartModel => Polycart::create('cart'));
 
     expect(CartModel::query()->fromSource('import')->count())->toBe(1)
-        ->and(CartModel::query()->fromSource(CartSource::Code, 'import')->count())->toBe(2);
+        ->and(CartModel::query()->fromSource('cli', 'import')->count())->toBe(2);
 
     $this->getJson('/polycart/carts?source=import')->assertOk()->assertJsonCount(1, 'data');
 });
 
-it('records the source of the conversion on the converted cart', function (bool $copy): void {
+it('records the surface of the conversion on the converted cart', function (bool $copy): void {
     $cartId = $this->postJson('/polycart/carts', ['type' => 'cart'])->assertCreated()->json('data.id');
     CartModel::query()->findOrFail($cartId)->add(product());
 
@@ -98,6 +92,6 @@ it('records the source of the conversion on the converted cart', function (bool 
         ->and($order->id === $cartId)->toBe(! $copy);
 
     if ($copy) {
-        expect(CartModel::query()->findOrFail($cartId)->source)->toBe('api');
+        expect(CartModel::query()->findOrFail($cartId)->source)->toBe('http');
     }
 })->with(['copied' => true, 'in place' => false]);

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\CartLine\Actions;
 
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\CartLine\Events\LineUpdatedActionEvent;
 use JayI\Polycart\Domains\CartLine\Events\LineUpdatingActionEvent;
 use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
@@ -59,8 +57,6 @@ final class UpdateLineAction
 
         $cart->extendLifetime();
         $cart->unsetRelation('lines');
-
-        app(ActivityRecorder::class)->record($cart, Activity::LineUpdated, ['line' => $line->id, 'quantity' => $line->quantity]);
 
         return $line;
     }

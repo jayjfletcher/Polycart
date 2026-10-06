@@ -6,9 +6,7 @@ namespace JayI\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Carbon;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
-use JayI\Polycart\Domains\Activity\Services\SourceContext;
+use JayI\Foundation\Support\Surface;
 use JayI\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
 use JayI\Polycart\Domains\Cart\Events\CartConvertingActionEvent;
 use JayI\Polycart\Domains\Cart\Exceptions\InvalidConversionException;
@@ -73,24 +71,7 @@ final class ConvertCartAction
 
         $target = $this->types->get($to);
 
-        $converted = $this->db->transaction(function () use ($cart, $target, $source, $copy): CartModel {
-            $converted = $copy ? $this->copy($cart, $target) : $this->retype($cart, $target);
-            $recorder = app(ActivityRecorder::class);
-
-            if ($copy) {
-                // The copy carries the original's history, so every source
-                // that touched what became this cart is on record.
-                $recorder->record($cart, Activity::Converted, ['from' => $source->key(), 'to' => $target->key(), 'into' => $converted->id]);
-                $recorder->inherit($cart, $converted);
-                $recorder->record($converted, Activity::ConvertedFrom, ['from' => $source->key(), 'to' => $target->key(), 'cart' => $cart->id]);
-            } else {
-                $recorder->record($converted, Activity::Converted, ['from' => $source->key(), 'to' => $target->key()]);
-            }
-
-            return $converted;
-        });
-
-        return $converted;
+        return $this->db->transaction(fn (): CartModel => $copy ? $this->copy($cart, $target) : $this->retype($cart, $target));
     }
 
     private function copy(CartModel $cart, CartType $target): CartModel
@@ -138,7 +119,7 @@ final class ConvertCartAction
         $cart->forceFill([
             'type' => $target->key(),
             // A cart that became an order through MCP is an MCP order.
-            'source' => app(SourceContext::class)->current(),
+            'source' => app(Surface::class)->current(),
             'status' => CartModel::statusValue($target->initialStatus()),
             'expires_at' => $lifetime === null ? null : Carbon::now()->add($lifetime),
         ])->save();

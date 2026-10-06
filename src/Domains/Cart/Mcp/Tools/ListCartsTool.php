@@ -26,8 +26,7 @@ final class ListCartsTool extends Tool
         return [
             'type' => $schema->string()->description('Only carts of this type key.'),
             'status' => $schema->string()->description('Only carts in this status.'),
-            'source' => $schema->string()->description('Only carts created from this source: code, api, mcp, atrium, or one the application records.'),
-            'touched_by' => $schema->string()->description('Only carts this source has touched at any point.'),
+            'source' => $schema->string()->description('Only carts created through this surface: http (the JSON API), mcp, cortex, atrium, cli, code, or one the application names.'),
             'owner_type' => $schema->string()->description('Owner alias from polycart.owners, or its morph class. Requires owner_id.'),
             'owner_id' => $schema->string()->description('Key of the owning model. Requires owner_type.'),
             'session_key' => $schema->string()->description('Only the guest carts for this session key.'),

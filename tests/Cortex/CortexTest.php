@@ -32,7 +32,7 @@ it('offers every cart tool to Cortex agents', function (): void {
     $tools = app(ToolRegistry::class);
 
     expect($tools->has('add-lines'))->toBeTrue()
-        ->and($tools->has('list-cart-activity'))->toBeTrue()
+        ->and($tools->has('list-polycart-history-tool'))->toBeTrue()
         ->and(array_intersect($tools->names(), ['list-carts', 'share-cart', 'remove-lines']))->toHaveCount(3)
         ->and($tools->get('create-cart'))->toBeInstanceOf(AgentTool::class);
 });
@@ -89,8 +89,7 @@ it('lets an agent run a cart tool, recording cortex as the source', function ():
 
     expect((string) $result)->toContain('From an agent')
         ->and($quote->source)->toBe('cortex')
-        ->and($quote->sources)->toBe(['cortex'])
-        ->and(Polycart::create('cart')->source)->toBe('code');
+        ->and(Polycart::create('cart')->source)->toBe('cli');
 });
 
 it('reports whether the integration is active', function (): void {

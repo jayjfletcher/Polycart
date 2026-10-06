@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\Scope;
 
+use JayI\Foundation\Support\ServiceProvider;
 use JayI\Polycart\Domains\Scope\Models\CartPathModel;
-use JayI\Polycart\Support\ServiceProvider;
 
 class ScopeServiceProvider extends ServiceProvider
 {

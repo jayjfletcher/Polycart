@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\Sharing;
 
+use JayI\Foundation\Support\ServiceProvider;
 use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Support\ServiceProvider;
 
 class SharingServiceProvider extends ServiceProvider
 {

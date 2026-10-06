@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains;
 
 use Illuminate\Support\ServiceProvider;
-use JayI\Polycart\Domains\Activity\ActivityServiceProvider;
 use JayI\Polycart\Domains\Cart\CartServiceProvider;
 use JayI\Polycart\Domains\CartLine\CartLineServiceProvider;
 use JayI\Polycart\Domains\CartType\CartTypeServiceProvider;
@@ -20,7 +19,6 @@ class DomainServiceProvider extends ServiceProvider
      * @var array<int, class-string<ServiceProvider>>
      */
     private array $providers = [
-        ActivityServiceProvider::class,
         CartServiceProvider::class,
         CartLineServiceProvider::class,
         CartTypeServiceProvider::class,

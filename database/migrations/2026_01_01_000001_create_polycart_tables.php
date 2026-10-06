@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('type');
             $table->string('status')->nullable();
             $table->string('source')->nullable()->index();
-            $table->json('sources')->nullable();
             $table->string('owner_type')->nullable();
             $table->string('owner_id')->nullable();
             $table->string('session_key')->nullable()->index();
@@ -51,20 +50,6 @@ return new class extends Migration
             $table->index(['scope_type', 'scope_id']);
         });
 
-        // Every change a cart goes through, and where it came from.
-        Schema::create('polycart_cart_activities', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('cart_id')->constrained('polycart_carts')->cascadeOnDelete();
-            $table->string('action');
-            $table->string('source')->index();
-            $table->string('actor_type')->nullable();
-            $table->string('actor_id')->nullable();
-            $table->json('context')->nullable();
-            $table->timestamp('created_at', 6);
-
-            $table->index(['cart_id', 'created_at']);
-        });
-
         Schema::create('polycart_cart_members', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('cart_id')->constrained('polycart_carts')->cascadeOnDelete();
@@ -98,7 +83,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('polycart_cart_members');
-        Schema::dropIfExists('polycart_cart_activities');
         Schema::dropIfExists('polycart_cart_paths');
         Schema::dropIfExists('polycart_cart_lines');
         Schema::dropIfExists('polycart_carts');

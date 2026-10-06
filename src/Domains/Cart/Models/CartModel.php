@@ -16,10 +16,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
-use JayI\Polycart\Domains\Activity\Services\SourceContext;
+use JayI\Foundation\Support\Surface;
+use JayI\Keen\Facades\Keen;
 use JayI\Polycart\Domains\Cart\Actions\ClearCartAction;
 use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
 use JayI\Polycart\Domains\Cart\Actions\TransitionCartAction;
@@ -54,7 +52,6 @@ use JayI\Polycart\Domains\Sharing\Services\CartAccess;
  * @property string $type
  * @property string|null $status
  * @property string|null $source
- * @property array<int, string>|null $sources
  * @property string|null $owner_type
  * @property string|null $owner_id
  * @property string|null $session_key
@@ -132,7 +129,7 @@ class CartModel extends Model
             $type = $cart->cartType();
 
             $cart->status ??= self::statusValue($type->initialStatus());
-            $cart->source ??= app(SourceContext::class)->current();
+            $cart->source ??= app(Surface::class)->current();
             $cart->expires_at ??= self::expiry($type);
             $cart->visibility ??= $type->defaultVisibility();
 
@@ -150,8 +147,6 @@ class CartModel extends Model
                     'role' => $cart->cartType()->creatorRole(),
                 ]);
             }
-
-            app(ActivityRecorder::class)->record($cart, Activity::Created, ['type' => $cart->type]);
         });
 
         // A cart is locked to the tree it was created in.
@@ -279,14 +274,25 @@ class CartModel extends Model
     }
 
     /**
-     * Add an entry to this cart's activity log, stamped with the current
-     * source and signed-in user. Use it for the application's own events.
+     * Record one of the application's own events about this cart in the
+     * suite-wide audit log (jayi/keen), stamped with the signed-in user and
+     * the current surface. An action without a dot is prefixed with `cart.`
+     * (`exported` becomes `cart.exported`). Without jayi/keen installed it
+     * does nothing.
+     *
+     * @deprecated Call `Keen::record($action)->on($cart)->with($context)->save()` instead.
      *
      * @param  array<string, mixed>  $context
      */
-    public function recordActivity(BackedEnum|string $action, array $context = []): CartActivityModel
+    public function recordActivity(BackedEnum|string $action, array $context = []): void
     {
-        return app(ActivityRecorder::class)->record($this, $action, $context);
+        if (! class_exists(Keen::class)) {
+            return;
+        }
+
+        $action = $action instanceof BackedEnum ? (string) $action->value : $action;
+
+        Keen::record(str_contains($action, '.') ? $action : 'cart.'.$action)->on($this)->with($context)->save();
     }
 
     /**
@@ -443,16 +449,6 @@ class CartModel extends Model
     }
 
     /**
-     * Every change this cart has been through, oldest first.
-     *
-     * @return HasMany<CartActivityModel, $this>
-     */
-    public function activities(): HasMany
-    {
-        return $this->hasMany(CartActivityModel::class, 'cart_id')->orderBy('created_at')->orderBy('id');
-    }
-
-    /**
      * Every level of the tree this cart lives in, nearest first.
      *
      * @return HasMany<CartPathModel, $this>
@@ -600,20 +596,6 @@ class CartModel extends Model
     }
 
     /**
-     * Carts any of the given sources has touched at any point.
-     *
-     * @param  Builder<static>  $query
-     */
-    public function scopeTouchedBy(Builder $query, BackedEnum|string ...$sources): void
-    {
-        $query->where(function (Builder $query) use ($sources): void {
-            foreach ($sources as $source) {
-                $query->orWhereJsonContains($query->qualifyColumn('sources'), $source instanceof BackedEnum ? (string) $source->value : $source);
-            }
-        });
-    }
-
-    /**
      * Carts that have not expired.
      *
      * @param  Builder<static>  $query
@@ -670,7 +652,6 @@ class CartModel extends Model
     {
         return [
             'meta' => 'array',
-            'sources' => 'array',
             'visibility' => Visibility::class,
             'expires_at' => 'datetime',
         ];

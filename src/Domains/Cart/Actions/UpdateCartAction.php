@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Support\Arr;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Events\CartUpdatedActionEvent;
 use JayI\Polycart\Domains\Cart\Events\CartUpdatingActionEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
@@ -51,13 +49,7 @@ final class UpdateCartAction
     {
         $cart->fill(Arr::only($data, ['label', 'meta']));
 
-        $changed = array_keys($cart->getDirty());
-
         $cart->save();
-
-        if ($changed !== []) {
-            app(ActivityRecorder::class)->record($cart, Activity::Updated, ['changed' => $changed]);
-        }
 
         return $cart;
     }

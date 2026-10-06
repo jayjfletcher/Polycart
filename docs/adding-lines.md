@@ -12,7 +12,7 @@ This guide covers:
 - [Configuring stages per cart type](#configuring-stages-per-cart-type)
 - [Adding several lines at once](#adding-several-lines-at-once)
 - [Over the JSON API and MCP](#over-the-json-api-and-mcp)
-- [Transactions, events and activity](#transactions-events-and-activity)
+- [Transactions, events and history](#transactions-events-and-history)
 - [What the pipeline does not cover](#what-the-pipeline-does-not-cover)
 
 ## How it works
@@ -23,7 +23,7 @@ $cart->add($product, 2, options: ['finish' => '626']);
 
 This builds a `PendingLine` and sends it through the cart type's `addLineStages()` with Laravel's `Pipeline`, inside one database transaction. Each stage reads and changes the pending line, then passes it on. By the end, the line has been written.
 
-Any stage can refuse the line. When one does, the transaction is rolled back and the cart is left exactly as it was: no line, no quantity change, no activity entry, no event.
+Any stage can refuse the line. When one does, the transaction is rolled back and the cart is left exactly as it was: no line, no quantity change, no event, and so no history entry.
 
 Every way of adding a line uses the same pipeline:
 
@@ -67,7 +67,7 @@ Where to put your own stages:
 | `cart` | The cart being added to |
 | `type` | The cart's `CartType` |
 | `actor` | The signed-in user, or `null` |
-| `source` | The current source: `api`, `mcp`, `code`, or yours. See [Sources and activity](sources-and-activity.md). |
+| `source` | The current surface: `http`, `mcp`, `cortex`, `atrium`, `cli`, `code`, or yours. See [Sources and history](sources-and-history.md). |
 
 **Changed by stages:**
 
@@ -269,11 +269,11 @@ The MCP tool is `add-lines`, with the same `lines` array. A refusal reads `Line 
 
 Both need the `update` ability on the cart when `polycart.authorization` is on. Purchasables are named by aliases from `polycart.purchasables`.
 
-## Transactions, events and activity
+## Transactions, events and history
 
 - **One transaction:** the pipeline runs in a single database transaction, and so does a batch. Nested transactions become savepoints.
 - **Events:** adding fires `LineAddingActionEvent` before the pipeline runs and `LineAddedActionEvent` (with `merged`) once it commits, and a batch wraps these in `LinesAdding`/`LinesAddedActionEvent`. Finish events wait for the commit, so listeners never hear about a line that was rolled back. See [Events](events.md).
-- **Activity:** entries (`line_added` or `line_updated`) are written inside the transaction, so a rolled-back add leaves none.
+- **History:** with jayi/keen installed, the audit log records `line.added` from the finish event, so a rolled-back add leaves no entry.
 - **Expiry:** the cart's expiry is pushed back once the line is written.
 
 ## What the pipeline does not cover

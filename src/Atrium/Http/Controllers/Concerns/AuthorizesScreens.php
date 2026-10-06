@@ -9,6 +9,11 @@ use JayI\Polycart\Atrium\ScreenAccess;
 
 /**
  * The same policy checks the JSON API and MCP tools make, for Atrium screens.
+ *
+ * Polycart's own rather than Atrium's `AuthorizesScreens`, because its checks
+ * take arguments (the status to transition to, the type to convert to) and
+ * let dashboard operators through; ScreenAccess hands everything else to
+ * Atrium's shared check.
  */
 trait AuthorizesScreens
 {

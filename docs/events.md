@@ -23,9 +23,9 @@ Each model fires a class-based event for every Eloquent hook that applies to it:
 | Model | Events |
 | --- | --- |
 | `CartModel` | all 15: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`, `trashed`, `forceDeleting`, `forceDeleted`, `replicating` |
-| `CartLineModel`, `CartMemberModel`, `CartPathModel`, `CartActivityModel` | the 10 that apply to models without soft deletes: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `replicating` |
+| `CartLineModel`, `CartMemberModel`, `CartPathModel` | the 10 that apply to models without soft deletes: `retrieved`, `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `replicating` |
 
-They live in the `Events` namespace of the model's domain, such as `JayI\Polycart\Domains\CartLine\Events`, and are named `{Entity}{Hook}Event`, the entity being the model's name less its `Model` suffix, for example `CartCreatingEvent` or `CartLineDeletedEvent`. The model is a typed property: `$event->cart`, `$event->line`, `$event->member`, `$event->path`, `$event->activity`. It is also available as `$event->model()`, alongside `$event->hook()`.
+They live in the `Events` namespace of the model's domain, such as `JayI\Polycart\Domains\CartLine\Events`, and are named `{Entity}{Hook}Event`, the entity being the model's name less its `Model` suffix, for example `CartCreatingEvent` or `CartLineDeletedEvent`. The model is a typed property: `$event->cart`, `$event->line`, `$event->member`, `$event->path`. It is also available as `$event->model()`, alongside `$event->hook()`.
 
 ```php
 use JayI\Polycart\Domains\CartLine\Events\CartLineSavingEvent;
@@ -114,7 +114,6 @@ Outside a transaction, finish events fire straight away.
 | `ConvertCartAction` | `CartConvertingActionEvent` (`cart`, `to`, `copy`) | `CartConvertedActionEvent` (`source`, `cart`, `from`, `to`, `copy`) |
 | `CreateCartAction` | `CartCreatingActionEvent` (`type`, `owner`, `attributes`, `scope`) | `CartCreatedActionEvent` (`cart`) |
 | `DeleteCartAction` | `CartDeletingActionEvent` (`cart`) | `CartDeletedActionEvent` (`cart`) |
-| `ListActivityAction` | `ActivityListingActionEvent` (`cart`, `filters`) | `ActivityListedActionEvent` (`cart`, `activity`) |
 | `ListCartTypesAction` | `CartTypesListingActionEvent` (none) | `CartTypesListedActionEvent` (`types`) |
 | `ListCartsAction` | `CartsListingActionEvent` (`filters`, `viewer`) | `CartsListedActionEvent` (`carts`, `viewer`) |
 | `ListMembersAction` | `MembersListingActionEvent` (`cart`) | `MembersListedActionEvent` (`cart`, `members`) |
@@ -149,4 +148,4 @@ $cart->add($product, 2);
 Event::assertDispatched(LineAddedActionEvent::class, fn ($event) => $event->line->quantity === 2 && ! $event->merged);
 ```
 
-Fake only the events you assert on. A bare `Event::fake()` also stops the model hooks a cart needs when it is created: its initial status, expiry, place in the tree, the creator's membership and the first activity entry.
+Fake only the events you assert on. A bare `Event::fake()` also stops the model hooks a cart needs when it is created: its initial status, expiry, place in the tree, and the creator's membership.

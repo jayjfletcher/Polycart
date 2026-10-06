@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\Cart\Actions;
 
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Events\CartClearedActionEvent;
 use JayI\Polycart\Domains\Cart\Events\CartClearingActionEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
@@ -42,8 +40,6 @@ final class ClearCartAction
         foreach ($cart->lines()->get() as $line) {
             $this->remove->execute($line);
         }
-
-        app(ActivityRecorder::class)->record($cart, Activity::Cleared);
 
         return $cart->unsetRelation('lines');
     }

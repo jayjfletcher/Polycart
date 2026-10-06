@@ -6,13 +6,14 @@ namespace JayI\Polycart\Domains\Sharing\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use JayI\Foundation\Audit\Contracts\Auditable;
 use JayI\Foundation\Contracts\ActionFinishedEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * A member was removed from a cart.
  */
-final class CartUnsharedActionEvent implements ActionFinishedEvent
+final class CartUnsharedActionEvent implements ActionFinishedEvent, Auditable
 {
     use Dispatchable;
     use SerializesModels;
@@ -22,4 +23,23 @@ final class CartUnsharedActionEvent implements ActionFinishedEvent
         public string $memberType,
         public string $memberId,
     ) {}
+
+    /**
+     * The entry is about the cart that was unshared.
+     */
+    public function auditSubject(): CartModel
+    {
+        return $this->cart;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function auditContext(): array
+    {
+        return [
+            'member_type' => $this->memberType,
+            'member_id' => $this->memberId,
+        ];
+    }
 }

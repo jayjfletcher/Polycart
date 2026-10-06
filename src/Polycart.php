@@ -7,7 +7,7 @@ namespace JayI\Polycart;
 use BackedEnum;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Activity\Services\SourceContext;
+use JayI\Foundation\Support\Surface;
 use JayI\Polycart\Domains\Cart\Actions\ActiveCartAction;
 use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
 use JayI\Polycart\Domains\Cart\Actions\CreateCartAction;
@@ -69,7 +69,10 @@ final class Polycart
     }
 
     /**
-     * Stamp every cart created inside the callback with a source.
+     * Mark everything inside the callback as coming from a surface of your
+     * own, such as `import` or `pos`: carts created inside it record it as
+     * their `source`, and the audit log records it as the entries' surface.
+     * A shortcut for Foundation's `Surface::using()`.
      *
      * @template TReturn
      *
@@ -78,7 +81,7 @@ final class Polycart
      */
     public function usingSource(BackedEnum|string $source, Closure $callback): mixed
     {
-        return app(SourceContext::class)->using($source, $callback);
+        return app(Surface::class)->using($source instanceof BackedEnum ? (string) $source->value : $source, $callback);
     }
 
     /**

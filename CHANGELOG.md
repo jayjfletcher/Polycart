@@ -4,6 +4,16 @@
 
 ### Breaking
 
+- **The cart activity log is replaced by jayi/keen history.** Polycart keeps no history of its own: install [jayi/keen](https://github.com/jayjfletcher/Keen), the suite-wide audit log (now in `suggest`), and every cart change is recorded there with source `polycart`; without it carts keep no history. The `Activity` domain is removed: `CartActivityModel` and its policy and model events, `ActivityRecorder`, the `Activity` enum, `ListActivityAction` and its events, `$cart->activities`, the `polycart.policies` entry for `CartActivityModel`, and the `JayI\Polycart\Models\CartActivity` morph alias.
+- `GET /polycart/carts/{cart}/activity` and the `list-cart-activity` MCP tool are removed in favour of `GET /polycart/history?subject_type=...&subject_id=...` and `list-polycart-history-tool`.
+- The create migration no longer creates `polycart_cart_activities` or the `polycart_carts.sources` column. No migration drops them: existing installs keep the orphaned table and column, which are harmless; drop them when you no longer need the old entries.
+- `polycart_carts.source` stays, and is now jayi/foundation's `Surface::current()`: the JSON API records `http` (was `api`), and work outside every surface records `cli` or `code` (was `polycart.default_source`, which is removed). `CartSource` (the enum and the middleware), `SourceContext` and `Cortex\RecordsAgentCartSource` are removed; `Polycart::usingSource()` now wraps `Surface::using()`, and `Surface::route()` replaces the middleware for your own routes.
+- `$cart->sources`, `CartModel::scopeTouchedBy()`, the `touched_by` list filter and the `sources` field of cart responses are removed: which surfaces touched a cart is in its history.
+- Histories are no longer copied when carts merge or convert. The cart merged into records `carts.merged` with `merged_from`, and a conversion's copy records `cart.converted` with `converted_from`, so a cart's history shows where it came from.
+- `$cart->recordActivity()` is deprecated, returns nothing, and calls `Keen::record()->on($cart)` when jayi/keen is installed (an action without a dot gets a `cart.` prefix); otherwise it does nothing.
+- `JayI\Polycart\Support\ServiceProvider` is removed; domain providers extend Foundation's `ServiceProvider`.
+- Polycart ships no stylesheet: `resources/css/atrium.css` and its `Atrium::css()` registration are removed, and every screen uses only Atrium's components and compiled utilities.
+
 - Polycart now stands on [jayi/foundation](https://github.com/jayjfletcher/Foundation), the shared runtime of the jayi packages, which it requires. Its own copies are removed in favour of Foundation's: `Contracts\ActionStartingEvent`, `Contracts\ActionFinishedEvent` and `Contracts\ModelLifecycleEvent` (now `JayI\Foundation\Contracts\*`), `Support\Models\Concerns\DispatchesModelEvents` (now `JayI\Foundation\Models\Concerns\DispatchesModelEvents`), `Support\Authorizer` (now `JayI\Foundation\Auth\Authorizer::for($package)`), `Http\Request` (now `JayI\Foundation\Http\Requests\Request`), `Mcp\Tool` (now `JayI\Foundation\Mcp\Tool`) and `Cortex\CortexIntegration` (now `JayI\Foundation\Cortex\CortexIntegration::for($package)`). Listen to the Foundation contracts to hear every action and model event of every jayi package. Config keys, route names, MCP tool names and behaviour are unchanged.
 - `PolycartServiceProvider` extends Foundation's `PackageServiceProvider`, `PolycartServer` extends `JayI\Foundation\Mcp\Server`, `PolycartException` extends `JayI\Foundation\Exceptions\PackageException` (still 422), and the base policy extends `JayI\Foundation\Policies\Policy`: `allowsOnCart()` is now `allowsOn()`.
 - MCP requests extending `JayI\Polycart\Mcp\Request` implement `respond(array $validated)` instead of `handle()`.
@@ -88,6 +98,8 @@
 
 ### Added
 
+- The line, sharing, merge and conversion action events implement `JayI\Foundation\Audit\Contracts\Auditable`, naming the cart as the subject of their audit entry with the line, member, `merged_from` or `converted_from` details as context. Carts (by label, else id) and lines are labelled through Foundation's `AuditHooks`.
+- With jayi/keen installed, a cart's Atrium page shows its history (`<x-atrium::audit-trail source="polycart" :subject="$cart" />`), and the carts page Polycart's recent history to those who may read it.
 - `GET {prefix}/history` (`polycart.history.index`) and the `list-polycart-history-tool` MCP tool serve Polycart's audit history from an installed audit log such as jayi/keen, and answer "not installed" (404 over HTTP) until one is.
 - Polycart's Atrium navigation items have icons, and the screens follow Atrium's screen conventions: actions are icon buttons with their label as a tooltip, and cart statuses are status dots (`data-status`) coloured by `JayI\Polycart\Atrium\Badges`, which keeps `info` for pending and awaiting states.
 - The `@polycartCan` Blade conditional and `JayI\Polycart\Atrium\ScreenAccess`, which ask the cart policies exactly as the JSON API does.
@@ -96,10 +108,12 @@
 
 ### Fixed
 
-- Tailwind utilities that only Polycart's Atrium screens use (`w-48`, `gap-6`, `sm:grid-cols-3`, ...) are now added to the dashboard through `Atrium::css()`, so the **Move to** and **Convert to** selects and the cart grids are sized as intended. The **Keep the original** checkbox no longer squeezes the **Convert to** select.
+- Tailwind utilities that only Polycart's Atrium screens use (`w-48`, `gap-6`, `sm:grid-cols-3`, ...) are now compiled into Atrium's stylesheet, so the **Move to** and **Convert to** selects and the cart grids are sized as intended. The **Keep the original** checkbox no longer squeezes the **Convert to** select.
 
 ### Changed
 
+- The cart page's details use `x-atrium::description-list`, and every screen shows its flash status and errors with `x-atrium::flash`; the `ui/partials/status` view is removed.
+- `PolycartPlugin::features()` uses Atrium's `featuresFromConfig()`, and `ScreenAccess::allows()` delegates to Atrium's `ScreenAccess` for abilities without arguments.
 - With `polycart.authorization` on, the Atrium dashboard now applies the same per-user policies as the JSON API and MCP tools. Navigation, widgets and search need `viewAny` on `Cart`; each page action checks the ability its API request checks and answers 403 otherwise; controls the user may not use are hidden; and lists, widgets and search hold only the carts the user can access. Previously the dashboard relied on Atrium's gate alone.
 - `JayI\Polycart\Atrium\Format::variant()` is replaced by `Badges::forCart()`.
 

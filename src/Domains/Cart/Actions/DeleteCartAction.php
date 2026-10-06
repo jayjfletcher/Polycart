@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\Cart\Actions;
 
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Events\CartDeletedActionEvent;
 use JayI\Polycart\Domains\Cart\Events\CartDeletingActionEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
@@ -34,8 +32,6 @@ final class DeleteCartAction
 
     private function perform(CartModel $cart): void
     {
-        app(ActivityRecorder::class)->record($cart, Activity::Deleted);
-
         $cart->delete();
     }
 }

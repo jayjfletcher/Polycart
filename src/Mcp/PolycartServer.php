@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Mcp;
 
 use JayI\Foundation\Mcp\Server;
-use JayI\Polycart\Domains\Activity\Mcp\Tools\ListActivityTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
@@ -80,7 +79,6 @@ final class PolycartServer extends Server
         SetVisibilityTool::class,
 
         // History
-        ListActivityTool::class,
         ListPolycartHistoryTool::class,
     ];
 

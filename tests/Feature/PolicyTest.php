@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
-use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
-use JayI\Polycart\Domains\Activity\Policies\CartActivityPolicy;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
@@ -51,8 +49,7 @@ it('registers the policies from the config', function (): void {
     expect(Gate::getPolicyFor(CartModel::class))->toBeInstanceOf(CartPolicy::class)
         ->and(Gate::getPolicyFor(Quote::class))->toBeInstanceOf(CartPolicy::class)
         ->and(Gate::getPolicyFor(CartLineModel::class))->toBeInstanceOf(CartLinePolicy::class)
-        ->and(Gate::getPolicyFor(CartMemberModel::class))->toBeInstanceOf(CartMemberPolicy::class)
-        ->and(Gate::getPolicyFor(CartActivityModel::class))->toBeInstanceOf(CartActivityPolicy::class);
+        ->and(Gate::getPolicyFor(CartMemberModel::class))->toBeInstanceOf(CartMemberPolicy::class);
 });
 
 it('lets the owner do anything with their cart', function (): void {
@@ -70,7 +67,7 @@ it('lets the owner do anything with their cart', function (): void {
         ->and($this->bob->can('approve', $cart))->toBeFalse();
 });
 
-it('checks lines, members and activity against their cart', function (): void {
+it('checks lines and members against their cart', function (): void {
     $cart = Polycart::create('cart', $this->ann, scope: $this->sales);
     $line = $cart->add(product());
     Polycart::share($cart, $this->bob, 'viewer');
@@ -83,11 +80,9 @@ it('checks lines, members and activity against their cart', function (): void {
         ->and($this->bob->can('delete', $line))->toBeFalse()
         ->and($this->bob->can('viewAny', [CartMemberModel::class, $cart]))->toBeTrue()
         ->and($this->bob->can('delete', $member))->toBeFalse()
-        ->and($this->bob->can('viewAny', [CartActivityModel::class, $cart]))->toBeTrue()
         ->and($this->ann->can('update', $line))->toBeTrue()
         ->and($this->ann->can('create', [CartMemberModel::class, $cart]))->toBeTrue()
-        ->and($this->ann->can('delete', $member))->toBeTrue()
-        ->and($this->ann->can('update', $cart->activities()->firstOrFail()))->toBeFalse();
+        ->and($this->ann->can('delete', $member))->toBeTrue();
 });
 
 it('uses a cart policy swapped in the config, for carts and their lines', function (): void {

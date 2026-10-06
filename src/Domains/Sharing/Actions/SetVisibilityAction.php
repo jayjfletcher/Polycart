@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains\Sharing\Actions;
 
 use Illuminate\Validation\Rule;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 use JayI\Polycart\Domains\Sharing\Events\VisibilityChangedActionEvent;
@@ -62,8 +60,6 @@ final class SetVisibilityAction
 
         $cart->visibility = $to;
         $cart->save();
-
-        app(ActivityRecorder::class)->record($cart, Activity::VisibilityChanged, ['from' => $from->value, 'to' => $to->value]);
 
         return $cart;
     }

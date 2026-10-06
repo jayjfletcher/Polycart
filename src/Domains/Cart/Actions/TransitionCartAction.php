@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains\Cart\Actions;
 
 use BackedEnum;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Events\CartTransitionedActionEvent;
 use JayI\Polycart\Domains\Cart\Events\CartTransitioningActionEvent;
 use JayI\Polycart\Domains\Cart\Exceptions\InvalidTransitionException;
@@ -66,8 +64,6 @@ final class TransitionCartAction
 
         $cart->status = $value;
         $cart->save();
-
-        app(ActivityRecorder::class)->record($cart, Activity::StatusChanged, ['from' => $from, 'to' => $value]);
 
         return $cart;
     }

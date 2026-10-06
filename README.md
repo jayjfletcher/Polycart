@@ -31,7 +31,7 @@ php artisan vendor:publish --tag="polycart-config"
 php artisan migrate
 ```
 
-The migrations create `polycart_carts`, `polycart_cart_lines`, `polycart_cart_members`, `polycart_cart_paths` and `polycart_cart_activities`. Prices are stored as integers in minor units (cents).
+The migrations create `polycart_carts`, `polycart_cart_lines`, `polycart_cart_members` and `polycart_cart_paths`. Prices are stored as integers in minor units (cents).
 
 To customise the Atrium dashboard's views or strings, publish them with the `polycart-views` or `polycart-lang` tag. The `polycart` tag publishes everything at once.
 
@@ -353,11 +353,10 @@ Turn authorization off only for trusted server-to-server use.
 | Method | Path | Does |
 | --- | --- | --- |
 | `GET` | `/types` | Every type and what it allows |
-| `GET` | `/carts` | List, filtered by `type`, `status`, `source`, `touched_by`, `owner_type` and `owner_id`, `scope_type` and `scope_id`, `session_key`, `parent`, `root`, `search`, `unexpired`; cursor paginated |
+| `GET` | `/carts` | List, filtered by `type`, `status`, `source`, `owner_type` and `owner_id`, `scope_type` and `scope_id`, `session_key`, `parent`, `root`, `search`, `unexpired`; cursor paginated |
 | `POST` | `/carts` | Create a cart (`type`, and optionally `scope_type` and `scope_id`, an owner or `session_key`, `label`, `meta`, `parent_id`) |
 | `POST` | `/carts/active` | The owner's current cart of a type, created if missing |
 | `GET` | `/carts/{cart}` | The cart with its lines, quantity and subtotal |
-| `GET` | `/carts/{cart}/activity` | The cart's activity log, filterable by `source` and `action` |
 | `PATCH` | `/carts/{cart}` | Change `label` or `meta` |
 | `DELETE` | `/carts/{cart}` | Soft-delete the cart |
 | `POST` | `/carts/{cart}/clear` | Remove every line |
@@ -371,7 +370,7 @@ Turn authorization off only for trusted server-to-server use.
 | `POST` | `/carts/{cart}/members` | Share with a `member_type` and `member_id` (a person or a scope) as a `role` |
 | `DELETE` | `/carts/{cart}/members/{member}` | Remove a member |
 | `PUT` | `/carts/{cart}/visibility` | Set `visibility` to `private`, `scope` or `boundary` |
-| `GET` | `/history` | Polycart's audit history from [jayi/keen](https://github.com/jayjfletcher/Keen), filterable by `subject_type` and `subject_id`, `action`; cursor paginated. Answers `404` until an audit log is installed. Named `polycart.history.index`. |
+| `GET` | `/history` | Polycart's audit history from [jayi/keen](https://github.com/jayjfletcher/Keen), filterable by `subject_type` and `subject_id` (one cart's history: its morph class and id), `action`; cursor paginated. Answers `404` until an audit log is installed. Named `polycart.history.index`. |
 
 When a type refuses a request, the API returns `422` with a message that explains why, such as `A [quote] cart cannot move from [submitted] to [draft].`
 
@@ -384,8 +383,7 @@ The same operations are available as MCP tools, so an agent can manage carts:
 - `transition-cart`, `convert-cart`, `merge-carts`
 - `add-lines`, `update-lines`, `remove-lines`
 - `list-members`, `share-cart`, `unshare-cart`, `set-visibility`
-- `list-cart-activity`
-- `list-polycart-history-tool`, the audit history (needs an audit log such as jayi/keen installed)
+- `list-polycart-history-tool`, the audit history, for Polycart or one cart (needs an audit log such as jayi/keen installed)
 
 ```php
 'mcp' => [
@@ -402,7 +400,7 @@ When [`jayi/cortex`](https://github.com/jayjfletcher/cortex) is installed, Polyc
 
 - Every MCP tool joins Cortex's tool registry, tagged `polycart`, so **Cortex agents can manage carts**. They go through the same validation, authorization and add pipeline as MCP clients.
 - The server is registered as `polycart`, so its **instructions and each tool's description can be overridden** with Cortex's versioned, publishable content.
-- Changes an agent makes record **`cortex` as their source**.
+- Changes an agent makes record **`cortex` as their surface**, on the cart's `source` and in the audit log.
 
 ```php
 'cortex' => ['enabled' => true, 'server' => 'polycart', 'tools' => null, 'tags' => ['polycart']],   // tools: or a list of names
@@ -418,6 +416,7 @@ When [`jayi/atrium`](https://github.com/jayjfletcher/Atrium) is installed, Polyc
 - **Cart types:** every registered type and its rules.
 - **Widgets:** *Carts by type* and *Recent carts*.
 - **Search:** find carts from Atrium's search.
+- **History:** with [jayi/keen](https://github.com/jayjfletcher/Keen) installed, a cart's page shows its history and the carts page Polycart's recent history.
 
 The screens follow Atrium's screen conventions: actions are icon buttons (the label is the tooltip), each navigation item has an icon, and a cart's status is a coloured dot with the status on hover. `JayI\Polycart\Atrium\Badges` picks the colour by the status's meaning: `info` only for pending or awaiting states such as `pending` and `submitted`, `success` for done or active, `warning` for held, `danger` for failed or refused, `neutral` for over (and for any expired cart), and `primary` for anything else.
 
@@ -436,7 +435,7 @@ With `polycart.authorization` on (the default), the dashboard asks the policies 
 | Changing a line's quantity / removing a line | `update` / `delete` on the line |
 | Visibility | `share` on the cart |
 | Adding a member / removing one | `create` on `CartMemberModel` with the cart / `delete` on the member |
-| The Activity card | `viewAny` on `CartActivityModel` with the cart |
+| Polycart's history on the carts page | the history endpoint's check: the `viewAuditLog` Gate ability, when defined |
 
 A control is hidden unless its action would be allowed, and the action itself answers 403 otherwise. Lists, widgets and search hold only the carts the user can access, as the JSON API's list does. In your own Blade views, `@polycartCan('update', $cart) ... @endpolycartCan` asks the same question. With `polycart.authorization` off, everything is shown and allowed.
 
@@ -456,7 +455,7 @@ Support and operations staff often need to see and fix any cart, not only the on
 Gate::define('manage-carts', fn (User $user): bool => $user->is_support);
 ```
 
-An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines, members and activity: viewing, editing, deleting, moving to any status the cart's type allows, converting, sharing and the activity log. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `JayI\Polycart\Atrium\ScreenAccess::operator($user)` tells you whether a user is one.
+An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines and members: viewing, editing, deleting, moving to any status the cart's type allows, converting and sharing. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `JayI\Polycart\Atrium\ScreenAccess::operator($user)` tells you whether a user is one.
 
 ### Switching it off
 
@@ -470,29 +469,23 @@ Feature::for(null)->deactivate(PolycartSupportFeature::class);
 
 The features checked come from `polycart.atrium.features`. Point it at a subclass to change the default, at your own feature, or empty it. A class that cannot be loaded, such as `PolycartSupportFeature` without jayi/pennantplus, is skipped.
 
-## Sources and activity
+## Sources and history
 
-Polycart records where every change to a cart came from. The package sets `api`, `mcp`, `atrium` and `cortex` (a Cortex agent) itself; everything else gets `code`, or your `polycart.default_source`. Any other string works too.
+Every cart records the **`source`** it was created (or last converted) through, as jayi/foundation's `Surface` names it: `http` (the JSON API), `mcp`, `cortex` (a Cortex agent), `atrium`, `cli` or `code`, or a name of your own.
 
-- **`source`**: where the cart was created, or last converted.
-- **`sources`**: every source that has touched the cart, in the order each first did.
-- **Activity log**: each change's action, source, signed-in user, context and time.
-
-When a cart is converted by copy or merged into another, its history goes with it. A cart built through the API and turned into an order through MCP is an `mcp` order whose `sources` are `['api', 'mcp']`.
+Polycart keeps no history of its own. Install [jayi/keen](https://github.com/jayjfletcher/Keen), the suite-wide audit log, and every change to a cart is recorded with who made it, through which surface and what changed. Line, sharing, merge and conversion entries are about the cart; a merge names the merged cart in `merged_from`, and a copy made by a conversion names the original in `converted_from`. Without Keen, carts keep no history.
 
 ```php
-Polycart::usingSource('import', fn () => $importer->run());      // tag your own work
-Route::middleware(CartSource::class.':web')->group(...);         // or your own routes
+Polycart::usingSource('import', fn () => $importer->run());      // name your own surface
 
-$cart->sources;                                                  // ['api', 'mcp']
-$cart->activities;                                               // oldest first
-$cart->recordActivity('exported', ['reference' => 'SO-1042']);    // your own events
+CartModel::query()->fromSource('mcp')->get();
 
-CartModel::query()->touchedBy('mcp')->get();
-CartModel::query()->fromSource('api')->get();
+Keen::record('cart.exported')->on($cart)->with(['reference' => 'SO-1042'])->save();   // your own events
 ```
 
-**Full guide:** [Sources and activity](docs/sources-and-activity.md). It covers setting sources, every recorded action and its context, how history travels through conversions and merges, the API and MCP, the dashboard, storage, and what is not recorded.
+Read a cart's history from `GET /polycart/history?subject_type=...&subject_id=...`, the `list-polycart-history-tool` MCP tool, or its Atrium page.
+
+**Full guide:** [Sources and history](docs/sources-and-history.md). It covers sources, every recorded action, where a cart came from, reading history, and upgrading from the old activity log.
 
 ## Events
 
@@ -523,9 +516,8 @@ The code is organised into domain modules under `src/Domains/{Domain}` (`JayI\Po
 | `CartType` | `CartType`, `ShoppingCart` and the `CartTypeRegistry` |
 | `Sharing` | `CartMemberModel`, sharing and visibility, `CartAccess` |
 | `Scope` | `CartPathModel`, the `ScopeTree`, `CartScope` and `CartParticipant` |
-| `Activity` | `CartActivityModel`, the `ActivityRecorder`, sources (`CartSource`, `SourceContext`) |
 
-Polycart stands on [jayi/foundation](https://github.com/jayjfletcher/Foundation), the runtime the jayi packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Foundation's MCP request plus the `mcp` source and line reason codes), the MCP server and its history tool, `Support/` (the domain provider base that adds the `api` source, morph lookups and the base policy), `Cortex/RecordsAgentCartSource` (the `cortex` source for the activity log) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain.
+Polycart stands on [jayi/foundation](https://github.com/jayjfletcher/Foundation), the runtime the jayi packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Foundation's MCP request plus the `cortex` surface for agent calls and line reason codes), the MCP server and its history tool, `Support/` (morph lookups and the base policy) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain. Domain providers extend Foundation's `ServiceProvider` directly. Each change's history is jayi/keen's, read through Foundation's `AuditTrail`.
 
 ## Testing
 

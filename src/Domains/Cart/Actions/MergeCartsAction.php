@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\ConnectionInterface;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Events\CartsMergedActionEvent;
 use JayI\Polycart\Domains\Cart\Events\CartsMergingActionEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
@@ -76,12 +74,6 @@ final class MergeCartsAction
                     $line->unit_price,
                 );
             }
-
-            // The lines carry their history with them.
-            $recorder = app(ActivityRecorder::class);
-            $recorder->record($from, Activity::MergedInto, ['into' => $into->id]);
-            $recorder->inherit($from, $into);
-            $recorder->record($into, Activity::Merged, ['from' => $from->id]);
 
             $from->delete();
         });

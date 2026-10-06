@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Event;
 use JayI\Foundation\Contracts\ActionFinishedEvent;
 use JayI\Foundation\Contracts\ActionStartingEvent;
 use JayI\Foundation\Contracts\ModelLifecycleEvent;
-use JayI\Polycart\Domains\Activity\Actions\ListActivityAction;
 use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
 use JayI\Polycart\Domains\Cart\Actions\ListCartsAction;
 use JayI\Polycart\Domains\Cart\Actions\ShowCartAction;
@@ -69,7 +68,7 @@ it('fires every lifecycle event of a cart', function (): void {
     ]);
 });
 
-it('fires the lifecycle events of lines, members, paths and activity', function (): void {
+it('fires the lifecycle events of lines, members and paths', function (): void {
     $seen = recordEvents(ModelLifecycleEvent::class);
 
     $sales = team(organization());
@@ -84,7 +83,7 @@ it('fires the lifecycle events of lines, members, paths and activity', function 
 
     expect($models)->toContain(
         'CartLineModel.creating', 'CartLineModel.created', 'CartLineModel.updating', 'CartLineModel.updated', 'CartLineModel.deleting', 'CartLineModel.deleted',
-        'CartMemberModel.created', 'CartPathModel.created', 'CartActivityModel.created',
+        'CartMemberModel.created', 'CartPathModel.created',
     );
 });
 
@@ -127,7 +126,6 @@ it('starts and finishes every action once, in order', function (): void {
     app(ListCartsAction::class)->execute();
     app(ListCartTypesAction::class)->execute();
     app(ListMembersAction::class)->execute($cart);
-    app(ListActivityAction::class)->execute($cart);
     $quote = $cart->convertTo('quote');
     $quote->transitionTo(QuoteStatus::Submitted);
     Polycart::merge(Polycart::create('cart', 'guest'), $cart);
@@ -145,7 +143,7 @@ it('starts and finishes every action once, in order', function (): void {
             'LinesUpdatingActionEvent', 'LineUpdatingActionEvent', 'LinesRemovingActionEvent', 'LineRemovingActionEvent',
             'CartSharingActionEvent', 'CartUnsharingActionEvent', 'VisibilityChangingActionEvent', 'CartUpdatingActionEvent',
             'CartShowingActionEvent', 'CartsListingActionEvent', 'CartTypesListingActionEvent', 'MembersListingActionEvent',
-            'ActivityListingActionEvent', 'CartConvertingActionEvent', 'CartTransitioningActionEvent', 'CartsMergingActionEvent',
+            'CartConvertingActionEvent', 'CartTransitioningActionEvent', 'CartsMergingActionEvent',
             'CartClearingActionEvent', 'CartDeletingActionEvent',
         );
 });

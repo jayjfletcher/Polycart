@@ -10,10 +10,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use JayI\Foundation\Audit\History;
+use JayI\Foundation\Packages\PackageRegistry;
 use JayI\Polycart\Atrium\Http\Controllers\Concerns\AuthorizesScreens;
 use JayI\Polycart\Atrium\ScreenAccess;
-use JayI\Polycart\Domains\Activity\Actions\ListActivityAction;
-use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
 use JayI\Polycart\Domains\Cart\Actions\ClearCartAction;
 use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
 use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
@@ -59,6 +59,8 @@ final class CartUiController
             'carts' => app(ListCartsAction::class)->execute($filters, ScreenAccess::actor()),
             'filters' => $filters,
             'types' => array_keys(app(CartTypeRegistry::class)->all()),
+            // The whole package's history, asked as its history endpoint asks it.
+            'showHistory' => app(History::class)->allows(app(PackageRegistry::class)->get('polycart'), $request->user(), []),
         ]);
     }
 
@@ -68,14 +70,12 @@ final class CartUiController
 
         $cart = app(ShowCartAction::class)->execute($cart);
         $type = app(CartTypeRegistry::class)->has($cart->type) ? $cart->cartType() : null;
-        $canSeeActivity = ScreenAccess::allows('viewAny', CartActivityModel::class, [$cart]);
 
         /** @var view-string $view */
         $view = 'polycart::ui.carts.show';
 
         return view($view, [
             'cart' => $cart->load(['parent', 'children', 'paths']),
-            'activity' => $canSeeActivity ? app(ListActivityAction::class)->execute($cart, ['per_page' => 25]) : null,
             'type' => $type,
             // Only the moves the type allows from here, and the user may make.
             'nextStatuses' => array_values(array_filter(

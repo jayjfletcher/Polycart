@@ -7,21 +7,24 @@ namespace JayI\Polycart\Atrium;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
+use JayI\Atrium\Support\ScreenAccess as AtriumScreenAccess;
 use JayI\Foundation\Auth\Authorizer;
 use JayI\Foundation\Packages\PackageRegistry;
-use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
 use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * Whether the signed-in user may perform an ability, asked the way the JSON
- * API and MCP tools ask it: through the Authorizer and the policies in
- * `polycart.policies`. Controllers refuse with it and views hide controls
- * with it (as `@polycartCan`), so a control is shown exactly when its action
- * is allowed. With `polycart.authorization` off, everything is.
+ * API and MCP tools ask it: Atrium's shared `ScreenAccess` for the
+ * `polycart` package, through the policies in `polycart.policies`.
+ * Controllers refuse with it and views hide controls with it (as
+ * `@polycartCan`), so a control is shown exactly when its action is allowed.
+ * With `polycart.authorization` off, everything is.
  *
- * An operator (`polycart.atrium.show_all`) is allowed everything on
+ * Polycart keeps this class for what Atrium's does not do: abilities that
+ * take arguments (`transition` to a status, `convert` to a type, `create` a
+ * member on a cart) and operators. An operator (`polycart.atrium.show_all`) is allowed everything on
  * Polycart's own models and lists every cart, on these screens only: the
  * JSON API and MCP tools never consult this class.
  */
@@ -34,8 +37,13 @@ final class ScreenAccess
     public static function allows(string $ability, Model|string $subject, array $arguments = []): bool
     {
         $user = request()->user();
+        $user = $user instanceof Authenticatable ? $user : null;
 
-        return self::allowsUser($user instanceof Authenticatable ? $user : null, $ability, $subject, $arguments);
+        if ($arguments !== [] || (self::ownModel($subject) && self::operator($user))) {
+            return self::allowsUser($user, $ability, $subject, $arguments);
+        }
+
+        return AtriumScreenAccess::allows('polycart', $ability, $subject);
     }
 
     /**
@@ -97,7 +105,7 @@ final class ScreenAccess
      */
     private static function ownModel(Model|string $subject): bool
     {
-        foreach ([CartModel::class, CartLineModel::class, CartMemberModel::class, CartActivityModel::class] as $model) {
+        foreach ([CartModel::class, CartLineModel::class, CartMemberModel::class] as $model) {
             if (is_a($subject, $model, true)) {
                 return true;
             }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\Cart;
 
+use Illuminate\Database\Eloquent\Model;
+use JayI\Foundation\Audit\AuditHooks;
+use JayI\Foundation\Support\ServiceProvider;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Support\ServiceProvider;
 
 class CartServiceProvider extends ServiceProvider
 {
@@ -14,6 +16,10 @@ class CartServiceProvider extends ServiceProvider
         $this->keepMorphAliases([
             'JayI\Polycart\Models\Cart' => CartModel::class,
         ]);
+
+        // How the audit log (jayi/keen) names a cart: its label, else its id.
+        $this->app->make(AuditHooks::class)
+            ->label(CartModel::class, fn (Model $cart): ?string => $cart instanceof CartModel ? $cart->label ?? $cart->id : null);
 
         $this->loadApiRoutesFrom(__DIR__.'/routes.php');
     }

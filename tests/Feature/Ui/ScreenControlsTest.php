@@ -146,8 +146,7 @@ it('shows a viewer the cart without any control', function (): void {
     $viewer = member($this->sales, $this->cart, 'viewer');
 
     $response = $this->actingAs($viewer)->get(route('atrium.polycart.carts.show', $this->cart))
-        ->assertOk()
-        ->assertSee(testId('activity-card'), false);
+        ->assertOk();
 
     foreach (CART_CONTROLS as $control) {
         $response->assertDontSee(testId($control), false);

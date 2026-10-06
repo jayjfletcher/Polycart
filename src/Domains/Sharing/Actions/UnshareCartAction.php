@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\Sharing\Actions;
 
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\Sharing\Events\CartUnsharedActionEvent;
 use JayI\Polycart\Domains\Sharing\Events\CartUnsharingActionEvent;
@@ -44,8 +42,6 @@ final class UnshareCartAction
 
         $member->delete();
         $cart->unsetRelation('members');
-
-        app(ActivityRecorder::class)->record($cart, Activity::Unshared, ['member_type' => $member->member_type, 'member_id' => $member->member_id]);
     }
 
     /**

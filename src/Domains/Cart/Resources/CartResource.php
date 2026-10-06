@@ -27,7 +27,6 @@ final class CartResource extends JsonResource
             'type' => $this->type,
             'status' => $this->status,
             'source' => $this->source,
-            'sources' => $this->sources ?? [],
             'label' => $this->label,
             'owner_type' => $this->owner_type,
             'owner_id' => $this->owner_id,

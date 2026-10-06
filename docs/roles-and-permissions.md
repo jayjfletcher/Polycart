@@ -238,7 +238,7 @@ With `polycart.authorization` on, which is the default, each call is checked aga
 | Convert | `POST .../convert` | `convert-cart` | `conversionAbility($to)` |
 | Merge | `POST .../merge` | `merge-carts` | `update` on **both** carts |
 | Members | `.../members` | `list-members`, `share-cart`, `unshare-cart` | `viewAny` and `create` on `CartMemberModel` for the cart, `delete` on the member |
-| Activity | `.../activity` | `list-cart-activity` | `viewAny` on `CartActivityModel` for the cart |
+| History | `GET /history?subject_type=...&subject_id=...` | `list-polycart-history-tool` | `view` on the cart; Polycart's whole history needs the `viewAuditLog` Gate ability when defined |
 | Visibility | `.../visibility` | `set-visibility` | `share` |
 
 A failed check returns `403` over HTTP and `Unauthorized.` over MCP. Turn `polycart.authorization` off only for trusted server-to-server callers.
@@ -254,7 +254,6 @@ Polycart registers a policy for each of its models from `polycart.policies`:
     CartModel::class => \JayI\Polycart\Domains\Cart\Policies\CartPolicy::class,
     CartLineModel::class => \JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy::class,
     CartMemberModel::class => \JayI\Polycart\Domains\Sharing\Policies\CartMemberPolicy::class,
-    CartActivityModel::class => \JayI\Polycart\Domains\Activity\Policies\CartActivityPolicy::class,
 ],
 ```
 
@@ -263,9 +262,8 @@ What the bundled policies allow:
 - **`CartPolicy`**: a cart's owner may do anything with it. Everyone else gets what their role on the cart grants. Anyone signed in passes `viewAny` and `create`. The `CartModel` entry also covers every type's subclass.
 - **`CartLinePolicy`**: reading lines needs `view` on the cart. Adding, changing or removing them needs `update`.
 - **`CartMemberPolicy`**: listing members needs `view` on the cart. Sharing, changing a role or unsharing needs `share`.
-- **`CartActivityPolicy`**: reading the log needs `view` on the cart. No ability changes it.
 
-The line, member and activity policies ask the Gate about the cart, so they follow whichever cart policy is registered.
+The line and member policies ask the Gate about the cart, so they follow whichever cart policy is registered.
 
 ### Replacing a policy
 

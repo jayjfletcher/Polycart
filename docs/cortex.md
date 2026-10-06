@@ -4,7 +4,7 @@ When [`jayi/cortex`](https://github.com/jayjfletcher/cortex) is installed, Polyc
 
 - **Agents can manage carts.** Every Polycart MCP tool joins Cortex's tool registry under its own name (`list-carts`, `add-lines`, `convert-cart`, ...). Give an agent those tools, and it can list, build, share and convert carts.
 - **Instructions and descriptions can change without a deploy.** The Polycart server is registered with Cortex as `polycart`, so its instructions get Cortex's versioned, publishable overrides, and so does each tool's description. Published overrides are served both to MCP clients and to agents.
-- **Agent changes are traceable.** Anything an agent changes through a cart tool records `cortex` as its [source](sources-and-activity.md).
+- **Agent changes are traceable.** Anything an agent changes through a cart tool records `cortex` as its [source](sources-and-history.md), and as the surface of its audit entries.
 
 Cortex is optional. Without it, none of this runs, and nothing Cortex-related is loaded.
 
@@ -28,7 +28,7 @@ That is all: Polycart notices Cortex's service provider and registers itself. Co
 Offer agents a read-only subset:
 
 ```php
-'tools' => ['list-cart-types', 'list-carts', 'show-cart', 'list-members', 'list-cart-activity'],
+'tools' => ['list-cart-types', 'list-carts', 'show-cart', 'list-members', 'list-polycart-history-tool'],
 ```
 
 Registration is lazy. It happens the first time Cortex's registries are used, so a request that never touches Cortex does no extra work. A name that is already registered with Cortex, for example by your own config, is left alone.
@@ -64,12 +64,12 @@ This is useful for fitting the tools to your business without forking the packag
 
 ## Sources
 
-| Called by | Source recorded |
+| Called by | Source and surface recorded |
 | --- | --- |
 | An MCP client, directly | `mcp` |
 | A Cortex agent, through the same tool | `cortex` |
 
-Polycart listens to laravel/ai's `InvokingTool`, `ToolInvoked` and `ToolFailed` events (in `JayI\Polycart\Cortex\RecordsAgentCartSource`). It sets the `cortex` source for exactly as long as each cart tool runs. The rest of the integration (registering the server and tools, tags, overrides, and the shared `cortex` surface for the audit log) comes from jayi/foundation's `CortexIntegration`.
+jayi/foundation's `CortexIntegration` registers the server and tools, tags and overrides, and enters the shared `cortex` surface for exactly as long as each cart tool runs. Foundation's MCP request then marks the call `mcp`; Polycart's `Mcp\Request` looks beneath that and keeps `cortex` for an agent's calls.
 
 ## Notes
 

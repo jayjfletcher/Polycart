@@ -4,7 +4,7 @@
     <x-atrium::page-header :title="__('polycart::polycart.carts')" />
 
     <div class="mt-5 flex flex-col gap-4">
-        @include('polycart::ui.partials.status')
+        <x-atrium::flash />
 
         {{-- Type options come from the registry, so the filter can never offer a
              type the API would not recognise. --}}
@@ -74,6 +74,11 @@
             </x-atrium::table>
 
             <x-atrium::pagination :paginator="$carts" />
+        @endif
+
+        {{-- Polycart's recent history from the suite-wide audit log; renders nothing until jayi/keen is installed. --}}
+        @if ($showHistory)
+            <x-atrium::audit-trail source="polycart" />
         @endif
     </div>
 </x-atrium::layout>

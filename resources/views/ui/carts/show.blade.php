@@ -28,7 +28,7 @@
     </x-atrium::page-header>
 
     <div class="mt-5 flex flex-col gap-5">
-        @include('polycart::ui.partials.status')
+        <x-atrium::flash />
 
         @if (! $type)
             <x-atrium::alert variant="warning">{{ __('polycart::polycart.unknown_type', ['type' => $cart->type]) }}</x-atrium::alert>
@@ -41,59 +41,29 @@
         </div>
 
         <x-atrium::card>
-            <dl class="grid gap-x-6 gap-y-3 sm:grid-cols-2">
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.cart_id') }}</dt>
-                    <dd class="font-mono text-sm">{{ $cart->id }}</dd>
-                </div>
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.owner') }}</dt>
-                    <dd class="text-sm">{{ Format::owner($cart) }}</dd>
-                </div>
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.source') }}</dt>
-                    <dd class="text-sm">{{ $cart->source ?? '—' }}</dd>
-                </div>
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.touched_by') }}</dt>
-                    <dd class="flex flex-wrap gap-1 text-sm">
-                        @foreach ($cart->sources ?? [] as $source)
-                            <x-atrium::badge>{{ $source }}</x-atrium::badge>
-                        @endforeach
-                    </dd>
-                </div>
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.expires') }}</dt>
-                    <dd class="text-sm">{{ $cart->expires_at?->diffForHumans() ?? __('polycart::polycart.never') }}</dd>
-                </div>
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.updated') }}</dt>
-                    <dd class="text-sm">{{ $cart->updated_at?->diffForHumans() }}</dd>
-                </div>
-
-                <div>
-                    <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.scope') }}</dt>
-                    <dd class="text-sm">
-                        @forelse ($cart->paths as $path)
-                            <x-atrium::badge>{{ class_basename($path->scope_type) }} #{{ $path->scope_id }}</x-atrium::badge>
-                            @unless ($loop->last) <span class="opacity-60">›</span> @endunless
-                        @empty
-                            <span class="opacity-60">{{ __('polycart::polycart.unscoped') }}</span>
-                        @endforelse
-                    </dd>
-                </div>
+            <x-atrium::description-list>
+                <x-atrium::description-list.item :term="__('polycart::polycart.cart_id')" class="font-mono">{{ $cart->id }}</x-atrium::description-list.item>
+                <x-atrium::description-list.item :term="__('polycart::polycart.owner')">{{ Format::owner($cart) }}</x-atrium::description-list.item>
+                <x-atrium::description-list.item :term="__('polycart::polycart.source')">{{ $cart->source ?? '—' }}</x-atrium::description-list.item>
+                <x-atrium::description-list.item :term="__('polycart::polycart.expires')">{{ $cart->expires_at?->diffForHumans() ?? __('polycart::polycart.never') }}</x-atrium::description-list.item>
+                <x-atrium::description-list.item :term="__('polycart::polycart.updated')">{{ $cart->updated_at?->diffForHumans() }}</x-atrium::description-list.item>
+                <x-atrium::description-list.item :term="__('polycart::polycart.scope')">
+                    @forelse ($cart->paths as $path)
+                        <x-atrium::badge>{{ class_basename($path->scope_type) }} #{{ $path->scope_id }}</x-atrium::badge>
+                        @unless ($loop->last) <span class="opacity-60">›</span> @endunless
+                    @empty
+                        <span class="opacity-60">{{ __('polycart::polycart.unscoped') }}</span>
+                    @endforelse
+                </x-atrium::description-list.item>
 
                 @if ($cart->parent)
-                    <div>
-                        <dt class="text-sm text-on-surface dark:text-on-surface-dark">{{ __('polycart::polycart.parent') }}</dt>
-                        <dd class="text-sm">
-                            <a class="underline-offset-2 hover:underline" href="{{ route('atrium.polycart.carts.show', $cart->parent) }}">
-                                {{ $cart->parent->label ?? $cart->parent->id }} ({{ $cart->parent->type }})
-                            </a>
-                        </dd>
-                    </div>
+                    <x-atrium::description-list.item :term="__('polycart::polycart.parent')">
+                        <a class="underline-offset-2 hover:underline" href="{{ route('atrium.polycart.carts.show', $cart->parent) }}">
+                            {{ $cart->parent->label ?? $cart->parent->id }} ({{ $cart->parent->type }})
+                        </a>
+                    </x-atrium::description-list.item>
                 @endif
-            </dl>
+            </x-atrium::description-list>
         </x-atrium::card>
 
         @if ($nextStatuses !== [] || $conversions !== [])
@@ -267,29 +237,8 @@
             </x-atrium::card>
         @endif
 
-        @if ($activity !== null)
-        <x-atrium::card :title="__('polycart::polycart.activity')" data-testid="activity-card">
-            @if ($activity->isEmpty())
-                <x-atrium::empty-state :title="__('polycart::polycart.no_activity')" />
-            @else
-                <ul class="flex flex-col gap-2">
-                    @foreach ($activity as $entry)
-                        <li class="flex flex-wrap items-center gap-2 text-sm">
-                            <x-atrium::badge variant="primary">{{ $entry->action }}</x-atrium::badge>
-                            <x-atrium::badge>{{ $entry->source }}</x-atrium::badge>
-                            @if ($entry->actor_type)
-                                <span>{{ class_basename($entry->actor_type) }} #{{ $entry->actor_id }}</span>
-                            @endif
-                            @if ($entry->context)
-                                <span class="font-mono text-xs opacity-70">{{ json_encode($entry->context) }}</span>
-                            @endif
-                            <span class="ml-auto opacity-60">{{ $entry->created_at->diffForHumans() }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            @endif
-        </x-atrium::card>
-        @endif
+        {{-- The cart's history from the suite-wide audit log; renders nothing until jayi/keen is installed. --}}
+        <x-atrium::audit-trail source="polycart" :subject="$cart" />
 
         @polycartCan('update', $cart)
         <x-atrium::card :title="__('polycart::polycart.details')" data-testid="details-card">

@@ -25,7 +25,6 @@ final class ListCartsAction
             'type' => ['sometimes', 'string', 'max:191'],
             'status' => ['sometimes', 'string', 'max:191'],
             'source' => ['sometimes', 'string', 'max:191'],
-            'touched_by' => ['sometimes', 'string', 'max:191'],
             'owner_type' => ['nullable', 'string', 'max:191', 'required_with:owner_id'],
             'owner_id' => ['nullable', 'string', 'max:191', 'required_with:owner_type'],
             'session_key' => ['sometimes', 'string', 'max:191'],
@@ -92,10 +91,6 @@ final class ListCartsAction
             $query->where(fn (Builder $query): Builder => $query
                 ->where('label', 'like', '%'.$search.'%')
                 ->orWhere('id', 'like', $search.'%'));
-        }
-
-        if (is_string($filters['touched_by'] ?? null)) {
-            $query->touchedBy($filters['touched_by']);
         }
 
         if (filter_var($filters['unexpired'] ?? false, FILTER_VALIDATE_BOOLEAN)) {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Atrium;
 
-use Error;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -18,8 +17,6 @@ use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
 use JayI\Atrium\Support\Icons;
 use JayI\Polycart\Atrium\Http\Controllers\CartTypeUiController;
 use JayI\Polycart\Atrium\Http\Controllers\CartUiController;
-use JayI\Polycart\Domains\Activity\Enums\CartSource;
-use JayI\Polycart\Domains\Activity\Http\Middleware\CartSource as CartSourceMiddleware;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
 
@@ -34,16 +31,6 @@ use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
  */
 class PolycartPlugin extends Plugin
 {
-    public function key(): string
-    {
-        return 'polycart';
-    }
-
-    public function label(): string
-    {
-        return 'Polycart';
-    }
-
     /**
      * Features from `polycart.atrium.features` that switch Polycart in Atrium
      * on and off as a whole. A feature class that cannot be loaded, such as
@@ -53,12 +40,7 @@ class PolycartPlugin extends Plugin
      */
     public function features(): array
     {
-        $features = config('polycart.atrium.features', []);
-
-        return array_values(array_filter(
-            is_array($features) ? $features : [],
-            fn (mixed $feature): bool => is_string($feature) && (! str_contains($feature, '\\') || self::loadable($feature)),
-        ));
+        return $this->featuresFromConfig('polycart.atrium.features');
     }
 
     public function navigation(): array
@@ -82,7 +64,7 @@ class PolycartPlugin extends Plugin
 
     public function routes(): void
     {
-        Route::name('polycart.')->middleware(CartSourceMiddleware::class.':'.CartSource::Atrium->value)->group(function (): void {
+        Route::name('polycart.')->group(function (): void {
             Route::get('polycart/carts', [CartUiController::class, 'index'])->name('carts.index');
             Route::get('polycart/carts/{cart}', [CartUiController::class, 'show'])->name('carts.show');
             Route::patch('polycart/carts/{cart}', [CartUiController::class, 'update'])->name('carts.update');
@@ -182,18 +164,5 @@ class PolycartPlugin extends Plugin
         $actor = ScreenAccess::actor($user instanceof Authenticatable ? $user : null);
 
         return CartModel::query()->when($actor, fn (Builder $query, Model $actor): Builder => $query->accessibleBy($actor));
-    }
-
-    /**
-     * Whether a class can be loaded. A class whose parent is missing, such as
-     * a feature extending PennantPlus without it installed, cannot.
-     */
-    private static function loadable(string $class): bool
-    {
-        try {
-            return class_exists($class);
-        } catch (Error) {
-            return false;
-        }
     }
 }

@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use JayI\Polycart\Atrium\Features\PolycartSupportFeature;
-use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
-use JayI\Polycart\Domains\Activity\Policies\CartActivityPolicy;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
 use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
@@ -41,19 +39,6 @@ return [
     */
 
     'default_type' => 'cart',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Default Source
-    |--------------------------------------------------------------------------
-    |
-    | What new carts record as their source when nothing more specific is
-    | set. The JSON API, MCP server and dashboard set their own; wrap other
-    | work in Polycart::usingSource() or the CartSource middleware.
-    |
-    */
-
-    'default_source' => 'code',
 
     /*
     |--------------------------------------------------------------------------
@@ -115,8 +100,8 @@ return [
     |
     | The policy the Gate uses for each model. The JSON API and MCP tools
     | check every call against these. By default a cart's owner may do
-    | anything, everyone else gets what their role grants, and lines, members
-    | and activity follow their cart. Point a model at your own class to
+    | anything, everyone else gets what their role grants, and lines and members
+    | follow their cart. Point a model at your own class to
     | replace its policy; the CartModel entry covers every cart type's subclass.
     |
     */
@@ -125,7 +110,6 @@ return [
         CartModel::class => CartPolicy::class,
         CartLineModel::class => CartLinePolicy::class,
         CartMemberModel::class => CartMemberPolicy::class,
-        CartActivityModel::class => CartActivityPolicy::class,
     ],
 
     /*

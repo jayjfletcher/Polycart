@@ -8,9 +8,7 @@ use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pipeline\Pipeline;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
-use JayI\Polycart\Domains\Activity\Services\SourceContext;
+use JayI\Foundation\Support\Surface;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
 use JayI\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
@@ -30,7 +28,7 @@ final class AddLineAction
         private readonly ConnectionInterface $db,
         private readonly Pipeline $pipeline,
         private readonly Auth $auth,
-        private readonly SourceContext $sources,
+        private readonly Surface $surface,
     ) {}
 
     /**
@@ -93,7 +91,7 @@ final class AddLineAction
             meta: $meta,
             unitPrice: $unitPrice,
             actor: $user instanceof Model ? $user : null,
-            source: $this->sources->current(),
+            source: $this->surface->current(),
         );
 
         $pending = $this->db->transaction(fn (): PendingLine => $this->pipeline
@@ -108,15 +106,9 @@ final class AddLineAction
         }
 
         $line = $pending->line;
-        $merged = $pending->merging();
 
         $cart->extendLifetime();
         $cart->unsetRelation('lines');
-
-        app(ActivityRecorder::class)->record($cart, $merged ? Activity::LineUpdated : Activity::LineAdded, [
-            'line' => $line->id,
-            'quantity' => $line->quantity,
-        ]);
 
         return $line;
     }

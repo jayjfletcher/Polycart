@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Domains\CartType;
 
+use JayI\Foundation\Support\ServiceProvider;
 use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Support\ServiceProvider;
 
 class CartTypeServiceProvider extends ServiceProvider
 {

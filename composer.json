@@ -25,6 +25,7 @@
     "require-dev": {
         "jayi/atrium": "dev-main",
         "jayi/cortex": "dev-main",
+        "jayi/keen": "dev-main",
         "jayi/pennantplus": "dev-main",
         "larastan/larastan": "^3.9",
         "laravel/pao": "^1.0",
@@ -38,6 +39,7 @@
     "suggest": {
         "jayi/atrium": "Browse and manage carts from the Atrium dashboard (dev-main).",
         "jayi/cortex": "Let Cortex agents use the cart tools and manage the MCP instructions and tool descriptions (dev-main).",
+        "jayi/keen": "Records cart changes in the suite-wide audit log; without it carts keep no history (dev-main).",
         "jayi/pennantplus": "Switch Polycart in Atrium on and off with the PolycartSupportFeature Pennant feature (dev-main)."
     },
     "autoload": {
@@ -130,6 +132,10 @@
         {
             "type": "vcs",
             "url": "https://github.com/jayjfletcher/Foundation.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/jayjfletcher/Keen.git"
         }
     ]
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Relations\Relation;
-use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
 use JayI\Polycart\Domains\Scope\Models\CartPathModel;
@@ -17,7 +16,6 @@ it('keeps the class names the models were stored under before they moved', funct
     ['JayI\\Polycart\\Models\\Cart', CartModel::class],
     ['JayI\\Polycart\\Models\\CartLine', CartLineModel::class],
     ['JayI\\Polycart\\Models\\CartMember', CartMemberModel::class],
-    ['JayI\\Polycart\\Models\\CartActivity', CartActivityModel::class],
     ['JayI\\Polycart\\Models\\CartPath', CartPathModel::class],
 ]);
 

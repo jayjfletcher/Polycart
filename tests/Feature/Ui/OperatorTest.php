@@ -89,7 +89,7 @@ it('shows every cart and allows every action to everyone with show_all on', func
 
     $response = $this->actingAs($this->bob)->get(route('atrium.polycart.carts.show', $this->cart))->assertOk();
 
-    foreach (['clear-cart', 'delete-cart', 'update-line', 'remove-line', 'set-visibility', 'remove-member', 'share-cart', 'details-card', 'activity-card', 'transition-cart'] as $control) {
+    foreach (['clear-cart', 'delete-cart', 'update-line', 'remove-line', 'set-visibility', 'remove-member', 'share-cart', 'details-card', 'transition-cart'] as $control) {
         $response->assertSee('data-testid="'.$control.'"', false);
     }
 

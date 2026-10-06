@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains\Sharing\Actions;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Activity\Enums\Activity;
-use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
 use JayI\Polycart\Domains\Scope\Contracts\CartScope;
@@ -85,8 +83,6 @@ final class ShareCartAction
         );
 
         $cart->unsetRelation('members');
-
-        app(ActivityRecorder::class)->record($cart, Activity::Shared, ['member_type' => $memberType, 'member_id' => $memberId, 'role' => $role]);
 
         return $membership;
     }

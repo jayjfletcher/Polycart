@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace JayI\Polycart;
 
 use Illuminate\Support\Facades\Blade;
-use JayI\Atrium\Facades\Atrium;
-use JayI\Foundation\Cortex\CortexIntegration;
 use JayI\Foundation\Packages\Package;
 use JayI\Foundation\Support\PackageServiceProvider;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Atrium\ScreenAccess;
-use JayI\Polycart\Cortex\RecordsAgentCartSource;
 use JayI\Polycart\Domains\DomainServiceProvider;
 use JayI\Polycart\Mcp\PolycartServer;
 
@@ -53,11 +50,9 @@ class PolycartServiceProvider extends PackageServiceProvider
         $this->registerPolicies();
         $this->registerMcpServer();
         $this->registerAtriumPlugin(PolycartPlugin::class);
-        $this->registerAtriumStyles();
 
         // Cortex is optional: agents get the cart tools only when it is loaded.
         $this->registerCortex();
-        $this->app->make(RecordsAgentCartSource::class)->register(CortexIntegration::for($this->package()));
 
         $this->loadHistoryRoutes();
 
@@ -88,18 +83,5 @@ class PolycartServiceProvider extends PackageServiceProvider
         $this->publishes([
             __DIR__.'/../lang' => $this->app->langPath('vendor/polycart'),
         ], ['polycart', 'polycart-lang']);
-    }
-
-    /**
-     * Utilities Polycart's screens use that Atrium's stylesheet lacks, when
-     * the dashboard is mounted.
-     */
-    private function registerAtriumStyles(): void
-    {
-        if (! class_exists(Atrium::class) || $this->config()->get('polycart.ui.enabled') !== true) {
-            return;
-        }
-
-        Atrium::css((string) file_get_contents(__DIR__.'/../resources/css/atrium.css'), 'polycart');
     }
 }

@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 return [
-    'activity' => 'Activity',
     'all_types' => 'All types',
     'any' => 'Any',
     'cart' => 'Cart',
@@ -44,7 +43,6 @@ return [
     'move' => 'Move',
     'move_to' => 'Move to',
     'never' => 'Never',
-    'no_activity' => 'Nothing has happened to this cart yet.',
     'no_carts' => 'No carts match.',
     'no_lines' => 'This cart is empty.',
     'no_members' => 'Nobody has been added to this cart.',
@@ -71,7 +69,6 @@ return [
     'statuses' => 'Statuses',
     'subtotal' => 'Subtotal',
     'total' => 'Total',
-    'touched_by' => 'Touched by',
     'type' => 'Type',
     'types' => 'Cart types',
     'types_description' => 'Every registered type and the rules it enforces.',

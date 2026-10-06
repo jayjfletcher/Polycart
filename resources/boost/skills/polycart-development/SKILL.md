@@ -78,22 +78,22 @@ php artisan migrate
 - JSON API: set `polycart.routes.enabled` to `true` and put your auth middleware in `polycart.routes.middleware`.
 - List the models callers may name in `polycart.owners`, `polycart.scopes` and `polycart.purchasables`, keyed by alias.
 - With `polycart.authorization` on (the default), every call acts as the signed-in user and is checked against the policies in `polycart.policies`. By default the cart's owner may do anything and everyone else gets what their role grants. Swap a policy by pointing its model at your own class there.
-- MCP: enable `polycart.mcp.web` or `polycart.mcp.local`. The tools match the API one-to-one: `list-cart-types`, `list-carts`, `show-cart`, `create-cart`, `active-cart`, `update-cart`, `delete-cart`, `clear-cart`, `transition-cart`, `convert-cart`, `merge-carts`, `add-lines`, `update-lines`, `remove-lines`, `list-members`, `share-cart`, `unshare-cart`, `set-visibility`, `list-cart-activity`, plus `list-polycart-history-tool` for the audit history (`GET {prefix}/history` over HTTP; both answer "not installed" until an audit log such as jayi/keen is).
-- Atrium: install `jayi/atrium`. Polycart adds Carts and Cart types pages, two widgets, and search. Set `polycart.ui.enabled` to `false` to turn this off.
+- MCP: enable `polycart.mcp.web` or `polycart.mcp.local`. The tools match the API one-to-one: `list-cart-types`, `list-carts`, `show-cart`, `create-cart`, `active-cart`, `update-cart`, `delete-cart`, `clear-cart`, `transition-cart`, `convert-cart`, `merge-carts`, `add-lines`, `update-lines`, `remove-lines`, `list-members`, `share-cart`, `unshare-cart`, `set-visibility`, plus `list-polycart-history-tool` for the audit history, Polycart's or one cart's (`GET {prefix}/history?subject_type=...&subject_id=...` over HTTP; both answer "not installed" until an audit log such as jayi/keen is).
+- Atrium: install `jayi/atrium`. Polycart adds Carts and Cart types pages, two widgets, and search; with jayi/keen, a cart's page shows its history (`<x-atrium::audit-trail source="polycart" :subject="$cart" />`) and the carts page Polycart's. Set `polycart.ui.enabled` to `false` to turn this off.
 - The dashboard checks the same policies as the JSON API for the signed-in user: navigation, widgets and search need `viewAny` on `CartModel`, and each control is shown only when its action is allowed (`update`, `delete`, `share`, `transition`/`convert` with the target, `update`/`delete` on a line or member). Lists hold only the carts the user can access. Use `@polycartCan('update', $cart)` in your own views to ask the same question. With `polycart.authorization` off, everything is allowed.
 - `polycart.atrium.show_all` (default `false`) makes dashboard operators: `true` for everyone who can open Atrium, or a Gate ability name such as `'manage-carts'`. Operators see every cart in the dashboard's lists, widgets and search and may take every action on it; `ScreenAccess::operator($user)` reports it. The JSON API and MCP are unaffected.
-- Polycart adds the Tailwind utilities its screens need beyond Atrium's stylesheet from `resources/css/atrium.css` via `Atrium::css(..., 'polycart')`; `tests/Feature/Ui/StylesTest.php` fails when a view uses a class neither defines.
+- Polycart ships no stylesheet: its views use only `x-atrium::*` components (`description-list`, `flash`, `audit-trail`, ...) and the utilities Atrium's compiled stylesheet contains, with no `<style>` or `style=`. `tests/Feature/Ui/StylesTest.php` asserts `AtriumStyles::missingClasses()` and `AtriumStyles::inlineStyles()` are empty.
 - Statuses show as Atrium status dots coloured by `JayI\Polycart\Atrium\Badges` (`info` only for pending/awaiting states); actions are icon buttons.
-- With `jayi/pennantplus`, `JayI\Polycart\Atrium\Features\PolycartSupportFeature` switches Polycart in Atrium off globally (`Feature::for(null)->deactivate(...)`); the list lives in `polycart.atrium.features`, and classes that cannot be loaded are skipped.
+- With `jayi/pennantplus`, `JayI\Polycart\Atrium\Features\PolycartSupportFeature` switches Polycart in Atrium off globally (`Feature::for(null)->deactivate(...)`); the list lives in `polycart.atrium.features` (read with Atrium's `Plugin::featuresFromConfig()`), and classes that cannot be loaded are skipped.
 
 ### 8. Record where carts come from and what happened to them
 
-- Every cart records a `source`. The package sets `api`, `mcp`, `atrium` or `cortex` itself; everything else gets `polycart.default_source` (`code`).
-- Tag your own work with `Polycart::usingSource('import', fn () => ...)`, or tag routes with the `JayI\Polycart\Domains\Activity\Http\Middleware\CartSource::class.':web'` middleware.
-- Every change made through the package is logged in `$cart->activities` with its action, source, actor and context. `$cart->sources` lists every source that has touched the cart. Copies and merges carry history with them.
-- Record your own events with `$cart->recordActivity('exported', [...])`.
-- Query with `CartModel::query()->fromSource('mcp')` (creating source) or `->touchedBy('mcp')` (any touch).
-- Write changes through the package's methods, not raw Eloquent updates, or they are not logged.
+- Every cart records a `source`: the jayi/foundation `Surface` it was created (or last converted) through: `http`, `mcp`, `cortex`, `atrium`, `cli` or `code`.
+- Name your own surface with `Polycart::usingSource('import', fn () => ...)` (Foundation's `Surface::using()`), or for your routes with `app(Surface::class)->route('checkout.', 'web')`.
+- Polycart keeps no history of its own. Install `jayi/keen` and every change made through the package is recorded in the suite-wide audit log with source `polycart`; line, sharing, merge and conversion entries are about the cart, a merge names `merged_from` and a conversion copy `converted_from`. Without Keen, carts keep no history.
+- Record your own events with `Keen::record('cart.exported')->on($cart)->with([...])->save()`. `$cart->recordActivity()` is deprecated and delegates to it.
+- Query carts with `CartModel::query()->fromSource('mcp')`; read history from `GET {prefix}/history?subject_type=...&subject_id=...` or `list-polycart-history-tool`.
+- Write changes through the package's methods, not raw Eloquent updates, or they are not recorded.
 
 ### 9. Let Cortex agents manage carts (optional)
 
@@ -101,7 +101,7 @@ php artisan migrate
 - Limit the tools with `polycart.cortex.tools` (a list of names), or turn it off with `polycart.cortex.enabled`.
 - The tools are tagged `polycart` in Cortex's tool pickers; change the tags with `polycart.cortex.tags`.
 - Override the server instructions and tool descriptions in Cortex; the published versions are served to MCP clients and agents.
-- Agent changes record `cortex` as their source.
+- Agent changes record `cortex` as their source and audit surface.
 
 ## Rules, References, and Templates
 
