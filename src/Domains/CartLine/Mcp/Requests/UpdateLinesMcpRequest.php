@@ -24,7 +24,7 @@ final class UpdateLinesMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var array<int, array{id: string, quantity: int|numeric-string, unit_price?: int|numeric-string|null}> $lines */
         $lines = $validated['lines'];

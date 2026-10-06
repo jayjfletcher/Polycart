@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace JayI\Polycart\Domains\CartType\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
+use JayI\Foundation\Http\Requests\Request;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\CartType\Actions\ListCartTypesAction;
 use JayI\Polycart\Domains\CartType\Http\Resources\CartTypeResource;
-use JayI\Polycart\Http\Request;
 
 final class IndexCartTypesRequest extends Request
 {

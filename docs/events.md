@@ -42,7 +42,7 @@ About how they fire:
 - **Subclasses:** a cart that hydrates as a subclass, such as your `Quote extends CartModel`, fires the `Cart*` events. A listener sees every cart, whatever its class.
 - **Your own mapping:** entries you declare on a subclass's `$dispatchesEvents` win over the derived ones.
 
-The mapping is done by the `DispatchesModelEvents` trait (`JayI\Polycart\Support\Models\Concerns`). It is the same convention the rest of your application may already use.
+The mapping is done by the `DispatchesModelEvents` trait from [jayi/foundation](https://github.com/jayjfletcher/Foundation) (`JayI\Foundation\Models\Concerns`), the convention every jayi package shares.
 
 ## Action events
 
@@ -73,7 +73,7 @@ Action events live in the `Events` namespace of their domain, such as `JayI\Poly
 
 ## Listening to a whole family
 
-Each family implements an interface in `JayI\Polycart\Contracts`, and Laravel delivers an event to listeners of the interfaces it implements:
+Each family implements an interface in `JayI\Foundation\Contracts`, shared by every jayi package, and Laravel delivers an event to listeners of the interfaces it implements:
 
 | Interface | Receives |
 | --- | --- |
@@ -82,7 +82,7 @@ Each family implements an interface in `JayI\Polycart\Contracts`, and Laravel de
 | `ActionFinishedEvent` | every action finish |
 
 ```php
-use JayI\Polycart\Contracts\ActionFinishedEvent;
+use JayI\Foundation\Contracts\ActionFinishedEvent;
 
 Event::listen(ActionFinishedEvent::class, fn (ActionFinishedEvent $event) => Metrics::increment(class_basename($event)));
 ```

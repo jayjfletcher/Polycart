@@ -4,6 +4,11 @@
 
 ### Breaking
 
+- Polycart now stands on [jayi/foundation](https://github.com/jayjfletcher/Foundation), the shared runtime of the jayi packages, which it requires. Its own copies are removed in favour of Foundation's: `Contracts\ActionStartingEvent`, `Contracts\ActionFinishedEvent` and `Contracts\ModelLifecycleEvent` (now `JayI\Foundation\Contracts\*`), `Support\Models\Concerns\DispatchesModelEvents` (now `JayI\Foundation\Models\Concerns\DispatchesModelEvents`), `Support\Authorizer` (now `JayI\Foundation\Auth\Authorizer::for($package)`), `Http\Request` (now `JayI\Foundation\Http\Requests\Request`), `Mcp\Tool` (now `JayI\Foundation\Mcp\Tool`) and `Cortex\CortexIntegration` (now `JayI\Foundation\Cortex\CortexIntegration::for($package)`). Listen to the Foundation contracts to hear every action and model event of every jayi package. Config keys, route names, MCP tool names and behaviour are unchanged.
+- `PolycartServiceProvider` extends Foundation's `PackageServiceProvider`, `PolycartServer` extends `JayI\Foundation\Mcp\Server`, `PolycartException` extends `JayI\Foundation\Exceptions\PackageException` (still 422), and the base policy extends `JayI\Foundation\Policies\Policy`: `allowsOnCart()` is now `allowsOn()`.
+- MCP requests extending `JayI\Polycart\Mcp\Request` implement `respond(array $validated)` instead of `handle()`.
+- A `PolycartException` now always renders as JSON with its status; previously a request that did not expect JSON fell through to Laravel's own handling.
+
 - The source is reorganised into domain modules under `src/Domains/{Domain}` (`JayI\Polycart\Domains\{Domain}`): **Cart**, **CartLine**, **CartType**, **Sharing** (members, visibility and access), **Scope** (the scope tree and cart paths) and **Activity** (sources and the activity log). Each domain has its own service provider, registered by `JayI\Polycart\Domains\DomainServiceProvider`; `PolycartServiceProvider`, the `Polycart` facade, the config file and its keys, route names and URLs, MCP tool names, view and translation namespaces, publish tags and event class names are unchanged. There are no aliases for the old class names: update your imports.
 - The Eloquent models are renamed to end in `Model`. Their old class names are kept as morph aliases, so polymorphic `*_type` values written under them still resolve and new rows keep writing the same values:
   - `JayI\Polycart\Models\Cart` → `JayI\Polycart\Domains\Cart\Models\CartModel`
@@ -83,6 +88,7 @@
 
 ### Added
 
+- `GET {prefix}/history` (`polycart.history.index`) and the `list-polycart-history-tool` MCP tool serve Polycart's audit history from an installed audit log such as jayi/keen, and answer "not installed" (404 over HTTP) until one is.
 - Polycart's Atrium navigation items have icons, and the screens follow Atrium's screen conventions: actions are icon buttons with their label as a tooltip, and cart statuses are status dots (`data-status`) coloured by `JayI\Polycart\Atrium\Badges`, which keeps `info` for pending and awaiting states.
 - The `@polycartCan` Blade conditional and `JayI\Polycart\Atrium\ScreenAccess`, which ask the cart policies exactly as the JSON API does.
 - `JayI\Polycart\Atrium\Features\PolycartSupportFeature` and the `polycart.atrium.features` config: with jayi/pennantplus installed, a global Pennant switch for Polycart in Atrium. Feature classes that cannot be loaded are skipped.

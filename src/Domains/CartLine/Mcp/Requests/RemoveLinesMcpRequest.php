@@ -24,7 +24,7 @@ final class RemoveLinesMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var array<int, string> $lines */
         $lines = $validated['lines'];

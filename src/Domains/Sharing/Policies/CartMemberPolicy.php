@@ -17,26 +17,26 @@ class CartMemberPolicy extends Policy
 {
     public function viewAny(Model $user, CartModel $cart): bool
     {
-        return $this->allowsOnCart($user, 'view', $cart);
+        return $this->allowsOn($user, 'view', $cart);
     }
 
     public function view(Model $user, CartMemberModel $member): bool
     {
-        return $this->allowsOnCart($user, 'view', $member->cart);
+        return $this->allowsOn($user, 'view', $member->cart);
     }
 
     public function create(Model $user, CartModel $cart): bool
     {
-        return $this->allowsOnCart($user, 'share', $cart);
+        return $this->allowsOn($user, 'share', $cart);
     }
 
     public function update(Model $user, CartMemberModel $member): bool
     {
-        return $this->allowsOnCart($user, 'share', $member->cart);
+        return $this->allowsOn($user, 'share', $member->cart);
     }
 
     public function delete(Model $user, CartMemberModel $member): bool
     {
-        return $this->allowsOnCart($user, 'share', $member->cart);
+        return $this->allowsOn($user, 'share', $member->cart);
     }
 }

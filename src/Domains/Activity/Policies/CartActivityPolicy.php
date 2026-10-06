@@ -17,11 +17,11 @@ class CartActivityPolicy extends Policy
 {
     public function viewAny(Model $user, CartModel $cart): bool
     {
-        return $this->allowsOnCart($user, 'view', $cart);
+        return $this->allowsOn($user, 'view', $cart);
     }
 
     public function view(Model $user, CartActivityModel $activity): bool
     {
-        return $this->allowsOnCart($user, 'view', $activity->cart);
+        return $this->allowsOn($user, 'view', $activity->cart);
     }
 }

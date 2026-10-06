@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
+use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Support\Models\Concerns\DispatchesModelEvents;
 
 /**
  * One change to a cart: what happened, where from, and who did it.

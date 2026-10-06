@@ -3,8 +3,11 @@
 declare(strict_types=1);
 
 use Illuminate\Support\ServiceProvider;
+use JayI\Foundation\Auth\Authorizer;
+use JayI\Foundation\Packages\PackageRegistry;
 use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
 use JayI\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
+use JayI\Polycart\Mcp\PolycartServer;
 use JayI\Polycart\Polycart;
 use JayI\Polycart\PolycartServiceProvider;
 
@@ -24,3 +27,15 @@ it('prices through purchasables by default', function (): void {
 it('publishes the config and migrations', function (string $tag): void {
     expect(ServiceProvider::pathsToPublish(PolycartServiceProvider::class, $tag))->not->toBeEmpty();
 })->with(['polycart', 'polycart-config', 'polycart-migrations']);
+
+it('registers with the shared runtime, authorizing through the Gate by default', function (): void {
+    $package = app(PackageRegistry::class)->get('polycart');
+
+    $config = config('polycart');
+    unset($config['authorization']);
+    config()->set('polycart', $config);
+
+    expect($package->server)->toBe(PolycartServer::class)
+        ->and($package->label)->toBe('Polycart')
+        ->and(Authorizer::for($package)->enabled())->toBeTrue();
+});

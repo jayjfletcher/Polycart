@@ -5,24 +5,38 @@ declare(strict_types=1);
 namespace JayI\Polycart;
 
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\ServiceProvider;
 use JayI\Atrium\Facades\Atrium;
+use JayI\Foundation\Cortex\CortexIntegration;
+use JayI\Foundation\Packages\Package;
+use JayI\Foundation\Support\PackageServiceProvider;
 use JayI\Polycart\Atrium\PolycartPlugin;
 use JayI\Polycart\Atrium\ScreenAccess;
-use JayI\Polycart\Cortex\CortexIntegration;
+use JayI\Polycart\Cortex\RecordsAgentCartSource;
 use JayI\Polycart\Domains\DomainServiceProvider;
 use JayI\Polycart\Mcp\PolycartServer;
-use Laravel\Mcp\Facades\Mcp;
 
-class PolycartServiceProvider extends ServiceProvider
+class PolycartServiceProvider extends PackageServiceProvider
 {
+    /**
+     * Polycart authorizes calls through the Gate unless an application turns
+     * `polycart.authorization` off.
+     */
+    protected function definition(): Package
+    {
+        return Package::make('polycart', __NAMESPACE__)
+            ->label('Polycart')
+            ->server(PolycartServer::class)
+            ->authorization();
+    }
+
     /**
      * Register any application services.
      */
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/polycart.php', 'polycart');
+
+        $this->registerPackage();
 
         $this->app->register(DomainServiceProvider::class);
 
@@ -34,12 +48,18 @@ class PolycartServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // The Cart policy is registered for the base model, so it covers
+        // every type's subclass.
         $this->registerPolicies();
         $this->registerMcpServer();
-        $this->registerAtriumPlugin();
+        $this->registerAtriumPlugin(PolycartPlugin::class);
+        $this->registerAtriumStyles();
 
         // Cortex is optional: agents get the cart tools only when it is loaded.
-        $this->app->make(CortexIntegration::class)->register();
+        $this->registerCortex();
+        $this->app->make(RecordsAgentCartSource::class)->register(CortexIntegration::for($this->package()));
+
+        $this->loadHistoryRoutes();
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'polycart');
 
@@ -71,48 +91,15 @@ class PolycartServiceProvider extends ServiceProvider
     }
 
     /**
-     * The Cart policy is registered for the base model, so it covers every
-     * type's subclass.
+     * Utilities Polycart's screens use that Atrium's stylesheet lacks, when
+     * the dashboard is mounted.
      */
-    private function registerPolicies(): void
+    private function registerAtriumStyles(): void
     {
-        /** @var array<class-string, class-string> $policies */
-        $policies = $this->app->make('config')->get('polycart.policies', []);
-
-        foreach ($policies as $model => $policy) {
-            Gate::policy($model, $policy);
-        }
-    }
-
-    private function registerMcpServer(): void
-    {
-        $config = $this->app->make('config');
-
-        if ($config->get('polycart.mcp.web.enabled') === true) {
-            /** @var array<int, string> $middleware */
-            $middleware = $config->get('polycart.mcp.web.middleware', []);
-
-            Mcp::web((string) $config->get('polycart.mcp.web.route'), PolycartServer::class)
-                ->middleware($middleware);
-        }
-
-        if ($config->get('polycart.mcp.local.enabled') === true) {
-            Mcp::local((string) $config->get('polycart.mcp.local.handle'), PolycartServer::class);
-        }
-    }
-
-    /**
-     * Atrium is optional: the dashboard mounts only when it is installed.
-     */
-    private function registerAtriumPlugin(): void
-    {
-        if (! class_exists(Atrium::class) || $this->app->make('config')->get('polycart.ui.enabled') !== true) {
+        if (! class_exists(Atrium::class) || $this->config()->get('polycart.ui.enabled') !== true) {
             return;
         }
 
-        Atrium::plugin(PolycartPlugin::class);
-
-        // Utilities Polycart's screens use that Atrium's stylesheet lacks.
         Atrium::css((string) file_get_contents(__DIR__.'/../resources/css/atrium.css'), 'polycart');
     }
 }

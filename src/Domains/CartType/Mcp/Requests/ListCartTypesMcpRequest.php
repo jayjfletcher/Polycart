@@ -22,7 +22,7 @@ final class ListCartTypesMcpRequest extends Request
         return ListCartTypesAction::rules();
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         return $this->structuredCollection(
             CartTypeResource::collection(app(ListCartTypesAction::class)->execute())->resolve(),

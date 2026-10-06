@@ -28,7 +28,7 @@ final class MergeCartsMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var string $into */
         $into = $validated['into'];

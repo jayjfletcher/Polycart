@@ -17,26 +17,26 @@ class CartLinePolicy extends Policy
 {
     public function viewAny(Model $user, CartModel $cart): bool
     {
-        return $this->allowsOnCart($user, 'view', $cart);
+        return $this->allowsOn($user, 'view', $cart);
     }
 
     public function view(Model $user, CartLineModel $line): bool
     {
-        return $this->allowsOnCart($user, 'view', $line->cart);
+        return $this->allowsOn($user, 'view', $line->cart);
     }
 
     public function create(Model $user, CartModel $cart): bool
     {
-        return $this->allowsOnCart($user, 'update', $cart);
+        return $this->allowsOn($user, 'update', $cart);
     }
 
     public function update(Model $user, CartLineModel $line): bool
     {
-        return $this->allowsOnCart($user, 'update', $line->cart);
+        return $this->allowsOn($user, 'update', $line->cart);
     }
 
     public function delete(Model $user, CartLineModel $line): bool
     {
-        return $this->allowsOnCart($user, 'update', $line->cart);
+        return $this->allowsOn($user, 'update', $line->cart);
     }
 }

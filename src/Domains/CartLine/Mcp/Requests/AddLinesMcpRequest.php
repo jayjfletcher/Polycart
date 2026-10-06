@@ -25,7 +25,7 @@ final class AddLinesMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         $lines = app(AddLinesAction::class)->execute($this->cart(), app(LineInput::class)->lines($validated));
 

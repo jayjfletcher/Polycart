@@ -6,7 +6,7 @@ namespace JayI\Polycart\Domains\Sharing\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Polycart\Contracts\ActionStartingEvent;
+use JayI\Foundation\Contracts\ActionStartingEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 
 /**

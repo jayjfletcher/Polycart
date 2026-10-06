@@ -24,7 +24,7 @@ final class ListMembersMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         return $this->structuredCollection(
             CartMemberResource::collection(app(ListMembersAction::class)->execute($this->cart()))->resolve(),

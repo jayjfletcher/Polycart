@@ -23,7 +23,7 @@ final class ShowCartMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         $cart = app(ShowCartAction::class)->execute($this->cart());
 

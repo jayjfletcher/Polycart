@@ -371,6 +371,7 @@ Turn authorization off only for trusted server-to-server use.
 | `POST` | `/carts/{cart}/members` | Share with a `member_type` and `member_id` (a person or a scope) as a `role` |
 | `DELETE` | `/carts/{cart}/members/{member}` | Remove a member |
 | `PUT` | `/carts/{cart}/visibility` | Set `visibility` to `private`, `scope` or `boundary` |
+| `GET` | `/history` | Polycart's audit history from [jayi/keen](https://github.com/jayjfletcher/Keen), filterable by `subject_type` and `subject_id`, `action`; cursor paginated. Answers `404` until an audit log is installed. Named `polycart.history.index`. |
 
 When a type refuses a request, the API returns `422` with a message that explains why, such as `A [quote] cart cannot move from [submitted] to [draft].`
 
@@ -384,6 +385,7 @@ The same operations are available as MCP tools, so an agent can manage carts:
 - `add-lines`, `update-lines`, `remove-lines`
 - `list-members`, `share-cart`, `unshare-cart`, `set-visibility`
 - `list-cart-activity`
+- `list-polycart-history-tool`, the audit history (needs an audit log such as jayi/keen installed)
 
 ```php
 'mcp' => [
@@ -523,7 +525,7 @@ The code is organised into domain modules under `src/Domains/{Domain}` (`JayI\Po
 | `Scope` | `CartPathModel`, the `ScopeTree`, `CartScope` and `CartParticipant` |
 | `Activity` | `CartActivityModel`, the `ActivityRecorder`, sources (`CartSource`, `SourceContext`) |
 
-Cross-domain code stays outside the domains: the `Polycart` entry point and facade, the base `Http\Request`, `Mcp\Request` and `Mcp\Tool`, the MCP server, `Support/` (authorization, morph lookups, base policy and model events), the Cortex integration and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain.
+Polycart stands on [jayi/foundation](https://github.com/jayjfletcher/Foundation), the runtime the jayi packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Foundation's MCP request plus the `mcp` source and line reason codes), the MCP server and its history tool, `Support/` (the domain provider base that adds the `api` source, morph lookups and the base policy), `Cortex/RecordsAgentCartSource` (the `cortex` source for the activity log) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain.
 
 ## Testing
 

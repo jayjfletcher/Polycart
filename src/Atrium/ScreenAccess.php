@@ -7,11 +7,12 @@ namespace JayI\Polycart\Atrium;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
+use JayI\Foundation\Auth\Authorizer;
+use JayI\Foundation\Packages\PackageRegistry;
 use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
 use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Support\Authorizer;
 
 /**
  * Whether the signed-in user may perform an ability, asked the way the JSON
@@ -47,7 +48,7 @@ final class ScreenAccess
             return true;
         }
 
-        return app(Authorizer::class)->can($user, $ability, $subject, $arguments);
+        return self::authorizer()->can($user, $ability, $subject, $arguments);
     }
 
     /**
@@ -81,7 +82,12 @@ final class ScreenAccess
         $user ??= request()->user();
         $user = $user instanceof Authenticatable ? $user : null;
 
-        return self::operator($user) ? null : app(Authorizer::class)->actor($user);
+        return self::operator($user) ? null : self::authorizer()->actor($user);
+    }
+
+    private static function authorizer(): Authorizer
+    {
+        return Authorizer::for(app(PackageRegistry::class)->get('polycart'));
     }
 
     /**

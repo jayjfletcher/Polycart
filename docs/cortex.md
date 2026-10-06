@@ -69,7 +69,7 @@ This is useful for fitting the tools to your business without forking the packag
 | An MCP client, directly | `mcp` |
 | A Cortex agent, through the same tool | `cortex` |
 
-Polycart listens to laravel/ai's `InvokingTool`, `ToolInvoked` and `ToolFailed` events. It sets the `cortex` source for exactly as long as each cart tool runs.
+Polycart listens to laravel/ai's `InvokingTool`, `ToolInvoked` and `ToolFailed` events (in `JayI\Polycart\Cortex\RecordsAgentCartSource`). It sets the `cortex` source for exactly as long as each cart tool runs. The rest of the integration (registering the server and tools, tags, overrides, and the shared `cortex` surface for the audit log) comes from jayi/foundation's `CortexIntegration`.
 
 ## Notes
 

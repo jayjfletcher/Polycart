@@ -7,7 +7,7 @@ namespace JayI\Polycart\Domains\CartLine\Events;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Polycart\Contracts\ActionStartingEvent;
+use JayI\Foundation\Contracts\ActionStartingEvent;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 
 /**

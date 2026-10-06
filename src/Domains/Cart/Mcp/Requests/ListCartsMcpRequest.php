@@ -22,7 +22,7 @@ final class ListCartsMcpRequest extends Request
         return ListCartsAction::rules();
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         $carts = app(ListCartsAction::class)->execute($validated, $this->actor());
 

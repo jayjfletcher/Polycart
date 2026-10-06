@@ -31,7 +31,7 @@ final class CreateCartMcpRequest extends Request
         return CreateCartAction::rules();
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var string $type */
         $type = $validated['type'];

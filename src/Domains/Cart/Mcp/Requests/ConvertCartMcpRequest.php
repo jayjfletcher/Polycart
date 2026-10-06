@@ -23,7 +23,7 @@ final class ConvertCartMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var string $to */
         $to = $validated['to'];

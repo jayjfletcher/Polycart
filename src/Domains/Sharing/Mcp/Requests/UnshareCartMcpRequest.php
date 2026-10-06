@@ -25,7 +25,7 @@ final class UnshareCartMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         $member = $this->member();
 

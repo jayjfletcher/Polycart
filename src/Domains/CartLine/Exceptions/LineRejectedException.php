@@ -6,7 +6,6 @@ namespace JayI\Polycart\Domains\CartLine\Exceptions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
 use JayI\Polycart\Exceptions\PolycartException;
 
@@ -76,16 +75,15 @@ final class LineRejectedException extends PolycartException
         return new self('A stage stopped the line without writing it or saying why.', 'stopped');
     }
 
-    public function render(Request $request): JsonResponse|false
+    /**
+     * Answer with the reason code and, in a batch, the line's position too.
+     */
+    public function render(): JsonResponse
     {
-        if (! $request->expectsJson()) {
-            return false;
-        }
-
         return new JsonResponse(array_filter([
             'message' => $this->getMessage(),
             'reason' => $this->reason,
             'line' => $this->index,
-        ], fn (mixed $value): bool => $value !== null), 422);
+        ], fn (mixed $value): bool => $value !== null), $this->status);
     }
 }

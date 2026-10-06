@@ -24,7 +24,7 @@ final class SetVisibilityMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var string $visibility */
         $visibility = $validated['visibility'];

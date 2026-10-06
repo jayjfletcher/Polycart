@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace JayI\Polycart\Mcp;
 
-use JayI\Polycart\Cortex\CortexIntegration;
+use JayI\Foundation\Mcp\Server;
 use JayI\Polycart\Domains\Activity\Mcp\Tools\ListActivityTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
@@ -24,11 +24,10 @@ use JayI\Polycart\Domains\Sharing\Mcp\Tools\ListMembersTool;
 use JayI\Polycart\Domains\Sharing\Mcp\Tools\SetVisibilityTool;
 use JayI\Polycart\Domains\Sharing\Mcp\Tools\ShareCartTool;
 use JayI\Polycart\Domains\Sharing\Mcp\Tools\UnshareCartTool;
-use Laravel\Mcp\Server;
+use JayI\Polycart\Mcp\Tools\ListPolycartHistoryTool;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Attributes\Version;
-use Laravel\Mcp\Server\ServerContext;
 use Laravel\Mcp\Server\Tool;
 
 #[Name('Polycart')]
@@ -82,26 +81,11 @@ final class PolycartServer extends Server
 
         // History
         ListActivityTool::class,
+        ListPolycartHistoryTool::class,
     ];
 
     /**
      * @var array<int, class-string<Tool>>
      */
     protected array $tools = self::TOOLS;
-
-    /**
-     * Serve Cortex's published instructions override, when Cortex is
-     * installed and one is published, in place of the ones declared above.
-     */
-    public function createContext(): ServerContext
-    {
-        $context = parent::createContext();
-        $override = app(CortexIntegration::class)->instructions();
-
-        if ($override !== null) {
-            $context->instructions = $override;
-        }
-
-        return $context;
-    }
 }

@@ -23,7 +23,7 @@ final class TransitionCartMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var string $status */
         $status = $validated['status'];

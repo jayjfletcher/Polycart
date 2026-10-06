@@ -9,8 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
+use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Support\Models\Concerns\DispatchesModelEvents;
 
 /**
  * Someone a cart is shared with, and the role the cart's type gives them.

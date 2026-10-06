@@ -26,7 +26,7 @@ final class ShareCartMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         /** @var string $role */
         $role = $validated['role'];

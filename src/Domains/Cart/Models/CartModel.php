@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
 use JayI\Polycart\Domains\Activity\Enums\Activity;
 use JayI\Polycart\Domains\Activity\Models\CartActivityModel;
 use JayI\Polycart\Domains\Activity\Services\ActivityRecorder;
@@ -40,7 +41,6 @@ use JayI\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
 use JayI\Polycart\Domains\Sharing\Enums\Visibility;
 use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
 use JayI\Polycart\Domains\Sharing\Services\CartAccess;
-use JayI\Polycart\Support\Models\Concerns\DispatchesModelEvents;
 
 /**
  * A cart of any type.

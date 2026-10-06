@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Contracts\ActionFinishedEvent;
-use JayI\Polycart\Contracts\ActionStartingEvent;
-use JayI\Polycart\Contracts\ModelLifecycleEvent;
+use JayI\Foundation\Contracts\ActionFinishedEvent;
+use JayI\Foundation\Contracts\ActionStartingEvent;
+use JayI\Foundation\Contracts\ModelLifecycleEvent;
 use JayI\Polycart\Domains\Activity\Actions\ListActivityAction;
 use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
 use JayI\Polycart\Domains\Cart\Actions\ListCartsAction;

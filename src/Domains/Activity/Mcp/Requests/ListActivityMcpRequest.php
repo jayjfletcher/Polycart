@@ -24,7 +24,7 @@ final class ListActivityMcpRequest extends CartRequest
         ];
     }
 
-    protected function handle(array $validated): ResponseFactory
+    protected function respond(array $validated): ResponseFactory
     {
         $cart = $this->cart();
         $activity = app(ListActivityAction::class)->execute($cart, $validated);

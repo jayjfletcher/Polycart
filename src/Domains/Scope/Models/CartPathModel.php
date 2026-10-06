@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Support\Models\Concerns\DispatchesModelEvents;
 
 /**
  * One level of the tree a cart lives in. Depth 0 is the cart's own scope.

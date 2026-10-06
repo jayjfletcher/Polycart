@@ -7,7 +7,8 @@ use JayI\Cortex\Domains\McpServer\Services\McpServerRegistry;
 use JayI\Cortex\Domains\Tool\Actions\CreateToolDescriptionVersionAction;
 use JayI\Cortex\Domains\Tool\Services\ToolRegistry;
 use JayI\Cortex\Facades\Cortex;
-use JayI\Polycart\Cortex\CortexIntegration;
+use JayI\Foundation\Cortex\CortexIntegration;
+use JayI\Foundation\Packages\PackageRegistry;
 use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
 use JayI\Polycart\Domains\Cart\Models\CartModel;
 use JayI\Polycart\Facades\Polycart;
@@ -93,7 +94,7 @@ it('lets an agent run a cart tool, recording cortex as the source', function ():
 });
 
 it('reports whether the integration is active', function (): void {
-    $integration = app(CortexIntegration::class);
+    $integration = CortexIntegration::for(app(PackageRegistry::class)->get('polycart'));
 
     expect($integration->active())->toBeTrue();
 
