@@ -2,6 +2,10 @@
 
 ## [Unreleased](https://github.com/jayi/polycart/compare/v0.1.0...1.x)
 
+### Added
+
+- An **Audit log** link in the package's sidebar group, opening its own audit log in Atrium (`/atrium/history/polycart`), shown while an audit log (jayi/keen) is installed and to those who may read the package's history.
+
 ### Breaking
 
 - **The cart activity log is replaced by jayi/keen history.** Polycart keeps no history of its own: install [jayi/keen](https://github.com/jayjfletcher/Keen), the suite-wide audit log (now in `suggest`), and every cart change is recorded there with source `polycart`; without it carts keep no history. The `Activity` domain is removed: `CartActivityModel` and its policy and model events, `ActivityRecorder`, the `Activity` enum, `ListActivityAction` and its events, `$cart->activities`, the `polycart.policies` entry for `CartActivityModel`, and the `JayI\Polycart\Models\CartActivity` morph alias.
