@@ -121,6 +121,7 @@
 
 ### Changed
 
+- Requires PHP 8.5 (was PHP 8.4), with dependency lower bounds raised to the latest releases (`laravel/framework` ^13.35, `orchestra/testbench` ^11.3, `pestphp/pest` ^5.3.1, `larastan/larastan` ^3.13).
 - The cart page's details use `x-atrium::description-list`, and every screen shows its flash status and errors with `x-atrium::flash`; the `ui/partials/status` view is removed.
 - `PolycartPlugin::features()` uses Atrium's `featuresFromConfig()`, and `ScreenAccess::allows()` delegates to Atrium's `ScreenAccess` for abilities without arguments.
 - With `polycart.authorization` on, the Atrium dashboard now applies the same per-user policies as the JSON API and MCP tools. Navigation, widgets and search need `viewAny` on `Cart`; each page action checks the ability its API request checks and answers 403 otherwise; controls the user may not use are hidden; and lists, widgets and search hold only the carts the user can access. Previously the dashboard relied on Atrium's gate alone.
