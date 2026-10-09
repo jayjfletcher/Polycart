@@ -6,7 +6,7 @@ namespace RefactorCircus\Polycart\Domains\Cart\Http\Requests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use RefactorCircus\Foundation\Http\Requests\Request;
+use RefactorCircus\Keystone\Http\Requests\Request;
 use RefactorCircus\Polycart\Domains\Cart\Actions\ActiveCartAction;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;

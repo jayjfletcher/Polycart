@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RefactorCircus\Polycart\Domains\CartType;
 
-use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Keystone\Support\ServiceProvider;
 use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
 
 class CartTypeServiceProvider extends ServiceProvider

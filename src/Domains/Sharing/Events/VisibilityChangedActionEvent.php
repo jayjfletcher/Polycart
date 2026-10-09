@@ -6,7 +6,7 @@ namespace RefactorCircus\Polycart\Domains\Sharing\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
+use RefactorCircus\Keystone\Contracts\ActionFinishedEvent;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
 

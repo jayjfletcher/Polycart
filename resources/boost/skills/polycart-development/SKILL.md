@@ -88,8 +88,8 @@ php artisan migrate
 
 ### 8. Record where carts come from and what happened to them
 
-- Every cart records a `source`: the refactor-circus/foundation `Surface` it was created (or last converted) through: `http`, `mcp`, `cortex`, `atrium`, `cli` or `code`.
-- Name your own surface with `Polycart::usingSource('import', fn () => ...)` (Foundation's `Surface::using()`), or for your routes with `app(Surface::class)->route('checkout.', 'web')`.
+- Every cart records a `source`: the refactor-circus/keystone `Surface` it was created (or last converted) through: `http`, `mcp`, `cortex`, `atrium`, `cli` or `code`.
+- Name your own surface with `Polycart::usingSource('import', fn () => ...)` (Keystone's `Surface::using()`), or for your routes with `app(Surface::class)->route('checkout.', 'web')`.
 - Polycart keeps no history of its own. Install `refactor-circus/keen` and every change made through the package is recorded in the suite-wide audit log with source `polycart`; line, sharing, merge and conversion entries are about the cart, a merge names `merged_from` and a conversion copy `converted_from`. Without Keen, carts keep no history.
 - Record your own events with `Keen::record('cart.exported')->on($cart)->with([...])->save()`. `$cart->recordActivity()` is deprecated and delegates to it.
 - Query carts with `CartModel::query()->fromSource('mcp')`; read history from `GET {prefix}/history?subject_type=...&subject_id=...` or `list-polycart-history-tool`.

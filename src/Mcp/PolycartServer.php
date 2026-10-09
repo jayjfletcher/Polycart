@@ -8,7 +8,7 @@ use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Attributes\Version;
 use Laravel\Mcp\Server\Tool;
-use RefactorCircus\Foundation\Mcp\Server;
+use RefactorCircus\Keystone\Mcp\Server;
 use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
 use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
 use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;

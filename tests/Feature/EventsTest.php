@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
-use RefactorCircus\Foundation\Contracts\ActionStartingEvent;
-use RefactorCircus\Foundation\Contracts\ModelLifecycleEvent;
+use RefactorCircus\Keystone\Contracts\ActionFinishedEvent;
+use RefactorCircus\Keystone\Contracts\ActionStartingEvent;
+use RefactorCircus\Keystone\Contracts\ModelLifecycleEvent;
 use RefactorCircus\Polycart\Domains\Cart\Actions\DeleteCartAction;
 use RefactorCircus\Polycart\Domains\Cart\Actions\ListCartsAction;
 use RefactorCircus\Polycart\Domains\Cart\Actions\ShowCartAction;

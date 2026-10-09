@@ -19,7 +19,7 @@ This guide covers:
 
 ## Sources
 
-A cart's `source` is the surface it was created through, as refactor-circus/foundation's `Surface` names it, the same name the audit log records with every entry:
+A cart's `source` is the surface it was created through, as refactor-circus/keystone's `Surface` names it, the same name the audit log records with every entry:
 
 | Source | When |
 | --- | --- |
@@ -34,7 +34,7 @@ A source is stored as a plain string, so you can name your own (`web`, `import`,
 
 ## Setting the source
 
-**Around a block of code**, with `Polycart::usingSource()`, a shortcut for Foundation's `Surface::using()`:
+**Around a block of code**, with `Polycart::usingSource()`, a shortcut for Keystone's `Surface::using()`:
 
 ```php
 use RefactorCircus\Polycart\Facades\Polycart;
@@ -51,7 +51,7 @@ The surface is restored afterwards, even when the callback throws, and blocks ca
 **On your own routes**, name the surface for a route-name prefix once, from a service provider:
 
 ```php
-use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Keystone\Support\Surface;
 
 app(Surface::class)->route('checkout.', 'web');
 ```
@@ -93,7 +93,7 @@ Every action Polycart takes announces itself through its action events, and Keen
 | `cart.unshared` | A member is removed | the cart | `member_type`, `member_id` |
 | `visibility.changed` | Visibility changes | the cart | `from`, `to` |
 
-The line, sharing, merge and conversion events implement `RefactorCircus\Foundation\Audit\Contracts\Auditable` to name the cart as their subject. Carts and lines are labelled through Foundation's `AuditHooks`.
+The line, sharing, merge and conversion events implement `RefactorCircus\Keystone\Audit\Contracts\Auditable` to name the cart as their subject. Carts and lines are labelled through Keystone's `AuditHooks`.
 
 ## Where a cart came from
 

@@ -7,7 +7,7 @@ namespace RefactorCircus\Polycart;
 use BackedEnum;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Keystone\Support\Surface;
 use RefactorCircus\Polycart\Domains\Cart\Actions\ActiveCartAction;
 use RefactorCircus\Polycart\Domains\Cart\Actions\ConvertCartAction;
 use RefactorCircus\Polycart\Domains\Cart\Actions\CreateCartAction;
@@ -72,7 +72,7 @@ final class Polycart
      * Mark everything inside the callback as coming from a surface of your
      * own, such as `import` or `pos`: carts created inside it record it as
      * their `source`, and the audit log records it as the entries' surface.
-     * A shortcut for Foundation's `Surface::using()`.
+     * A shortcut for Keystone's `Surface::using()`.
      *
      * @template TReturn
      *

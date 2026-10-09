@@ -9,7 +9,7 @@ use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
-use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Keystone\Mcp\Tool;
 use RefactorCircus\Polycart\Domains\Cart\Mcp\Requests\DeleteCartMcpRequest;
 
 #[Name('delete-cart')]

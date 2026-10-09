@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RefactorCircus\Polycart\Domains\Cart;
 
-use RefactorCircus\Foundation\Audit\AuditHooks;
-use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Keystone\Audit\AuditHooks;
+use RefactorCircus\Keystone\Support\ServiceProvider;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 class CartServiceProvider extends ServiceProvider

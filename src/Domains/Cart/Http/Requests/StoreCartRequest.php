@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RefactorCircus\Polycart\Domains\Cart\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use RefactorCircus\Foundation\Http\Requests\Request;
+use RefactorCircus\Keystone\Http\Requests\Request;
 use RefactorCircus\Polycart\Domains\Cart\Actions\CreateCartAction;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;

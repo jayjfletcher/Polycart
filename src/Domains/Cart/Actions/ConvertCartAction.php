@@ -6,7 +6,7 @@ namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Carbon;
-use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Keystone\Support\Surface;
 use RefactorCircus\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
 use RefactorCircus\Polycart\Domains\Cart\Events\CartConvertingActionEvent;
 use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidConversionException;

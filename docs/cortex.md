@@ -69,7 +69,7 @@ This is useful for fitting the tools to your business without forking the packag
 | An MCP client, directly | `mcp` |
 | A Cortex agent, through the same tool | `cortex` |
 
-refactor-circus/foundation's `CortexIntegration` registers the server and tools, tags and overrides, and enters the shared `cortex` surface for exactly as long as each cart tool runs. Foundation's MCP request then marks the call `mcp`; Polycart's `Mcp\Request` looks beneath that and keeps `cortex` for an agent's calls.
+refactor-circus/keystone's `CortexIntegration` registers the server and tools, tags and overrides, and enters the shared `cortex` surface for exactly as long as each cart tool runs. Keystone's MCP request then marks the call `mcp`; Polycart's `Mcp\Request` looks beneath that and keeps `cortex` for an agent's calls.
 
 ## Notes
 

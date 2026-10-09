@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RefactorCircus\Polycart\Domains\Scope;
 
-use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Keystone\Support\ServiceProvider;
 
 class ScopeServiceProvider extends ServiceProvider
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RefactorCircus\Polycart\Exceptions;
 
-use RefactorCircus\Foundation\Exceptions\PackageException;
+use RefactorCircus\Keystone\Exceptions\PackageException;
 
 /**
  * Every refusal the package makes: an unknown type, a rejected line, a move

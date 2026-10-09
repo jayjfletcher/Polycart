@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Support\ServiceProvider;
-use RefactorCircus\Foundation\Auth\Authorizer;
-use RefactorCircus\Foundation\Packages\PackageRegistry;
+use RefactorCircus\Keystone\Auth\Authorizer;
+use RefactorCircus\Keystone\Packages\PackageRegistry;
 use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
 use RefactorCircus\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
 use RefactorCircus\Polycart\Mcp\PolycartServer;

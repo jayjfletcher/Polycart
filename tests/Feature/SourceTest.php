@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
-use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Keystone\Support\Surface;
 use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
 use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
@@ -13,7 +13,7 @@ use RefactorCircus\Polycart\Facades\Polycart;
 use RefactorCircus\Polycart\Mcp\PolycartServer;
 
 it('records the surface of carts made directly', function (): void {
-    // The test runner is a console process, so Foundation's Surface says `cli`.
+    // The test runner is a console process, so Keystone's Surface says `cli`.
     expect(Polycart::create('cart')->source)->toBe('cli');
 });
 

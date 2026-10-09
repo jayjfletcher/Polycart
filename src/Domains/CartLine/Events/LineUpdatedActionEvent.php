@@ -6,8 +6,8 @@ namespace RefactorCircus\Polycart\Domains\CartLine\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use RefactorCircus\Foundation\Audit\Contracts\Auditable;
-use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
+use RefactorCircus\Keystone\Audit\Contracts\Auditable;
+use RefactorCircus\Keystone\Contracts\ActionFinishedEvent;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 

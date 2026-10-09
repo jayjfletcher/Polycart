@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RefactorCircus\Polycart\Domains\Cart\Http\Requests;
 
 use Illuminate\Database\Eloquent\Collection;
-use RefactorCircus\Foundation\Http\Requests\Request;
+use RefactorCircus\Keystone\Http\Requests\Request;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 

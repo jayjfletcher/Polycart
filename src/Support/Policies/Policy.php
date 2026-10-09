@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace RefactorCircus\Polycart\Support\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use RefactorCircus\Foundation\Policies\Policy as FoundationPolicy;
+use RefactorCircus\Keystone\Policies\Policy as KeystonePolicy;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
@@ -16,7 +16,7 @@ use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
  * a cart asks about its cart with `allowsOn()`, so it follows whichever cart
  * policy is registered.
  */
-abstract class Policy extends FoundationPolicy
+abstract class Policy extends KeystonePolicy
 {
     /**
      * Whether the user is the cart's owner.

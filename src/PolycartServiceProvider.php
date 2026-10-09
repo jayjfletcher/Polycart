@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace RefactorCircus\Polycart;
 
 use Illuminate\Support\Facades\Blade;
-use RefactorCircus\Foundation\Packages\Package;
-use RefactorCircus\Foundation\Support\PackageServiceProvider;
+use RefactorCircus\Keystone\Packages\Package;
+use RefactorCircus\Keystone\Support\PackageServiceProvider;
 use RefactorCircus\Polycart\Atrium\PolycartPlugin;
 use RefactorCircus\Polycart\Atrium\ScreenAccess;
 use RefactorCircus\Polycart\Domains\DomainServiceProvider;

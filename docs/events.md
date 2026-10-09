@@ -42,7 +42,7 @@ About how they fire:
 - **Subclasses:** a cart that hydrates as a subclass, such as your `Quote extends CartModel`, fires the `Cart*` events. A listener sees every cart, whatever its class.
 - **Your own mapping:** entries you declare on a subclass's `$dispatchesEvents` win over the derived ones.
 
-The mapping is done by the `DispatchesModelEvents` trait from [refactor-circus/foundation](https://github.com/Refactor-Circus/Foundation) (`RefactorCircus\Foundation\Models\Concerns`), the convention every Refactor Circus package shares.
+The mapping is done by the `DispatchesModelEvents` trait from [refactor-circus/keystone](https://github.com/Refactor-Circus/Keystone) (`RefactorCircus\Keystone\Models\Concerns`), the convention every Refactor Circus package shares.
 
 ## Action events
 
@@ -73,7 +73,7 @@ Action events live in the `Events` namespace of their domain, such as `RefactorC
 
 ## Listening to a whole family
 
-Each family implements an interface in `RefactorCircus\Foundation\Contracts`, shared by every Refactor Circus package, and Laravel delivers an event to listeners of the interfaces it implements:
+Each family implements an interface in `RefactorCircus\Keystone\Contracts`, shared by every Refactor Circus package, and Laravel delivers an event to listeners of the interfaces it implements:
 
 | Interface | Receives |
 | --- | --- |
@@ -82,7 +82,7 @@ Each family implements an interface in `RefactorCircus\Foundation\Contracts`, sh
 | `ActionFinishedEvent` | every action finish |
 
 ```php
-use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
+use RefactorCircus\Keystone\Contracts\ActionFinishedEvent;
 
 Event::listen(ActionFinishedEvent::class, fn (ActionFinishedEvent $event) => Metrics::increment(class_basename($event)));
 ```

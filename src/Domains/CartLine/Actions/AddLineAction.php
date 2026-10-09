@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pipeline\Pipeline;
-use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Keystone\Support\Surface;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
 use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddingActionEvent;

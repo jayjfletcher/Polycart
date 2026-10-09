@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace RefactorCircus\Polycart\Domains\CartLine;
 
-use RefactorCircus\Foundation\Audit\AuditHooks;
-use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Keystone\Audit\AuditHooks;
+use RefactorCircus\Keystone\Support\ServiceProvider;
 use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
 use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 use RefactorCircus\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;

@@ -471,7 +471,7 @@ The features checked come from `polycart.atrium.features`. Point it at a subclas
 
 ## Sources and history
 
-Every cart records the **`source`** it was created (or last converted) through, as refactor-circus/foundation's `Surface` names it: `http` (the JSON API), `mcp`, `cortex` (a Cortex agent), `atrium`, `cli` or `code`, or a name of your own.
+Every cart records the **`source`** it was created (or last converted) through, as refactor-circus/keystone's `Surface` names it: `http` (the JSON API), `mcp`, `cortex` (a Cortex agent), `atrium`, `cli` or `code`, or a name of your own.
 
 Polycart keeps no history of its own. Install [refactor-circus/keen](https://github.com/Refactor-Circus/Keen), the suite-wide audit log, and every change to a cart is recorded with who made it, through which surface and what changed. Line, sharing, merge and conversion entries are about the cart; a merge names the merged cart in `merged_from`, and a copy made by a conversion names the original in `converted_from`. Without Keen, carts keep no history.
 
@@ -517,7 +517,7 @@ The code is organised into domain modules under `src/Domains/{Domain}` (`Refacto
 | `Sharing` | `CartMemberModel`, sharing and visibility, `CartAccess` |
 | `Scope` | `CartPathModel`, the `ScopeTree`, `CartScope` and `CartParticipant` |
 
-Polycart stands on [refactor-circus/foundation](https://github.com/Refactor-Circus/Foundation), the runtime the Refactor Circus packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Foundation's MCP request plus the `cortex` surface for agent calls and line reason codes), the MCP server and its history tool, `Support/` (morph lookups and the base policy) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain. Domain providers extend Foundation's `ServiceProvider` directly. Each change's history is refactor-circus/keen's, read through Foundation's `AuditTrail`.
+Polycart stands on [refactor-circus/keystone](https://github.com/Refactor-Circus/Keystone), the runtime the Refactor Circus packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Keystone's MCP request plus the `cortex` surface for agent calls and line reason codes), the MCP server and its history tool, `Support/` (morph lookups and the base policy) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain. Domain providers extend Keystone's `ServiceProvider` directly. Each change's history is refactor-circus/keen's, read through Keystone's `AuditTrail`.
 
 ## Testing
 

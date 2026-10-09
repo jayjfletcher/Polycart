@@ -7,7 +7,7 @@ namespace RefactorCircus\Polycart\Domains\Sharing\Events;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use RefactorCircus\Foundation\Contracts\ActionStartingEvent;
+use RefactorCircus\Keystone\Contracts\ActionStartingEvent;
 use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
