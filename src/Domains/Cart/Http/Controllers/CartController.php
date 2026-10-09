@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Http\Controllers;
+namespace RefactorCircus\Polycart\Domains\Cart\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use JayI\Polycart\Domains\Cart\Http\Requests\ActiveCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\ClearCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\ConvertCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\DestroyCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\IndexCartsRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\MergeCartsRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\ShowCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\StoreCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\TransitionCartRequest;
-use JayI\Polycart\Domains\Cart\Http\Requests\UpdateCartRequest;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\ActiveCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\ClearCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\ConvertCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\DestroyCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\IndexCartsRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\MergeCartsRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\ShowCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\StoreCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\TransitionCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\UpdateCartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 final class CartController
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\CartLine\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\Cart\Http\Requests\CartRequest;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
-use JayI\Polycart\Domains\CartLine\Actions\RemoveLinesAction;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\RemoveLinesAction;
 
 /**
  * The ids may come in the body or the query string, since some clients and

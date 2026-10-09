@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Mcp\Requests;
+namespace RefactorCircus\Polycart\Domains\Cart\Mcp\Requests;
 
 use Illuminate\Database\Eloquent\Collection;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Mcp\Request;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Mcp\Request;
 
 abstract class CartRequest extends Request
 {

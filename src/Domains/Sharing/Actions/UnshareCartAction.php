@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Actions;
+namespace RefactorCircus\Polycart\Domains\Sharing\Actions;
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Events\CartUnsharedActionEvent;
-use JayI\Polycart\Domains\Sharing\Events\CartUnsharingActionEvent;
-use JayI\Polycart\Domains\Sharing\Exceptions\SharingException;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Events\CartUnsharedActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Events\CartUnsharingActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Exceptions\SharingException;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * Take a member off a cart. The last member holding the type's top role

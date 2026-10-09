@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Mcp;
+namespace RefactorCircus\Polycart\Mcp;
 
-use JayI\Foundation\Mcp\Requests\Request as FoundationRequest;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
+use RefactorCircus\Foundation\Mcp\Requests\Request as FoundationRequest;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
 
 /**
  * Base MCP request for Polycart's tools.

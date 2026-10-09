@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\Cart\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
+use RefactorCircus\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
 
 final class UpdateCartRequest extends CartRequest
 {

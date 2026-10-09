@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\Sharing\Mcp\Requests\ShareCartMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Requests\ShareCartMcpRequest;
 
 #[Name('share-cart')]
 #[Description('Share a cart with a person or a whole scope, such as a team, inside the cart\'s boundary. Sharing with an existing member changes their role. Roles come from the cart\'s type: see list-cart-types.')]

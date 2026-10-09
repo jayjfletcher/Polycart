@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Domains\Cart\Exceptions\InvalidParentException;
-use JayI\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidParentException;
+use RefactorCircus\Polycart\Facades\Polycart;
 
 it('nests carts and records the root of the tree', function (): void {
     $project = Polycart::create('project', attributes: ['label' => 'Tower A']);

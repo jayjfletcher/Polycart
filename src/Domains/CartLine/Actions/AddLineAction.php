@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Actions;
+namespace RefactorCircus\Polycart\Domains\CartLine\Actions;
 
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pipeline\Pipeline;
-use JayI\Foundation\Support\Surface;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
 
 /**
  * Put something in a cart by sending it through the cart type's stages.

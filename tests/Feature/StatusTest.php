@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\Cart\Events\CartTransitionedActionEvent;
-use JayI\Polycart\Domains\Cart\Exceptions\InvalidTransitionException;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Types\OrderStatus;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartTransitionedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidTransitionException;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\OrderStatus;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
 it('moves a cart through its own lifecycle', function (): void {
     Event::fake([CartTransitionedActionEvent::class]);

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
-use JayI\Atrium\Domains\Navigation\Data\NavItem;
-use JayI\Atrium\Domains\Navigation\Services\NavigationRegistry;
-use JayI\Polycart\Atrium\Features\PolycartSupportFeature;
-use JayI\Polycart\Atrium\PolycartPlugin;
-use JayI\Polycart\Tests\Fixtures\Features\UninstalledFeature;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
 use Laravel\Pennant\Feature;
+use RefactorCircus\Atrium\Domains\Navigation\Data\NavItem;
+use RefactorCircus\Atrium\Domains\Navigation\Services\NavigationRegistry;
+use RefactorCircus\Polycart\Atrium\Features\PolycartSupportFeature;
+use RefactorCircus\Polycart\Atrium\PolycartPlugin;
+use RefactorCircus\Polycart\Tests\Fixtures\Features\UninstalledFeature;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
 
 beforeEach(function (): void {
     // Atrium denies access outside local until a gate is defined.
@@ -87,16 +87,4 @@ it('skips a feature class that cannot be loaded', function (): void {
     config()->set('polycart.atrium.features', [UninstalledFeature::class, 'Missing\\Feature', 'polycart-dashboard']);
 
     expect(app(PolycartPlugin::class)->features())->toBe(['polycart-dashboard']);
-});
-
-it('keeps the stored name it had before it moved', function (): void {
-    // Values stored before the class moved from JayI\Polycart\Features.
-    Feature::for(null)->deactivate('JayI\\Polycart\\Features\\PolycartSupportFeature');
-
-    expect(Feature::for(null)->active(PolycartSupportFeature::class))->toBeFalse()
-        ->and(navigationFor(signedIn()))->not->toContain('Carts');
-
-    Feature::define(OffPolycartSupportFeature::class);
-
-    expect(Feature::defined())->toContain('JayI\\Polycart\\Features\\PolycartSupportFeature', OffPolycartSupportFeature::class);
 });

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Atrium;
+namespace RefactorCircus\Polycart\Atrium;
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * The one place Polycart's dashboard decides a status's colour.

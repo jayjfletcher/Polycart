@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Exceptions;
+namespace RefactorCircus\Polycart\Domains\Sharing\Exceptions;
 
-use JayI\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
 
 final class SharingException extends PolycartException
 {

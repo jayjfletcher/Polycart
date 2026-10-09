@@ -1,4 +1,4 @@
-@use(JayI\Polycart\Atrium\Format)
+@use(RefactorCircus\Polycart\Atrium\Format)
 
 <x-atrium::layout :title="__('polycart::polycart.carts')">
     <x-atrium::page-header :title="__('polycart::polycart.carts')" />
@@ -76,7 +76,7 @@
             <x-atrium::pagination :paginator="$carts" />
         @endif
 
-        {{-- Polycart's recent history from the suite-wide audit log; renders nothing until jayi/keen is installed. --}}
+        {{-- Polycart's recent history from the suite-wide audit log; renders nothing until refactor-circus/keen is installed. --}}
         @if ($showHistory)
             <x-atrium::audit-trail source="polycart" />
         @endif

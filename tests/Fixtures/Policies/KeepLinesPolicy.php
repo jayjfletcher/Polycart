@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Policies;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Policies\CartLinePolicy;
 
 /**
  * Lines may be changed but never removed.

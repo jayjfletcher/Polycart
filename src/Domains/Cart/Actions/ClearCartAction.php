@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
-use JayI\Polycart\Domains\Cart\Events\CartClearedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartClearingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Actions\RemoveLineAction;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartClearedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartClearingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\RemoveLineAction;
 
 /**
  * Remove every line from a cart.

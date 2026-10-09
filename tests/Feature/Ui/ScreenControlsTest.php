@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use JayI\Atrium\Domains\Navigation\Data\NavItem;
-use JayI\Atrium\Domains\Navigation\Services\NavigationRegistry;
-use JayI\Polycart\Atrium\PolycartPlugin;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
-use JayI\Polycart\Tests\Fixtures\Models\Team;
+use RefactorCircus\Atrium\Domains\Navigation\Data\NavItem;
+use RefactorCircus\Atrium\Domains\Navigation\Services\NavigationRegistry;
+use RefactorCircus\Polycart\Atrium\PolycartPlugin;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Policies\CartPolicy;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Team;
 
 /**
  * The dashboard asks the same policy questions the JSON API asks: each

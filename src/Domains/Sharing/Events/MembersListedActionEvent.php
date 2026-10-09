@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Events;
+namespace RefactorCircus\Polycart\Domains\Sharing\Events;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Foundation\Contracts\ActionFinishedEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * A cart's members were listed.

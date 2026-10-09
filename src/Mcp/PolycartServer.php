@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Mcp;
+namespace RefactorCircus\Polycart\Mcp;
 
-use JayI\Foundation\Mcp\Server;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\DeleteCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\MergeCartsTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\UpdateLinesTool;
-use JayI\Polycart\Domains\CartType\Mcp\Tools\ListCartTypesTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\ListMembersTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\SetVisibilityTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\ShareCartTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\UnshareCartTool;
-use JayI\Polycart\Mcp\Tools\ListPolycartHistoryTool;
 use Laravel\Mcp\Server\Attributes\Instructions;
 use Laravel\Mcp\Server\Attributes\Name;
 use Laravel\Mcp\Server\Attributes\Version;
 use Laravel\Mcp\Server\Tool;
+use RefactorCircus\Foundation\Mcp\Server;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\DeleteCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\MergeCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\UpdateLinesTool;
+use RefactorCircus\Polycart\Domains\CartType\Mcp\Tools\ListCartTypesTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\ListMembersTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\SetVisibilityTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\ShareCartTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\UnshareCartTool;
+use RefactorCircus\Polycart\Mcp\Tools\ListPolycartHistoryTool;
 
 #[Name('Polycart')]
 #[Version('1.0.0')]

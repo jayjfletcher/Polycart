@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Gate;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Domains\Sharing\Policies\CartMemberPolicy;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\PolycartServiceProvider;
-use JayI\Polycart\Tests\Fixtures\Models\Quote;
-use JayI\Polycart\Tests\Fixtures\Policies\KeepLinesPolicy;
-use JayI\Polycart\Tests\Fixtures\Policies\ReadOnlyCartPolicy;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Policies\CartPolicy;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Policies\CartLinePolicy;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Sharing\Policies\CartMemberPolicy;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\PolycartServiceProvider;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Quote;
+use RefactorCircus\Polycart\Tests\Fixtures\Policies\KeepLinesPolicy;
+use RefactorCircus\Polycart\Tests\Fixtures\Policies\ReadOnlyCartPolicy;
 
 beforeEach(function (): void {
     config()->set('polycart.authorization', true);

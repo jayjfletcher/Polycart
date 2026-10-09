@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Support\Carbon;
-use JayI\Foundation\Support\Surface;
-use JayI\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartConvertingActionEvent;
-use JayI\Polycart\Domains\Cart\Exceptions\InvalidConversionException;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartConvertingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidConversionException;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * Turn a cart into another type: a cart into a quote, a quote into an order.

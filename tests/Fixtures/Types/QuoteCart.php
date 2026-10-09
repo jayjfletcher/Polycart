@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Types;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Types;
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Tests\Fixtures\Models\Quote;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Quote;
 
 final class QuoteCart extends CartType
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use JayI\Atrium\Testing\AtriumStyles;
+use RefactorCircus\Atrium\Testing\AtriumStyles;
 
 /*
  * Polycart ships no stylesheet: every class its views use must be one

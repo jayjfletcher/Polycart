@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
-use JayI\Polycart\Domains\Cart\Events\CartDeletedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartDeletingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartDeletedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartDeletingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Soft-delete a cart. Its lines stay with it until it is pruned.

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Resources;
+namespace RefactorCircus\Polycart\Domains\CartLine\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 
 /**
  * @mixin CartLineModel

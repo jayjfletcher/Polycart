@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Mcp\Requests;
+namespace RefactorCircus\Polycart\Domains\Sharing\Mcp\Requests;
 
-use JayI\Polycart\Domains\Cart\Mcp\Requests\CartRequest;
-use JayI\Polycart\Domains\Sharing\Actions\ShareCartAction;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Domains\Sharing\Resources\CartMemberResource;
-use JayI\Polycart\Support\Morphs;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\ShareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Sharing\Resources\CartMemberResource;
+use RefactorCircus\Polycart\Support\Morphs;
 
 final class ShareCartMcpRequest extends CartRequest
 {

@@ -3,7 +3,7 @@
 Polycart keeps two kinds of record about a cart:
 
 - **`source`** on the cart: the surface it was created through, or last converted through.
-- **Its history**, kept by [jayi/keen](https://github.com/jayjfletcher/Keen), the audit log every jayi package shares: one entry per change, with who made it, through which surface, what changed and why. Polycart keeps no history of its own; without Keen installed, carts keep none.
+- **Its history**, kept by [refactor-circus/keen](https://github.com/Refactor-Circus/Keen), the audit log every Refactor Circus package shares: one entry per change, with who made it, through which surface, what changed and why. Polycart keeps no history of its own; without Keen installed, carts keep none.
 
 This guide covers:
 
@@ -19,7 +19,7 @@ This guide covers:
 
 ## Sources
 
-A cart's `source` is the surface it was created through, as jayi/foundation's `Surface` names it, the same name the audit log records with every entry:
+A cart's `source` is the surface it was created through, as refactor-circus/foundation's `Surface` names it, the same name the audit log records with every entry:
 
 | Source | When |
 | --- | --- |
@@ -37,7 +37,7 @@ A source is stored as a plain string, so you can name your own (`web`, `import`,
 **Around a block of code**, with `Polycart::usingSource()`, a shortcut for Foundation's `Surface::using()`:
 
 ```php
-use JayI\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Facades\Polycart;
 
 Polycart::usingSource('import', function () use ($rows) {
     foreach ($rows as $row) {
@@ -51,7 +51,7 @@ The surface is restored afterwards, even when the callback throws, and blocks ca
 **On your own routes**, name the surface for a route-name prefix once, from a service provider:
 
 ```php
-use JayI\Foundation\Support\Surface;
+use RefactorCircus\Foundation\Support\Surface;
 
 app(Surface::class)->route('checkout.', 'web');
 ```
@@ -60,7 +60,7 @@ API and MCP callers cannot choose a source; it always names the surface they use
 
 ## History
 
-With jayi/keen installed, every change made through Polycart's actions is recorded as an entry with source `polycart`:
+With refactor-circus/keen installed, every change made through Polycart's actions is recorded as an entry with source `polycart`:
 
 | Field | Meaning |
 | --- | --- |
@@ -93,7 +93,7 @@ Every action Polycart takes announces itself through its action events, and Keen
 | `cart.unshared` | A member is removed | the cart | `member_type`, `member_id` |
 | `visibility.changed` | Visibility changes | the cart | `from`, `to` |
 
-The line, sharing, merge and conversion events implement `JayI\Foundation\Audit\Contracts\Auditable` to name the cart as their subject. Carts and lines are labelled through Foundation's `AuditHooks`.
+The line, sharing, merge and conversion events implement `RefactorCircus\Foundation\Audit\Contracts\Auditable` to name the cart as their subject. Carts and lines are labelled through Foundation's `AuditHooks`.
 
 ## Where a cart came from
 
@@ -104,7 +104,7 @@ A cart's history answers where it came from. A cart that received another's line
 Record your application's own events with Keen's facade. They are stored with source `app`:
 
 ```php
-use JayI\Keen\Facades\Keen;
+use RefactorCircus\Keen\Facades\Keen;
 
 Keen::record('cart.exported')->on($cart)->with(['reference' => $salesOrder->number])->save();
 ```

@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-use JayI\Cortex\Domains\McpServer\Actions\CreateMcpInstructionVersionAction;
-use JayI\Cortex\Domains\McpServer\Services\McpServerRegistry;
-use JayI\Cortex\Domains\Tool\Actions\CreateToolDescriptionVersionAction;
-use JayI\Cortex\Domains\Tool\Services\ToolRegistry;
-use JayI\Cortex\Facades\Cortex;
-use JayI\Foundation\Cortex\CortexIntegration;
-use JayI\Foundation\Packages\PackageRegistry;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Tool as AgentTool;
 use Laravel\Ai\Events\InvokingTool;
 use Laravel\Ai\Events\ToolInvoked;
 use Laravel\Ai\Tools\Request;
 use Laravel\Mcp\Server\Transport\FakeTransporter;
+use RefactorCircus\Cortex\Domains\McpServer\Actions\CreateMcpInstructionVersionAction;
+use RefactorCircus\Cortex\Domains\McpServer\Services\McpServerRegistry;
+use RefactorCircus\Cortex\Domains\Tool\Actions\CreateToolDescriptionVersionAction;
+use RefactorCircus\Cortex\Domains\Tool\Services\ToolRegistry;
+use RefactorCircus\Cortex\Facades\Cortex;
+use RefactorCircus\Foundation\Cortex\CortexIntegration;
+use RefactorCircus\Foundation\Packages\PackageRegistry;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
 
 it('registers the MCP server with Cortex', function (): void {
     $servers = app(McpServerRegistry::class);

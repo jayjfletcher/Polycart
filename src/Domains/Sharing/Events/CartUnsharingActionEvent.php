@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Events;
+namespace RefactorCircus\Polycart\Domains\Sharing\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Foundation\Contracts\ActionStartingEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Foundation\Contracts\ActionStartingEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * A member is about to be removed from a cart.

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Policies;
+namespace RefactorCircus\Polycart\Domains\Sharing\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Support\Policies\Policy;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Support\Policies\Policy;
 
 /**
  * Seeing who a cart is shared with needs `view` on the cart; sharing it,

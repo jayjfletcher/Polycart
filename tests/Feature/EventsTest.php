@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use JayI\Foundation\Contracts\ActionFinishedEvent;
-use JayI\Foundation\Contracts\ActionStartingEvent;
-use JayI\Foundation\Contracts\ModelLifecycleEvent;
-use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
-use JayI\Polycart\Domains\Cart\Actions\ListCartsAction;
-use JayI\Polycart\Domains\Cart\Actions\ShowCartAction;
-use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
-use JayI\Polycart\Domains\Cart\Events\CartCreatingEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LinesAddedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LinesAddingActionEvent;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartType\Actions\ListCartTypesAction;
-use JayI\Polycart\Domains\Sharing\Actions\ListMembersAction;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Models\Quote;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
+use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
+use RefactorCircus\Foundation\Contracts\ActionStartingEvent;
+use RefactorCircus\Foundation\Contracts\ModelLifecycleEvent;
+use RefactorCircus\Polycart\Domains\Cart\Actions\DeleteCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ListCartsAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ShowCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartCreatingEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LinesAddedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LinesAddingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartType\Actions\ListCartTypesAction;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\ListMembersAction;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Quote;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
 /**
  * Record every event of a kind, in order.
@@ -158,7 +158,7 @@ it('gives every action exactly one start and one finish event', function (): voi
         preg_match_all('/([A-Za-z]+ActionEvent)::dispatch/', $source, $matches);
 
         $kinds = array_map(
-            fn (string $event): string => is_subclass_of('JayI\\Polycart\\Domains\\'.basename(dirname($path, 2)).'\\Events\\'.$event, ActionStartingEvent::class) ? 'start' : 'finish',
+            fn (string $event): string => is_subclass_of('RefactorCircus\\Polycart\\Domains\\'.basename(dirname($path, 2)).'\\Events\\'.$event, ActionStartingEvent::class) ? 'start' : 'finish',
             $matches[1],
         );
 

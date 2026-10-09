@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Exceptions;
+namespace RefactorCircus\Polycart\Exceptions;
 
 final class UnknownMorphException extends PolycartException
 {

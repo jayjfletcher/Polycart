@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\CartType\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Foundation\Http\Requests\Request;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Actions\ListCartTypesAction;
-use JayI\Polycart\Domains\CartType\Http\Resources\CartTypeResource;
+use RefactorCircus\Foundation\Http\Requests\Request;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Actions\ListCartTypesAction;
+use RefactorCircus\Polycart\Domains\CartType\Http\Resources\CartTypeResource;
 
 final class IndexCartTypesRequest extends Request
 {

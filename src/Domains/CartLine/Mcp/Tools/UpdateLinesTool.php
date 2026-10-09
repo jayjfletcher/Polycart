@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\CartLine\Actions\UpdateLinesAction;
-use JayI\Polycart\Domains\CartLine\Mcp\Requests\UpdateLinesMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\UpdateLinesAction;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Requests\UpdateLinesMcpRequest;
 
 #[Name('update-lines')]
 #[Description('Change the quantity, and optionally the unit price, of one or more lines in a cart, all or nothing. A quantity of 0 removes the line. If any change is refused, none are kept and the error names the entry by its position and gives a reason code. Returns the cart with its lines and totals.')]

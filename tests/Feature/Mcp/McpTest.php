@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 use Illuminate\Testing\Fluent\AssertableJson;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\DeleteCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\MergeCartsTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\UpdateLinesTool;
-use JayI\Polycart\Domains\CartType\Mcp\Tools\ListCartTypesTool;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ActiveCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ClearCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\DeleteCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\MergeCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\UpdateCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\RemoveLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\UpdateLinesTool;
+use RefactorCircus\Polycart\Domains\CartType\Mcp\Tools\ListCartTypesTool;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
 use Workbench\Database\Factories\UserFactory;
 
 it('lists the cart types', function (): void {

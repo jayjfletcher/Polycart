@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
-use JayI\Atrium\Domains\Plugins\Services\PluginRegistry;
-use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
-use JayI\Polycart\Atrium\PolycartPlugin;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
+use RefactorCircus\Atrium\Domains\Plugins\Services\PluginRegistry;
+use RefactorCircus\Atrium\Domains\Widgets\Data\WidgetDefinition;
+use RefactorCircus\Polycart\Atrium\PolycartPlugin;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
 beforeEach(function (): void {
     ValidateCsrfToken::except(['*']);

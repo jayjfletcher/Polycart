@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Scope\Contracts;
+namespace RefactorCircus\Polycart\Domains\Scope\Contracts;
 
 /**
  * A level of the application's tree a cart can live in: a team, an

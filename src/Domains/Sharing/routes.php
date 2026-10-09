@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use JayI\Polycart\Domains\Sharing\Http\Controllers\CartMemberController;
+use RefactorCircus\Polycart\Domains\Sharing\Http\Controllers\CartMemberController;
 
 Route::put('carts/{cart}/visibility', [CartMemberController::class, 'visibility'])->name('carts.visibility');
 

@@ -46,7 +46,7 @@ Implement two interfaces. Polycart creates no users, teams or organizations; you
 ### `CartScope`: each level of the tree
 
 ```php
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
 
 class Organization extends Model implements CartScope
 {
@@ -70,8 +70,8 @@ Trees can be any depth: department → division → organization, and so on. Pol
 ### `CartParticipant`: the people
 
 ```php
-use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
-use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
+use RefactorCircus\Polycart\Domains\Cart\Concerns\HasCarts;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartParticipant;
 
 class User extends Authenticatable implements CartParticipant
 {
@@ -111,7 +111,7 @@ Code that calls Polycart directly is not limited by these lists.
 Pass the scope when you create a cart or ask for an active one:
 
 ```php
-use JayI\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Facades\Polycart;
 
 $cart = Polycart::create('quote', $user, ['label' => 'Lobby'], scope: $salesTeam);
 
@@ -215,7 +215,7 @@ Visibility widens access beyond members, but only inside the cart's own tree:
 People who see a cart only through its visibility get the type's `visibilityRole()`, which is its weakest role (`viewer` by default). If someone is also a member, they get the stronger of the two roles.
 
 ```php
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
 
 $cart->setVisibility(Visibility::Scope);
 $cart->setVisibility('boundary');
@@ -249,7 +249,7 @@ Domain calls are **not** permission-checked. This includes `$cart->add()`, `Poly
 ## Querying
 
 ```php
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 $user->accessibleCarts()->ofType('quote')->get();     // everything this user can see
 CartModel::query()->accessibleBy($user)->get();            // the same, from the model

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Actions;
+namespace RefactorCircus\Polycart\Domains\CartLine\Actions;
 
 use Illuminate\Database\ConnectionInterface;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Events\LinesUpdatedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LinesUpdatingActionEvent;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Support\LineLookup;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LinesUpdatedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LinesUpdatingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Support\LineLookup;
 
 /**
  * Change several lines' quantities or prices at once, all or nothing.

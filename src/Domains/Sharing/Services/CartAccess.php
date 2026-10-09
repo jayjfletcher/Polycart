@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Services;
+namespace RefactorCircus\Polycart\Domains\Sharing\Services;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Scope\Services\ScopeTree;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Scope\Services\ScopeTree;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * Decides what someone may do with a cart.

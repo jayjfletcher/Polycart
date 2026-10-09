@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Exceptions;
+namespace RefactorCircus\Polycart\Domains\CartType\Exceptions;
 
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
 
 final class UnknownCartTypeException extends PolycartException
 {

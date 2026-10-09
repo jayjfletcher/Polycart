@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Policies;
+namespace RefactorCircus\Polycart\Domains\CartLine\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Support\Policies\Policy;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Support\Policies\Policy;
 
 /**
  * Lines are cart content, so each check defers to the cart: reading a line

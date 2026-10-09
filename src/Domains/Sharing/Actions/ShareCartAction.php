@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Actions;
+namespace RefactorCircus\Polycart\Domains\Sharing\Actions;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
-use JayI\Polycart\Domains\Scope\Services\ScopeTree;
-use JayI\Polycart\Domains\Sharing\Events\CartSharedActionEvent;
-use JayI\Polycart\Domains\Sharing\Events\CartSharingActionEvent;
-use JayI\Polycart\Domains\Sharing\Exceptions\SharingException;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartParticipant;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Domains\Scope\Services\ScopeTree;
+use RefactorCircus\Polycart\Domains\Sharing\Events\CartSharedActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Events\CartSharingActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Exceptions\SharingException;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * Share a cart with someone, or a whole scope, inside the cart's boundary.

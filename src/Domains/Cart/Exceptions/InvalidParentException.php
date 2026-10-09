@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Exceptions;
+namespace RefactorCircus\Polycart\Domains\Cart\Exceptions;
 
-use JayI\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
 
 final class InvalidParentException extends PolycartException
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Support;
+namespace RefactorCircus\Polycart\Domains\CartType\Support;
 
 /**
  * The plain cart a customer fills before checkout.

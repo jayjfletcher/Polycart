@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\Sharing\Mcp\Requests\SetVisibilityMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Requests\SetVisibilityMcpRequest;
 
 #[Name('set-visibility')]
 #[Description('Change who sees a cart without being shared in: private (members only), scope (everyone in the cart\'s scope, such as its team), or boundary (everyone in its organization).')]

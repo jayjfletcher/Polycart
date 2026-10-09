@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Support;
+namespace RefactorCircus\Polycart\Domains\CartType\Support;
 
 use BackedEnum;
 use Carbon\CarbonInterval;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
-use JayI\Polycart\Domains\CartLine\Support\Stages\FindMatchingLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
-use JayI\Polycart\Domains\CartLine\Support\Stages\ValidateLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\WriteLine;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\FindMatchingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\ValidateLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\WriteLine;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
 
 /**
  * Everything that makes one kind of cart behave differently from another.

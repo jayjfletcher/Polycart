@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains;
+namespace RefactorCircus\Polycart\Domains;
 
 use Illuminate\Support\ServiceProvider;
-use JayI\Polycart\Domains\Cart\CartServiceProvider;
-use JayI\Polycart\Domains\CartLine\CartLineServiceProvider;
-use JayI\Polycart\Domains\CartType\CartTypeServiceProvider;
-use JayI\Polycart\Domains\Scope\ScopeServiceProvider;
-use JayI\Polycart\Domains\Sharing\SharingServiceProvider;
+use RefactorCircus\Polycart\Domains\Cart\CartServiceProvider;
+use RefactorCircus\Polycart\Domains\CartLine\CartLineServiceProvider;
+use RefactorCircus\Polycart\Domains\CartType\CartTypeServiceProvider;
+use RefactorCircus\Polycart\Domains\Scope\ScopeServiceProvider;
+use RefactorCircus\Polycart\Domains\Sharing\SharingServiceProvider;
 
 class DomainServiceProvider extends ServiceProvider
 {

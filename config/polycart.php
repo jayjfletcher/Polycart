@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Atrium\Features\PolycartSupportFeature;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy;
-use JayI\Polycart\Domains\CartType\Support\ShoppingCart;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Domains\Sharing\Policies\CartMemberPolicy;
+use RefactorCircus\Polycart\Atrium\Features\PolycartSupportFeature;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Policies\CartPolicy;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Policies\CartLinePolicy;
+use RefactorCircus\Polycart\Domains\CartType\Support\ShoppingCart;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Sharing\Policies\CartMemberPolicy;
 
 return [
 
@@ -20,7 +20,7 @@ return [
     |
     | Every kind of cart your application keeps — a shopping cart, a saved
     | cart, a quote, an order, a project — keyed by the string stored in the
-    | carts table. Each class extends JayI\Polycart\Domains\CartType\Support\CartType and holds
+    | carts table. Each class extends RefactorCircus\Polycart\Domains\CartType\Support\CartType and holds
     | that kind's rules. Entries here win over types a package registers.
     |
     */
@@ -155,7 +155,7 @@ return [
     | Cortex
     |--------------------------------------------------------------------------
     |
-    | When jayi/cortex is installed, the MCP server is registered with it, so
+    | When refactor-circus/cortex is installed, the MCP server is registered with it, so
     | its instructions can be overridden, and the tools join its registry,
     | so Cortex agents can manage carts. Set `tools` to a list of tool names,
     | such as ['list-carts', 'show-cart'], to offer only some of them. The
@@ -175,7 +175,7 @@ return [
     | Dashboard
     |--------------------------------------------------------------------------
     |
-    | When jayi/atrium is installed, Polycart adds its pages, widgets, and
+    | When refactor-circus/atrium is installed, Polycart adds its pages, widgets, and
     | search to the Atrium dashboard, behind Atrium's own authorization. Each
     | page, navigation item and control is then shown only when the policies
     | above allow its action, as the JSON API checks it.
@@ -192,7 +192,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Features that switch Polycart in Atrium on and off as a whole: its
-    | navigation, widgets, search and pages. With jayi/pennantplus installed,
+    | navigation, widgets, search and pages. With refactor-circus/pennantplus installed,
     | PolycartSupportFeature is on until its global value is set; without it,
     | the class does not exist and is skipped. Point this at a subclass or at
     | your own feature, or empty it to never check one.

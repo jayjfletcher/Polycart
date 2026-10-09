@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Domains\Sharing\Events\CartSharedActionEvent;
-use JayI\Polycart\Domains\Sharing\Events\CartUnsharedActionEvent;
-use JayI\Polycart\Domains\Sharing\Exceptions\SharingException;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Types\OrderStatus;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Sharing\Events\CartSharedActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Events\CartUnsharedActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Exceptions\SharingException;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\OrderStatus;
 
 it('records the whole tree a cart is created in and makes the creator its owner', function (): void {
     $acme = organization();

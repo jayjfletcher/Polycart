@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Actions\UpdateLineAction;
-use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
-use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LineRemovedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LineUpdatedActionEvent;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Models\Service;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\UpdateLineAction;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineRemovedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineUpdatedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Service;
 
 it('adds a purchasable at its own price', function (): void {
     $cart = Polycart::create('cart');

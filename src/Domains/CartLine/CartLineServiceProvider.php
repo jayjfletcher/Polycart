@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine;
+namespace RefactorCircus\Polycart\Domains\CartLine;
 
-use JayI\Foundation\Audit\AuditHooks;
-use JayI\Foundation\Support\ServiceProvider;
-use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
+use RefactorCircus\Foundation\Audit\AuditHooks;
+use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
 
 class CartLineServiceProvider extends ServiceProvider
 {
@@ -20,11 +20,7 @@ class CartLineServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->keepMorphAliases([
-            'JayI\Polycart\Models\CartLine' => CartLineModel::class,
-        ]);
-
-        // How the audit log (jayi/keen) names a line: a custom line by its
+        // How the audit log (refactor-circus/keen) names a line: a custom line by its
         // description, any other by what it is for.
         $this->app->make(AuditHooks::class)->label(CartLineModel::class, fn (CartLineModel $line): string => match (true) {
             ! $line->isCustom() => class_basename((string) $line->purchasable_type).' #'.$line->purchasable_id,

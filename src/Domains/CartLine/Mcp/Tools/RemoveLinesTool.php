@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\CartLine\Actions\RemoveLinesAction;
-use JayI\Polycart\Domains\CartLine\Mcp\Requests\RemoveLinesMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\RemoveLinesAction;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Requests\RemoveLinesMcpRequest;
 
 #[Name('remove-lines')]
 #[Description('Remove one or more lines from a cart, all or nothing. Every line must belong to the cart; if one does not, none are removed. Returns the cart with its remaining lines and totals.')]

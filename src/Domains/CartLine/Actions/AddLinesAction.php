@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Actions;
+namespace RefactorCircus\Polycart\Domains\CartLine\Actions;
 
 use Illuminate\Database\ConnectionInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Events\LinesAddedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LinesAddingActionEvent;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LinesAddedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LinesAddingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 
 /**
  * Add several lines to a cart at once, all or nothing.

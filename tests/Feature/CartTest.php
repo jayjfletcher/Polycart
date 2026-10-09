@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\Cart\Events\CartCreatedActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Models\Quote;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
-use JayI\Polycart\Tests\Fixtures\Types\RetailCart;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartCreatedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Quote;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteStatus;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\RetailCart;
 use Workbench\App\Models\User;
 use Workbench\Database\Factories\UserFactory;
 

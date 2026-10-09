@@ -5,11 +5,11 @@ declare(strict_types=1);
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Schema;
-use JayI\Keen\Domains\Audit\Models\AuditEntryModel;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Mcp\Tools\ListPolycartHistoryTool;
+use RefactorCircus\Keen\Domains\Audit\Models\AuditEntryModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\Mcp\Tools\ListPolycartHistoryTool;
 
 beforeEach(function (): void {
     ValidateCsrfToken::except(['*']);

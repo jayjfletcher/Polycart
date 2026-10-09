@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Atrium\Http\Controllers\Concerns;
+namespace RefactorCircus\Polycart\Atrium\Http\Controllers\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Atrium\ScreenAccess;
+use RefactorCircus\Polycart\Atrium\ScreenAccess;
 
 /**
  * The same policy checks the JSON API and MCP tools make, for Atrium screens.

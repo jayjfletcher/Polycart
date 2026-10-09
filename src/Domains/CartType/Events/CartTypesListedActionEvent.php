@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Events;
+namespace RefactorCircus\Polycart\Domains\CartType\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Foundation\Contracts\ActionFinishedEvent;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Foundation\Contracts\ActionFinishedEvent;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * The cart types were listed.

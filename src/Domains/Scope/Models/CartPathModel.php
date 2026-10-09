@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Scope\Models;
+namespace RefactorCircus\Polycart\Domains\Scope\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Foundation\Models\Concerns\DispatchesModelEvents;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * One level of the tree a cart lives in. Depth 0 is the cart's own scope.

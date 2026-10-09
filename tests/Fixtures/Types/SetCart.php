@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Types;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Types;
 
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 final class SetCart extends CartType
 {

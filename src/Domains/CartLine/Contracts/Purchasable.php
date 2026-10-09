@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Contracts;
+namespace RefactorCircus\Polycart\Domains\CartLine\Contracts;
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * A model that can be put in a cart and knows its own price.

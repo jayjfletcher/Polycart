@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Mcp\Requests;
+namespace RefactorCircus\Polycart\Domains\Sharing\Mcp\Requests;
 
-use JayI\Polycart\Domains\Cart\Mcp\Requests\CartRequest;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
-use JayI\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
 
 final class SetVisibilityMcpRequest extends CartRequest
 {

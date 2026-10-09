@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Models;
+namespace RefactorCircus\Polycart\Domains\Sharing\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
-use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Foundation\Models\Concerns\DispatchesModelEvents;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Someone a cart is shared with, and the role the cart's type gives them.

@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Support\ServiceProvider;
-use JayI\Foundation\Auth\Authorizer;
-use JayI\Foundation\Packages\PackageRegistry;
-use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
-use JayI\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
-use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Polycart;
-use JayI\Polycart\PolycartServiceProvider;
+use RefactorCircus\Foundation\Auth\Authorizer;
+use RefactorCircus\Foundation\Packages\PackageRegistry;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use RefactorCircus\Polycart\Domains\CartLine\Services\PurchasablePriceResolver;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\Polycart;
+use RefactorCircus\Polycart\PolycartServiceProvider;
 
 it('resolves the entry point as a singleton', function (): void {
     expect(app(Polycart::class))->toBe(app(Polycart::class));

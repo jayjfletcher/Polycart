@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Actions;
+namespace RefactorCircus\Polycart\Domains\Sharing\Actions;
 
 use Illuminate\Validation\Rule;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Domains\Sharing\Events\VisibilityChangedActionEvent;
-use JayI\Polycart\Domains\Sharing\Events\VisibilityChangingActionEvent;
-use JayI\Polycart\Domains\Sharing\Exceptions\SharingException;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Sharing\Events\VisibilityChangedActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Events\VisibilityChangingActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Exceptions\SharingException;
 
 /**
  * Widen or narrow who sees a cart without being shared in.

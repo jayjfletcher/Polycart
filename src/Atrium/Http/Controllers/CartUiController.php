@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Atrium\Http\Controllers;
+namespace RefactorCircus\Polycart\Atrium\Http\Controllers;
 
 use BackedEnum;
 use Closure;
@@ -10,29 +10,29 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use JayI\Foundation\Audit\History;
-use JayI\Foundation\Packages\PackageRegistry;
-use JayI\Polycart\Atrium\Http\Controllers\Concerns\AuthorizesScreens;
-use JayI\Polycart\Atrium\ScreenAccess;
-use JayI\Polycart\Domains\Cart\Actions\ClearCartAction;
-use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
-use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
-use JayI\Polycart\Domains\Cart\Actions\ListCartsAction;
-use JayI\Polycart\Domains\Cart\Actions\ShowCartAction;
-use JayI\Polycart\Domains\Cart\Actions\TransitionCartAction;
-use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Actions\RemoveLineAction;
-use JayI\Polycart\Domains\CartLine\Actions\UpdateLineAction;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
-use JayI\Polycart\Domains\Sharing\Actions\ShareCartAction;
-use JayI\Polycart\Domains\Sharing\Actions\UnshareCartAction;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Exceptions\PolycartException;
-use JayI\Polycart\Support\Morphs;
+use RefactorCircus\Foundation\Audit\History;
+use RefactorCircus\Foundation\Packages\PackageRegistry;
+use RefactorCircus\Polycart\Atrium\Http\Controllers\Concerns\AuthorizesScreens;
+use RefactorCircus\Polycart\Atrium\ScreenAccess;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ClearCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ConvertCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\DeleteCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ListCartsAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ShowCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\TransitionCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\RemoveLineAction;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\UpdateLineAction;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\ShareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\UnshareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Support\Morphs;
 
 /**
  * The dashboard pages. Every change goes through the same Action the JSON

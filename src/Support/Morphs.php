@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Support;
+namespace RefactorCircus\Polycart\Support;
 
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use JayI\Polycart\Exceptions\UnknownMorphException;
+use RefactorCircus\Polycart\Exceptions\UnknownMorphException;
 
 /**
  * Turns an owner or purchasable named in an API or MCP call into a model.

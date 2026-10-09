@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\Sharing\Mcp\Requests\ListMembersMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Requests\ListMembersMcpRequest;
 
 #[Name('list-members')]
 #[Description('List who a cart is shared with and the role each holds. A member is a person or a whole scope, such as a team.')]

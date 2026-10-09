@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
-use JayI\Polycart\Domains\Cart\Events\CartShowingActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartShownActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartShowingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartShownActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 final class ShowCartAction
 {

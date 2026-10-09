@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\CartType\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\CartType\Mcp\Requests\ListCartTypesMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\CartType\Mcp\Requests\ListCartTypesMcpRequest;
 
 #[Name('list-cart-types')]
 #[Description('List every cart type and what it allows: its statuses and allowed moves, the types it converts into, its allowed parents, and whether its lines need a price. Read this before transitioning or converting a cart.')]

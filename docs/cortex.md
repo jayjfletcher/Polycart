@@ -1,6 +1,6 @@
 # Cortex
 
-When [`jayi/cortex`](https://github.com/jayjfletcher/cortex) is installed, Polycart connects its MCP server to it:
+When [`refactor-circus/cortex`](https://github.com/Refactor-Circus/cortex) is installed, Polycart connects its MCP server to it:
 
 - **Agents can manage carts.** Every Polycart MCP tool joins Cortex's tool registry under its own name (`list-carts`, `add-lines`, `convert-cart`, ...). Give an agent those tools, and it can list, build, share and convert carts.
 - **Instructions and descriptions can change without a deploy.** The Polycart server is registered with Cortex as `polycart`, so its instructions get Cortex's versioned, publishable overrides, and so does each tool's description. Published overrides are served both to MCP clients and to agents.
@@ -11,7 +11,7 @@ Cortex is optional. Without it, none of this runs, and nothing Cortex-related is
 ## Setup
 
 ```bash
-composer require jayi/cortex
+composer require refactor-circus/cortex
 ```
 
 That is all: Polycart notices Cortex's service provider and registers itself. Configure it in `config/polycart.php`:
@@ -69,7 +69,7 @@ This is useful for fitting the tools to your business without forking the packag
 | An MCP client, directly | `mcp` |
 | A Cortex agent, through the same tool | `cortex` |
 
-jayi/foundation's `CortexIntegration` registers the server and tools, tags and overrides, and enters the shared `cortex` surface for exactly as long as each cart tool runs. Foundation's MCP request then marks the call `mcp`; Polycart's `Mcp\Request` looks beneath that and keeps `cortex` for an agent's calls.
+refactor-circus/foundation's `CortexIntegration` registers the server and tools, tags and overrides, and enters the shared `cortex` surface for exactly as long as each cart tool runs. Foundation's MCP request then marks the call `mcp`; Polycart's `Mcp\Request` looks beneath that and keeps `cortex` for an agent's calls.
 
 ## Notes
 

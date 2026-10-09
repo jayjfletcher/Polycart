@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests;
+namespace RefactorCircus\Polycart\Tests;
 
-use JayI\Atrium\AtriumServiceProvider;
-use JayI\Polycart\PolycartServiceProvider;
-use JayI\Polycart\Tests\Fixtures\Models\Organization;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
-use JayI\Polycart\Tests\Fixtures\Models\Product;
-use JayI\Polycart\Tests\Fixtures\Models\Team;
-use JayI\Polycart\Tests\Fixtures\Types\AuditedCart;
-use JayI\Polycart\Tests\Fixtures\Types\CarelessCart;
-use JayI\Polycart\Tests\Fixtures\Types\OpeningCart;
-use JayI\Polycart\Tests\Fixtures\Types\OrderCart;
-use JayI\Polycart\Tests\Fixtures\Types\ProjectCart;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteCart;
-use JayI\Polycart\Tests\Fixtures\Types\RetailCart;
-use JayI\Polycart\Tests\Fixtures\Types\SavedCart;
-use JayI\Polycart\Tests\Fixtures\Types\SetCart;
-use JayI\Polycart\Tests\Fixtures\Types\WholesaleCart;
 use Laravel\Mcp\Server\McpServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
+use RefactorCircus\Atrium\AtriumServiceProvider;
+use RefactorCircus\Polycart\PolycartServiceProvider;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Organization;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Product;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Team;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\AuditedCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\CarelessCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\OpeningCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\OrderCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\ProjectCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\RetailCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\SavedCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\SetCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\WholesaleCart;
 use Workbench\App\Models\User;
 
 abstract class TestCase extends Orchestra
@@ -40,7 +40,7 @@ abstract class TestCase extends Orchestra
 
     protected function defineEnvironment($app): void
     {
-        // jayi/cortex is a dev dependency, so Atrium discovers its plugin here
+        // refactor-circus/cortex is a dev dependency, so Atrium discovers its plugin here
         // without its migrations; its navigation would query missing tables.
         $app['config']->set('atrium.disabled', ['cortex']);
 

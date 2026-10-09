@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Events;
+namespace RefactorCircus\Polycart\Domains\CartLine\Events;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Foundation\Contracts\ActionStartingEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Foundation\Contracts\ActionStartingEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * A line is about to go through the add pipeline.

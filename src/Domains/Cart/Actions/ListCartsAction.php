@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Events\CartsListedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartsListingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Support\Morphs;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartsListedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartsListingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Support\Morphs;
 
 final class ListCartsAction
 {

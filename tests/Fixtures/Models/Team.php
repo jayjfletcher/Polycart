@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Models;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
 
 /**
  * @property int $id

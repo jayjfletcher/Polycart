@@ -2,21 +2,17 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart;
+namespace RefactorCircus\Polycart\Domains\Cart;
 
-use JayI\Foundation\Audit\AuditHooks;
-use JayI\Foundation\Support\ServiceProvider;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Foundation\Audit\AuditHooks;
+use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 class CartServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        $this->keepMorphAliases([
-            'JayI\Polycart\Models\Cart' => CartModel::class,
-        ]);
-
-        // How the audit log (jayi/keen) names a cart: its label, else its id.
+        // How the audit log (refactor-circus/keen) names a cart: its label, else its id.
         $this->app->make(AuditHooks::class)
             ->label(CartModel::class, fn (CartModel $cart): string => $cart->label ?? $cart->id);
 

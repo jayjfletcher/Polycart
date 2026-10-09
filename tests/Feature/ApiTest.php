@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Models\Service;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Service;
 use Workbench\Database\Factories\UserFactory;
 
 it('lists the registered types with what each allows', function (): void {

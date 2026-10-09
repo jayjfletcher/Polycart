@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use JayI\Polycart\Domains\Cart\Events\CartCreatedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartCreatingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
-use JayI\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
-use JayI\Polycart\Domains\Scope\Services\ScopeTree;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartCreatedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartCreatingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartParticipant;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
+use RefactorCircus\Polycart\Domains\Scope\Services\ScopeTree;
 
 /**
  * Start a new cart of a type, hydrated as that type's model.

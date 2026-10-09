@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Models;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

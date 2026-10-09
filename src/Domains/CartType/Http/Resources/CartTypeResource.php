@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Http\Resources;
+namespace RefactorCircus\Polycart\Domains\CartType\Http\Resources;
 
 use BackedEnum;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * What a cart type allows, so a client can offer only the moves that work.

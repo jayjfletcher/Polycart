@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Services;
+namespace RefactorCircus\Polycart\Domains\CartLine\Services;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Contracts\PriceResolver;
-use JayI\Polycart\Domains\CartLine\Contracts\Purchasable;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\Purchasable;
 
 /**
  * Asks the purchasable for its own price, if it implements Purchasable.

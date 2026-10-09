@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Support\Stages;
+namespace RefactorCircus\Polycart\Domains\CartLine\Support\Stages;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
 
 /**
  * Build the CartLineModel that will be written, without saving it.

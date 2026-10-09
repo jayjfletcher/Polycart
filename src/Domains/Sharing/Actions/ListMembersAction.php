@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Actions;
+namespace RefactorCircus\Polycart\Domains\Sharing\Actions;
 
 use Illuminate\Database\Eloquent\Collection;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Events\MembersListedActionEvent;
-use JayI\Polycart\Domains\Sharing\Events\MembersListingActionEvent;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Events\MembersListedActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Events\MembersListingActionEvent;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 final class ListMembersAction
 {

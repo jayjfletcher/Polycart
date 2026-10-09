@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Policies;
+namespace RefactorCircus\Polycart\Domains\Cart\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Support\Policies\Policy;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Support\Policies\Policy;
 
 /**
  * Answers `$user->can(...)` for carts.

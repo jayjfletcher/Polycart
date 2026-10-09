@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\CartLine\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\Cart\Http\Requests\CartRequest;
-use JayI\Polycart\Domains\CartLine\Actions\AddLinesAction;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Resources\CartLineResource;
-use JayI\Polycart\Domains\CartLine\Support\LineInput;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\AddLinesAction;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Resources\CartLineResource;
+use RefactorCircus\Polycart\Domains\CartLine\Support\LineInput;
 
 final class StoreLinesRequest extends CartRequest
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Policies;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Cart\Policies\CartPolicy;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Policies\CartPolicy;
 
 /**
  * Nobody may change a cart, not even its owner.

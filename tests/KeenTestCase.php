@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests;
+namespace RefactorCircus\Polycart\Tests;
 
-use JayI\Keen\KeenServiceProvider;
+use RefactorCircus\Keen\KeenServiceProvider;
 
 /**
- * The package with jayi/keen installed, so cart changes land in the
+ * The package with refactor-circus/keen installed, so cart changes land in the
  * suite-wide audit log.
  */
 abstract class KeenTestCase extends TestCase
@@ -27,6 +27,6 @@ abstract class KeenTestCase extends TestCase
     {
         parent::defineDatabaseMigrations();
 
-        $this->loadMigrationsFrom(dirname(__DIR__).'/vendor/jayi/keen/database/migrations');
+        $this->loadMigrationsFrom(dirname(__DIR__).'/vendor/refactor-circus/keen/database/migrations');
     }
 }

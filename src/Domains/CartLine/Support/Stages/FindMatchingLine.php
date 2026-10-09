@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Support\Stages;
+namespace RefactorCircus\Polycart\Domains\CartLine\Support\Stages;
 
 use Closure;
-use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
 
 /**
  * Find the line this add merges into, locking it for the rest of the add.

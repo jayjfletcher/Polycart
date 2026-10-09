@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Tests\CortexTestCase;
-use JayI\Polycart\Tests\Fixtures\Models\Organization;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
-use JayI\Polycart\Tests\Fixtures\Models\Product;
-use JayI\Polycart\Tests\Fixtures\Models\Team;
-use JayI\Polycart\Tests\KeenTestCase;
-use JayI\Polycart\Tests\PennantPlusTestCase;
-use JayI\Polycart\Tests\TestCase;
+use RefactorCircus\Polycart\Tests\CortexTestCase;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Organization;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Product;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Team;
+use RefactorCircus\Polycart\Tests\KeenTestCase;
+use RefactorCircus\Polycart\Tests\PennantPlusTestCase;
+use RefactorCircus\Polycart\Tests\TestCase;
 
 uses(TestCase::class)->in('Feature', 'Unit');
 uses(CortexTestCase::class)->in('Cortex');

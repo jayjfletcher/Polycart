@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Support\Arr;
-use JayI\Polycart\Domains\Cart\Events\CartUpdatedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartUpdatingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartUpdatedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartUpdatingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Change a cart's label or meta.

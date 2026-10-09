@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Atrium;
+namespace RefactorCircus\Polycart\Atrium;
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Display helpers shared by the dashboard pages and widgets.

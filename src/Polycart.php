@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart;
+namespace RefactorCircus\Polycart;
 
 use BackedEnum;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
-use JayI\Foundation\Support\Surface;
-use JayI\Polycart\Domains\Cart\Actions\ActiveCartAction;
-use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
-use JayI\Polycart\Domains\Cart\Actions\CreateCartAction;
-use JayI\Polycart\Domains\Cart\Actions\MergeCartsAction;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Domains\Sharing\Actions\ShareCartAction;
-use JayI\Polycart\Domains\Sharing\Actions\UnshareCartAction;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ActiveCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ConvertCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\CreateCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\MergeCartsAction;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\ShareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\UnshareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * The public entry point.

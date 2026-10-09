@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Models;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Models;
 
 use Illuminate\Auth\Authenticatable as AuthenticatableConcern;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\Access\Authorizable;
-use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
-use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
+use RefactorCircus\Polycart\Domains\Cart\Concerns\HasCarts;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartParticipant;
 
 /**
  * @property int $id

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Support;
+namespace RefactorCircus\Polycart\Domains\CartLine\Support;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Support\Morphs;
+use RefactorCircus\Polycart\Support\Morphs;
 
 /**
  * Turns validated `lines.*` input from the API or MCP into the entries

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Support\Stages;
+namespace RefactorCircus\Polycart\Domains\CartLine\Support\Stages;
 
 use Closure;
-use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
 
 /**
  * Refuse what the cart type does not hold.

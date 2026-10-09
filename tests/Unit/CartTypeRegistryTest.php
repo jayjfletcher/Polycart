@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Exceptions\CartTypeCollisionException;
-use JayI\Polycart\Domains\CartType\Exceptions\UnknownCartTypeException;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Tests\Fixtures\Models\Product;
-use JayI\Polycart\Tests\Fixtures\Models\Quote;
-use JayI\Polycart\Tests\Fixtures\Types\OrderCart;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteCart;
-use JayI\Polycart\Tests\Fixtures\Types\SavedCart;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Exceptions\CartTypeCollisionException;
+use RefactorCircus\Polycart\Domains\CartType\Exceptions\UnknownCartTypeException;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Product;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Quote;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\OrderCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteCart;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\SavedCart;
 
 it('lets a package register a type at runtime', function (): void {
     $registry = app(CartTypeRegistry::class);

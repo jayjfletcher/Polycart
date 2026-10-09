@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Exceptions;
+namespace RefactorCircus\Polycart\Exceptions;
 
-use JayI\Foundation\Exceptions\PackageException;
+use RefactorCircus\Foundation\Exceptions\PackageException;
 
 /**
  * Every refusal the package makes: an unknown type, a rejected line, a move

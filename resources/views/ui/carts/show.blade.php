@@ -1,5 +1,5 @@
-@use(JayI\Polycart\Atrium\Format)
-@use(JayI\Polycart\Domains\Sharing\Models\CartMemberModel)
+@use(RefactorCircus\Polycart\Atrium\Format)
+@use(RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel)
 
 <x-atrium::layout :title="$cart->label ?? $cart->id">
     <x-atrium::page-header :title="$cart->label ?? $cart->id">
@@ -237,7 +237,7 @@
             </x-atrium::card>
         @endif
 
-        {{-- The cart's history from the suite-wide audit log; renders nothing until jayi/keen is installed. --}}
+        {{-- The cart's history from the suite-wide audit log; renders nothing until refactor-circus/keen is installed. --}}
         <x-atrium::audit-trail source="polycart" :subject="$cart" />
 
         @polycartCan('update', $cart)

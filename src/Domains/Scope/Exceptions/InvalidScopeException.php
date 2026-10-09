@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Scope\Exceptions;
+namespace RefactorCircus\Polycart\Domains\Scope\Exceptions;
 
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
-use JayI\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
 
 final class InvalidScopeException extends PolycartException
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Mcp\Requests;
+namespace RefactorCircus\Polycart\Domains\Cart\Mcp\Requests;
 
-use JayI\Polycart\Domains\Cart\Actions\UpdateCartAction;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
+use RefactorCircus\Polycart\Domains\Cart\Actions\UpdateCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
 
 final class UpdateCartMcpRequest extends CartRequest
 {

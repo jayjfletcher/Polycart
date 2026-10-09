@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Mcp\Tools;
+namespace RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
-use JayI\Foundation\Mcp\Tool;
-use JayI\Polycart\Domains\Sharing\Mcp\Requests\UnshareCartMcpRequest;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
 use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Attributes\Name;
+use RefactorCircus\Foundation\Mcp\Tool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Requests\UnshareCartMcpRequest;
 
 #[Name('unshare-cart')]
 #[Description('Remove a member from a cart. The last member with the top role cannot be removed.')]

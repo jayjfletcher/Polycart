@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Workbench\App\Carts;
 
 use BackedEnum;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * A placed order: a buyer pays, the owner fulfils or refunds it.

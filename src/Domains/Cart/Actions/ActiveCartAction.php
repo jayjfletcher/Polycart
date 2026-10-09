@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Events\ActiveCartResolvedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\ActiveCartResolvingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\Cart\Events\ActiveCartResolvedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\ActiveCartResolvingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
 
 /**
  * An owner's current cart of a type in a scope, started if they have none.

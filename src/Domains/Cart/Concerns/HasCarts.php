@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Concerns;
+namespace RefactorCircus\Polycart\Domains\Cart\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Polycart;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Polycart;
 
 /**
  * Give a model — a user, a team, a customer — carts of its own.

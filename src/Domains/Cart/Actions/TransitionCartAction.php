@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use BackedEnum;
-use JayI\Polycart\Domains\Cart\Events\CartTransitionedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartTransitioningActionEvent;
-use JayI\Polycart\Domains\Cart\Exceptions\InvalidTransitionException;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartTransitionedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartTransitioningActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidTransitionException;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Move a cart to another status of its own type.

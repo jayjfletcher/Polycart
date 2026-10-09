@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Types;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Types;
 
 use Closure;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
-use JayI\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Tests\Fixtures\Stages\ApplyBulkDiscount;
-use JayI\Polycart\Tests\Fixtures\Stages\CheckStock;
-use JayI\Polycart\Tests\Fixtures\Stages\EnsureCustomerCanBuy;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Tests\Fixtures\Stages\ApplyBulkDiscount;
+use RefactorCircus\Polycart\Tests\Fixtures\Stages\CheckStock;
+use RefactorCircus\Polycart\Tests\Fixtures\Stages\EnsureCustomerCanBuy;
 
 /**
  * A cart with its own add pipeline: customer rules, bulk pricing, stock.

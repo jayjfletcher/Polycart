@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests;
+namespace RefactorCircus\Polycart\Tests;
 
-use JayI\PennantPlus\PennantPlusServiceProvider;
 use Laravel\Pennant\PennantServiceProvider;
+use RefactorCircus\PennantPlus\PennantPlusServiceProvider;
 
 /**
- * Polycart booted with jayi/pennantplus answering Atrium's feature checks.
+ * Polycart booted with refactor-circus/pennantplus answering Atrium's feature checks.
  */
 abstract class PennantPlusTestCase extends TestCase
 {

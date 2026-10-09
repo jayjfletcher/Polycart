@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Models;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Models;
 
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 final class Quote extends CartModel
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Support\Policies;
+namespace RefactorCircus\Polycart\Support\Policies;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Foundation\Policies\Policy as FoundationPolicy;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Foundation\Policies\Policy as FoundationPolicy;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Shared checks for the bundled policies.

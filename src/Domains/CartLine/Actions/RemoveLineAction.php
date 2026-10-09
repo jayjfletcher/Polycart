@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Actions;
+namespace RefactorCircus\Polycart\Domains\CartLine\Actions;
 
-use JayI\Polycart\Domains\CartLine\Events\LineRemovedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LineRemovingActionEvent;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineRemovedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineRemovingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 
 final class RemoveLineAction
 {

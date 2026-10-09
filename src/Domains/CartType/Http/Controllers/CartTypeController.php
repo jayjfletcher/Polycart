@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Http\Controllers;
+namespace RefactorCircus\Polycart\Domains\CartType\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\CartType\Http\Requests\IndexCartTypesRequest;
+use RefactorCircus\Polycart\Domains\CartType\Http\Requests\IndexCartTypesRequest;
 
 final class CartTypeController
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Exceptions;
+namespace RefactorCircus\Polycart\Domains\CartLine\Exceptions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
 
 /**
  * A line was refused: by a stage of the add pipeline, or by the cart type.

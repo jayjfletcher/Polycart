@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Models;
+namespace RefactorCircus\Polycart\Domains\Cart\Models;
 
 use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,30 +15,30 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
-use JayI\Foundation\Models\Concerns\DispatchesModelEvents;
-use JayI\Foundation\Support\Surface;
-use JayI\Keen\Facades\Keen;
-use JayI\Polycart\Domains\Cart\Actions\ClearCartAction;
-use JayI\Polycart\Domains\Cart\Actions\ConvertCartAction;
-use JayI\Polycart\Domains\Cart\Actions\TransitionCartAction;
-use JayI\Polycart\Domains\Cart\Exceptions\InvalidParentException;
-use JayI\Polycart\Domains\CartLine\Actions\AddLineAction;
-use JayI\Polycart\Domains\CartLine\Actions\AddLinesAction;
-use JayI\Polycart\Domains\CartLine\Actions\RemoveLineAction;
-use JayI\Polycart\Domains\CartLine\Actions\RemoveLinesAction;
-use JayI\Polycart\Domains\CartLine\Actions\UpdateLineAction;
-use JayI\Polycart\Domains\CartLine\Actions\UpdateLinesAction;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
-use JayI\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
-use JayI\Polycart\Domains\Scope\Models\CartPathModel;
-use JayI\Polycart\Domains\Scope\Services\ScopeTree;
-use JayI\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Domains\Sharing\Services\CartAccess;
+use RefactorCircus\Foundation\Models\Concerns\DispatchesModelEvents;
+use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Keen\Facades\Keen;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ClearCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ConvertCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\TransitionCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidParentException;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\AddLineAction;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\AddLinesAction;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\RemoveLineAction;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\RemoveLinesAction;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\UpdateLineAction;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\UpdateLinesAction;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
+use RefactorCircus\Polycart\Domains\Scope\Models\CartPathModel;
+use RefactorCircus\Polycart\Domains\Scope\Services\ScopeTree;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Sharing\Services\CartAccess;
 
 /**
  * A cart of any type.
@@ -275,9 +275,9 @@ class CartModel extends Model
 
     /**
      * Record one of the application's own events about this cart in the
-     * suite-wide audit log (jayi/keen), stamped with the signed-in user and
+     * suite-wide audit log (refactor-circus/keen), stamped with the signed-in user and
      * the current surface. An action without a dot is prefixed with `cart.`
-     * (`exported` becomes `cart.exported`). Without jayi/keen installed it
+     * (`exported` becomes `cart.exported`). Without refactor-circus/keen installed it
      * does nothing.
      *
      * @deprecated Call `Keen::record($action)->source('polycart')->on($cart)->with($context)->save()` instead.

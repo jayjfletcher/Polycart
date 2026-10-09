@@ -6,9 +6,9 @@ namespace Workbench\App\Carts;
 
 use BackedEnum;
 use Carbon\CarbonInterval;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
 
 /**
  * A priced quote a manager approves before it goes to the customer.

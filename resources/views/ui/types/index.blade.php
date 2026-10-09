@@ -26,7 +26,7 @@
                             <div class="flex flex-wrap items-center gap-3">
                                 @foreach ($type->statuses()::cases() as $status)
                                     <span class="inline-flex items-center gap-1 text-sm">
-                                        <x-atrium::status-dot :variant="\JayI\Polycart\Atrium\Badges::forStatus((string) $status->value)" :label="$status->value" data-status="{{ $status->value }}" />
+                                        <x-atrium::status-dot :variant="\RefactorCircus\Polycart\Atrium\Badges::forStatus((string) $status->value)" :label="$status->value" data-status="{{ $status->value }}" />
                                         {{ $status->value }}
                                     </span>
                                 @endforeach

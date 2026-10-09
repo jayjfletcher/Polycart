@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Facades;
+namespace RefactorCircus\Polycart\Facades;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Facade;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\CartType\Support\CartType;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 /**
  * @method static CartTypeRegistry types()
@@ -23,12 +23,12 @@ use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
  * @method static CartModel convert(CartModel $cart, string $to, bool $copy = true)
  * @method static CartModel merge(CartModel $from, CartModel $into)
  *
- * @see \JayI\Polycart\Polycart
+ * @see \RefactorCircus\Polycart\Polycart
  */
 class Polycart extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return \JayI\Polycart\Polycart::class;
+        return \RefactorCircus\Polycart\Polycart::class;
     }
 }

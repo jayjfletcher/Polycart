@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 use Illuminate\Testing\Fluent\AssertableJson;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\ListMembersTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\SetVisibilityTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\ShareCartTool;
-use JayI\Polycart\Domains\Sharing\Mcp\Tools\UnshareCartTool;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
-use JayI\Polycart\Tests\Fixtures\Models\Team;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ShowCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\TransitionCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\ListMembersTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\SetVisibilityTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\ShareCartTool;
+use RefactorCircus\Polycart\Domains\Sharing\Mcp\Tools\UnshareCartTool;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Team;
 
 beforeEach(function (): void {
     config()->set('polycart.authorization', true);

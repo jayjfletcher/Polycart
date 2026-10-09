@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
-use JayI\Polycart\Domains\Cart\Exceptions\InvalidConversionException;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Tests\Fixtures\Models\Quote;
-use JayI\Polycart\Tests\Fixtures\Models\Service;
-use JayI\Polycart\Tests\Fixtures\Types\OrderStatus;
-use JayI\Polycart\Tests\Fixtures\Types\QuoteStatus;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartConvertedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Exceptions\InvalidConversionException;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Quote;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Service;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\OrderStatus;
+use RefactorCircus\Polycart\Tests\Fixtures\Types\QuoteStatus;
 
 it('copies a cart into a quote and leaves the cart alone', function (): void {
     Event::fake([CartConvertedActionEvent::class]);

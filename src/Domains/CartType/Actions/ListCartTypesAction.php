@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Actions;
+namespace RefactorCircus\Polycart\Domains\CartType\Actions;
 
-use JayI\Polycart\Domains\CartType\Events\CartTypesListedActionEvent;
-use JayI\Polycart\Domains\CartType\Events\CartTypesListingActionEvent;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\CartType\Events\CartTypesListedActionEvent;
+use RefactorCircus\Polycart\Domains\CartType\Events\CartTypesListingActionEvent;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 final class ListCartTypesAction
 {

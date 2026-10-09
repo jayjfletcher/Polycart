@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart;
+namespace RefactorCircus\Polycart;
 
 use Illuminate\Support\Facades\Blade;
-use JayI\Foundation\Packages\Package;
-use JayI\Foundation\Support\PackageServiceProvider;
-use JayI\Polycart\Atrium\PolycartPlugin;
-use JayI\Polycart\Atrium\ScreenAccess;
-use JayI\Polycart\Domains\DomainServiceProvider;
-use JayI\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Foundation\Packages\Package;
+use RefactorCircus\Foundation\Support\PackageServiceProvider;
+use RefactorCircus\Polycart\Atrium\PolycartPlugin;
+use RefactorCircus\Polycart\Atrium\ScreenAccess;
+use RefactorCircus\Polycart\Domains\DomainServiceProvider;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
 
 class PolycartServiceProvider extends PackageServiceProvider
 {

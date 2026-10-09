@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\Sharing\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\Cart\Http\Requests\CartRequest;
-use JayI\Polycart\Domains\Sharing\Actions\ShareCartAction;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
-use JayI\Polycart\Domains\Sharing\Resources\CartMemberResource;
-use JayI\Polycart\Support\Morphs;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\ShareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Sharing\Resources\CartMemberResource;
+use RefactorCircus\Polycart\Support\Morphs;
 
 final class StoreMemberRequest extends CartRequest
 {

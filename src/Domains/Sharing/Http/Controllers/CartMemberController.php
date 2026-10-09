@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Http\Controllers;
+namespace RefactorCircus\Polycart\Domains\Sharing\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Http\Requests\DestroyMemberRequest;
-use JayI\Polycart\Domains\Sharing\Http\Requests\IndexMembersRequest;
-use JayI\Polycart\Domains\Sharing\Http\Requests\StoreMemberRequest;
-use JayI\Polycart\Domains\Sharing\Http\Requests\UpdateVisibilityRequest;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Http\Requests\DestroyMemberRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Http\Requests\IndexMembersRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Http\Requests\StoreMemberRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Http\Requests\UpdateVisibilityRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 final class CartMemberController
 {

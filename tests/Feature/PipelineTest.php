@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
-use JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
-use JayI\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
-use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
-use JayI\Polycart\Domains\CartLine\Support\Stages\FindMatchingLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
-use JayI\Polycart\Domains\CartLine\Support\Stages\ValidateLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\WriteLine;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
-use JayI\Polycart\Tests\Fixtures\Stages\ApplyBulkDiscount;
-use JayI\Polycart\Tests\Fixtures\Stages\CheckStock;
-use JayI\Polycart\Tests\Fixtures\Stages\EnsureCustomerCanBuy;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineAddedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException;
+use RefactorCircus\Polycart\Domains\CartLine\Mcp\Tools\AddLinesTool;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\FindMatchingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\ValidateLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\WriteLine;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Polycart\Tests\Fixtures\Stages\ApplyBulkDiscount;
+use RefactorCircus\Polycart\Tests\Fixtures\Stages\CheckStock;
+use RefactorCircus\Polycart\Tests\Fixtures\Stages\EnsureCustomerCanBuy;
 
 it('sends lines through the default stages in order', function (): void {
     expect(app(CartTypeRegistry::class)->get('cart')->addLineStages())->toBe([

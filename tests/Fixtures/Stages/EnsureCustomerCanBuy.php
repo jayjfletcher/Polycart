@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Stages;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Stages;
 
 use Closure;
-use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
 
 final class EnsureCustomerCanBuy implements AddLineStage
 {

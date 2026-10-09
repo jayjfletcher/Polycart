@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Types;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Types;
 
 enum QuoteStatus: string
 {

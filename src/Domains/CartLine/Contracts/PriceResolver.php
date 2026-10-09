@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Contracts;
+namespace RefactorCircus\Polycart\Domains\CartLine\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
 
 /**
  * Prices a purchasable when it is added to a cart without an explicit price.

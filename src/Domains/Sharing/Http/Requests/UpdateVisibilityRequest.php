@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\Sharing\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\Cart\Http\Requests\CartRequest;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
-use JayI\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\SetVisibilityAction;
 
 final class UpdateVisibilityRequest extends CartRequest
 {

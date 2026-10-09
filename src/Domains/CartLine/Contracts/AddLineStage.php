@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Contracts;
+namespace RefactorCircus\Polycart\Domains\CartLine\Contracts;
 
 use Closure;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
 
 /**
  * One step a line goes through on its way into a cart.

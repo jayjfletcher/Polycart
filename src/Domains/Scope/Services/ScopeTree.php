@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Scope\Services;
+namespace RefactorCircus\Polycart\Domains\Scope\Services;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
-use JayI\Polycart\Domains\Scope\Contracts\CartScope;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartParticipant;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartScope;
 
 /**
  * Walks the application's tree of scopes.

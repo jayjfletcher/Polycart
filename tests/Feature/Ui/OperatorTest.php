@@ -7,14 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Testing\Fluent\AssertableJson;
-use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
-use JayI\Polycart\Atrium\PolycartPlugin;
-use JayI\Polycart\Atrium\ScreenAccess;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
-use JayI\Polycart\Tests\Fixtures\Models\Person;
+use RefactorCircus\Atrium\Domains\Widgets\Data\WidgetDefinition;
+use RefactorCircus\Polycart\Atrium\PolycartPlugin;
+use RefactorCircus\Polycart\Atrium\ScreenAccess;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ListCartsTool;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Polycart\Tests\Fixtures\Models\Person;
 
 /**
  * `polycart.atrium.show_all` makes some users dashboard operators: they see

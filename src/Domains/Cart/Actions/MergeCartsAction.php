@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Actions;
+namespace RefactorCircus\Polycart\Domains\Cart\Actions;
 
 use Illuminate\Database\ConnectionInterface;
-use JayI\Polycart\Domains\Cart\Events\CartsMergedActionEvent;
-use JayI\Polycart\Domains\Cart\Events\CartsMergingActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Actions\AddLineAction;
-use JayI\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartsMergedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartsMergingActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Actions\AddLineAction;
+use RefactorCircus\Polycart\Domains\Scope\Exceptions\InvalidScopeException;
 
 /**
  * Move every line of one cart into another, then delete the first.

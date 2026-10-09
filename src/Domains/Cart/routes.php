@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-use JayI\Polycart\Domains\Cart\Http\Controllers\CartController;
+use RefactorCircus\Polycart\Domains\Cart\Http\Controllers\CartController;
 
 Route::get('carts', [CartController::class, 'index'])->name('carts.index');
 Route::post('carts', [CartController::class, 'store'])->name('carts.store');

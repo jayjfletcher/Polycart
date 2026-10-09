@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Mcp\Requests;
+namespace RefactorCircus\Polycart\Domains\Cart\Mcp\Requests;
 
 use Illuminate\Database\Eloquent\Model;
-use JayI\Polycart\Domains\Cart\Actions\ActiveCartAction;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
-use JayI\Polycart\Mcp\Request;
-use JayI\Polycart\Support\Morphs;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\ResponseFactory;
+use RefactorCircus\Polycart\Domains\Cart\Actions\ActiveCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
+use RefactorCircus\Polycart\Mcp\Request;
+use RefactorCircus\Polycart\Support\Morphs;
 
 final class ActiveCartMcpRequest extends Request
 {

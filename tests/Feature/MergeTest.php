@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Event;
-use JayI\Polycart\Domains\Cart\Events\CartsMergedActionEvent;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Domains\Cart\Events\CartsMergedActionEvent;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Facades\Polycart;
 
 it('moves a guest cart into the customer\'s cart at login', function (): void {
     Event::fake([CartsMergedActionEvent::class]);

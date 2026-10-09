@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType;
+namespace RefactorCircus\Polycart\Domains\CartType;
 
-use JayI\Foundation\Support\ServiceProvider;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Foundation\Support\ServiceProvider;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
 
 class CartTypeServiceProvider extends ServiceProvider
 {

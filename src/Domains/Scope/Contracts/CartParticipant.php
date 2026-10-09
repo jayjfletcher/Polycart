@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Scope\Contracts;
+namespace RefactorCircus\Polycart\Domains\Scope\Contracts;
 
 /**
  * Someone who works with carts inside the application's tree, usually a user.

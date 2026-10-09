@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Atrium;
+namespace RefactorCircus\Polycart\Atrium;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use JayI\Atrium\Domains\Navigation\Data\NavGroup;
-use JayI\Atrium\Domains\Navigation\Data\NavItem;
-use JayI\Atrium\Domains\Plugins\Support\Plugin;
-use JayI\Atrium\Domains\Search\Data\SearchResult;
-use JayI\Atrium\Domains\Search\Data\SearchSource;
-use JayI\Atrium\Domains\Widgets\Data\WidgetDefinition;
-use JayI\Atrium\Support\Icons;
-use JayI\Polycart\Atrium\Http\Controllers\CartTypeUiController;
-use JayI\Polycart\Atrium\Http\Controllers\CartUiController;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Services\CartTypeRegistry;
+use RefactorCircus\Atrium\Domains\Navigation\Data\NavGroup;
+use RefactorCircus\Atrium\Domains\Navigation\Data\NavItem;
+use RefactorCircus\Atrium\Domains\Plugins\Support\Plugin;
+use RefactorCircus\Atrium\Domains\Search\Data\SearchResult;
+use RefactorCircus\Atrium\Domains\Search\Data\SearchSource;
+use RefactorCircus\Atrium\Domains\Widgets\Data\WidgetDefinition;
+use RefactorCircus\Atrium\Support\Icons;
+use RefactorCircus\Polycart\Atrium\Http\Controllers\CartTypeUiController;
+use RefactorCircus\Polycart\Atrium\Http\Controllers\CartUiController;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Services\CartTypeRegistry;
 
 /**
  * Registers Polycart inside the Atrium dashboard.
@@ -35,7 +35,7 @@ class PolycartPlugin extends Plugin
     /**
      * Features from `polycart.atrium.features` that switch Polycart in Atrium
      * on and off as a whole. A feature class that cannot be loaded, such as
-     * PolycartSupportFeature without jayi/pennantplus, is skipped.
+     * PolycartSupportFeature without refactor-circus/pennantplus, is skipped.
      *
      * @return array<int, string>
      */

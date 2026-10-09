@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Enums;
+namespace RefactorCircus\Polycart\Domains\Sharing\Enums;
 
 /**
  * Who can see a cart without being shared in.

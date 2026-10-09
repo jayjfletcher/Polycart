@@ -3,11 +3,11 @@
 </div>
 
 <p align="center">
-    <a href="https://packagist.org/packages/jayi/polycart"><img src="https://img.shields.io/packagist/v/jayi/polycart.svg?style=flat-square" alt="Packagist"></a>
-    <a href="https://packagist.org/packages/jayi/polycart"><img src="https://img.shields.io/packagist/php-v/jayi/polycart.svg?style=flat-square" alt="PHP from Packagist"></a>
-    <a href="https://packagist.org/packages/jayi/polycart"><img src="https://badge.laravel.cloud/badge/jayi/polycart?style=flat" alt="Laravel versions"></a>
-    <a href="https://github.com/jayi/polycart/actions"><img alt="GitHub Workflow Status (main)" src="https://img.shields.io/github/actions/workflow/status/jayi/polycart/tests.yml?branch=main&label=Tests&style=flat-square"></a>
-    <a href="https://packagist.org/packages/jayi/polycart"><img src="https://img.shields.io/packagist/dt/jayi/polycart.svg?style=flat-square" alt="Total Downloads"></a>
+    <a href="https://packagist.org/packages/refactor-circus/polycart"><img src="https://img.shields.io/packagist/v/refactor-circus/polycart.svg?style=flat-square" alt="Packagist"></a>
+    <a href="https://packagist.org/packages/refactor-circus/polycart"><img src="https://img.shields.io/packagist/php-v/refactor-circus/polycart.svg?style=flat-square" alt="PHP from Packagist"></a>
+    <a href="https://packagist.org/packages/refactor-circus/polycart"><img src="https://badge.laravel.cloud/badge/refactor-circus/polycart?style=flat" alt="Laravel versions"></a>
+    <a href="https://github.com/refactor-circus/polycart/actions"><img alt="GitHub Workflow Status (main)" src="https://img.shields.io/github/actions/workflow/status/refactor-circus/polycart/tests.yml?branch=main&label=Tests&style=flat-square"></a>
+    <a href="https://packagist.org/packages/refactor-circus/polycart"><img src="https://img.shields.io/packagist/dt/refactor-circus/polycart.svg?style=flat-square" alt="Total Downloads"></a>
 </p>
 
 Typed carts for Laravel. A shopping cart, a saved cart, a quote, an order, a project with its sets and openings: every one is a row in the same table, told apart by a string **type key**. Each key points at a `CartType` class, and that class holds all of that kind's rules:
@@ -24,7 +24,7 @@ Your code never branches on the key.
 ## Installation
 
 ```bash
-composer require jayi/polycart
+composer require refactor-circus/polycart
 
 php artisan vendor:publish --tag="polycart-migrations"
 php artisan vendor:publish --tag="polycart-config"
@@ -37,11 +37,11 @@ To customise the Atrium dashboard's views or strings, publish them with the `pol
 
 ## Defining types
 
-A type extends `JayI\Polycart\Domains\CartType\Support\CartType` and overrides only what makes it different. Every method has a permissive default.
+A type extends `RefactorCircus\Polycart\Domains\CartType\Support\CartType` and overrides only what makes it different. Every method has a permissive default.
 
 ```php
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 enum QuoteStatus: string
 {
@@ -119,7 +119,7 @@ CartModel::find($id);      // a Quote instance when the row is a quote
 Add `HasCarts` to anything that owns carts, such as a user, a team or a customer:
 
 ```php
-use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
+use RefactorCircus\Polycart\Domains\Cart\Concerns\HasCarts;
 
 class User extends Authenticatable
 {
@@ -134,7 +134,7 @@ $user->carts;                       // every cart of every type
 Guests use their session key as the owner:
 
 ```php
-use JayI\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Facades\Polycart;
 
 $cart = Polycart::active('cart', session()->getId());
 
@@ -213,7 +213,7 @@ A refused line writes nothing. The API answers `422` with `{message, reason, lin
 
 ### Pricing
 
-A line added without `unitPrice` is priced by the type's `price()`, which defers to the bound `JayI\Polycart\Domains\CartLine\Contracts\PriceResolver`. By default the resolver asks models that implement `Purchasable`:
+A line added without `unitPrice` is priced by the type's `price()`, which defers to the bound `RefactorCircus\Polycart\Domains\CartLine\Contracts\PriceResolver`. By default the resolver asks models that implement `Purchasable`:
 
 ```php
 class Product extends Model implements Purchasable
@@ -370,7 +370,7 @@ Turn authorization off only for trusted server-to-server use.
 | `POST` | `/carts/{cart}/members` | Share with a `member_type` and `member_id` (a person or a scope) as a `role` |
 | `DELETE` | `/carts/{cart}/members/{member}` | Remove a member |
 | `PUT` | `/carts/{cart}/visibility` | Set `visibility` to `private`, `scope` or `boundary` |
-| `GET` | `/history` | Polycart's audit history from [jayi/keen](https://github.com/jayjfletcher/Keen), filterable by `subject_type` and `subject_id` (one cart's history: its morph class and id), `action`; cursor paginated. Answers `404` until an audit log is installed. Named `polycart.history.index`. |
+| `GET` | `/history` | Polycart's audit history from [refactor-circus/keen](https://github.com/Refactor-Circus/Keen), filterable by `subject_type` and `subject_id` (one cart's history: its morph class and id), `action`; cursor paginated. Answers `404` until an audit log is installed. Named `polycart.history.index`. |
 
 When a type refuses a request, the API returns `422` with a message that explains why, such as `A [quote] cart cannot move from [submitted] to [draft].`
 
@@ -383,7 +383,7 @@ The same operations are available as MCP tools, so an agent can manage carts:
 - `transition-cart`, `convert-cart`, `merge-carts`
 - `add-lines`, `update-lines`, `remove-lines`
 - `list-members`, `share-cart`, `unshare-cart`, `set-visibility`
-- `list-polycart-history-tool`, the audit history, for Polycart or one cart (needs an audit log such as jayi/keen installed)
+- `list-polycart-history-tool`, the audit history, for Polycart or one cart (needs an audit log such as refactor-circus/keen installed)
 
 ```php
 'mcp' => [
@@ -396,7 +396,7 @@ The JSON API, the MCP tools and the dashboard all call the same action classes a
 
 ## Cortex
 
-When [`jayi/cortex`](https://github.com/jayjfletcher/cortex) is installed, Polycart connects to it:
+When [`refactor-circus/cortex`](https://github.com/Refactor-Circus/cortex) is installed, Polycart connects to it:
 
 - Every MCP tool joins Cortex's tool registry, tagged `polycart`, so **Cortex agents can manage carts**. They go through the same validation, authorization and add pipeline as MCP clients.
 - The server is registered as `polycart`, so its **instructions and each tool's description can be overridden** with Cortex's versioned, publishable content.
@@ -410,15 +410,15 @@ When [`jayi/cortex`](https://github.com/jayjfletcher/cortex) is installed, Polyc
 
 ## Atrium dashboard
 
-When [`jayi/atrium`](https://github.com/jayjfletcher/Atrium) is installed, Polycart adds pages to the dashboard behind Atrium's own gate:
+When [`refactor-circus/atrium`](https://github.com/Refactor-Circus/Atrium) is installed, Polycart adds pages to the dashboard behind Atrium's own gate:
 
 - **Carts:** filter the list, and open a cart to see its place in the tree and manage members and visibility. You can also edit its line quantities, move its status, convert it, rename it, edit its meta, clear it or delete it. Only the statuses and conversions its type allows are offered.
 - **Cart types:** every registered type and its rules.
 - **Widgets:** *Carts by type* and *Recent carts*.
 - **Search:** find carts from Atrium's search.
-- **History:** with [jayi/keen](https://github.com/jayjfletcher/Keen) installed, a cart's page shows its history and the carts page Polycart's recent history.
+- **History:** with [refactor-circus/keen](https://github.com/Refactor-Circus/Keen) installed, a cart's page shows its history and the carts page Polycart's recent history.
 
-The screens follow Atrium's screen conventions: actions are icon buttons (the label is the tooltip), each navigation item has an icon, and a cart's status is a coloured dot with the status on hover. `JayI\Polycart\Atrium\Badges` picks the colour by the status's meaning: `info` only for pending or awaiting states such as `pending` and `submitted`, `success` for done or active, `warning` for held, `danger` for failed or refused, `neutral` for over (and for any expired cart), and `primary` for anything else.
+The screens follow Atrium's screen conventions: actions are icon buttons (the label is the tooltip), each navigation item has an icon, and a cart's status is a coloured dot with the status on hover. `RefactorCircus\Polycart\Atrium\Badges` picks the colour by the status's meaning: `info` only for pending or awaiting states such as `pending` and `submitted`, `success` for done or active, `warning` for held, `danger` for failed or refused, `neutral` for over (and for any expired cart), and `primary` for anything else.
 
 ### Permissions
 
@@ -455,25 +455,25 @@ Support and operations staff often need to see and fix any cart, not only the on
 Gate::define('manage-carts', fn (User $user): bool => $user->is_support);
 ```
 
-An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines and members: viewing, editing, deleting, moving to any status the cart's type allows, converting and sharing. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `JayI\Polycart\Atrium\ScreenAccess::operator($user)` tells you whether a user is one.
+An operator sees every cart in the lists, widgets and search, and is allowed every action and control on Polycart's carts, lines and members: viewing, editing, deleting, moving to any status the cart's type allows, converting and sharing. Guests are never operators. It applies to the dashboard only: the JSON API and MCP tools still act as the user's role on each cart allows. In your own views, `@polycartCan` answers the same way, and `RefactorCircus\Polycart\Atrium\ScreenAccess::operator($user)` tells you whether a user is one.
 
 ### Switching it off
 
 Set `polycart.ui.enabled` to `false` to leave the dashboard out.
 
-With [`jayi/pennantplus`](https://github.com/jayjfletcher/PennantPlus) installed, the `JayI\Polycart\Atrium\Features\PolycartSupportFeature` Pennant feature switches Polycart in Atrium on and off as a whole: its navigation, widgets, search and pages, which answer 404 while it is off. It is on until its global value is set, and only its global value counts; per-user access stays with the policies.
+With [`refactor-circus/pennantplus`](https://github.com/Refactor-Circus/PennantPlus) installed, the `RefactorCircus\Polycart\Atrium\Features\PolycartSupportFeature` Pennant feature switches Polycart in Atrium on and off as a whole: its navigation, widgets, search and pages, which answer 404 while it is off. It is on until its global value is set, and only its global value counts; per-user access stays with the policies.
 
 ```php
 Feature::for(null)->deactivate(PolycartSupportFeature::class);
 ```
 
-The features checked come from `polycart.atrium.features`. Point it at a subclass to change the default, at your own feature, or empty it. A class that cannot be loaded, such as `PolycartSupportFeature` without jayi/pennantplus, is skipped.
+The features checked come from `polycart.atrium.features`. Point it at a subclass to change the default, at your own feature, or empty it. A class that cannot be loaded, such as `PolycartSupportFeature` without refactor-circus/pennantplus, is skipped.
 
 ## Sources and history
 
-Every cart records the **`source`** it was created (or last converted) through, as jayi/foundation's `Surface` names it: `http` (the JSON API), `mcp`, `cortex` (a Cortex agent), `atrium`, `cli` or `code`, or a name of your own.
+Every cart records the **`source`** it was created (or last converted) through, as refactor-circus/foundation's `Surface` names it: `http` (the JSON API), `mcp`, `cortex` (a Cortex agent), `atrium`, `cli` or `code`, or a name of your own.
 
-Polycart keeps no history of its own. Install [jayi/keen](https://github.com/jayjfletcher/Keen), the suite-wide audit log, and every change to a cart is recorded with who made it, through which surface and what changed. Line, sharing, merge and conversion entries are about the cart; a merge names the merged cart in `merged_from`, and a copy made by a conversion names the original in `converted_from`. Without Keen, carts keep no history.
+Polycart keeps no history of its own. Install [refactor-circus/keen](https://github.com/Refactor-Circus/Keen), the suite-wide audit log, and every change to a cart is recorded with who made it, through which surface and what changed. Line, sharing, merge and conversion entries are about the cart; a merge names the merged cart in `merged_from`, and a copy made by a conversion names the original in `converted_from`. Without Keen, carts keep no history.
 
 ```php
 Polycart::usingSource('import', fn () => $importer->run());      // name your own surface
@@ -502,12 +502,12 @@ Every event carries the models involved. Events for a removed line or member car
 A cart whose type has a `lifetime()` gets an `expires_at`. It is pruned `polycart.prune_after_days` days after it expires:
 
 ```php
-Schedule::command('model:prune', ['--model' => [\JayI\Polycart\Domains\Cart\Models\CartModel::class]])->daily();
+Schedule::command('model:prune', ['--model' => [\RefactorCircus\Polycart\Domains\Cart\Models\CartModel::class]])->daily();
 ```
 
 ## Package layout
 
-The code is organised into domain modules under `src/Domains/{Domain}` (`JayI\Polycart\Domains\{Domain}`), each with its own service provider, routes and only the folders it uses (`Models/`, `Policies/`, `Resources/`, `Actions/`, `Events/`, `Http/`, `Mcp/`, `Contracts/`, `Services/`, `Support/`, ...):
+The code is organised into domain modules under `src/Domains/{Domain}` (`RefactorCircus\Polycart\Domains\{Domain}`), each with its own service provider, routes and only the folders it uses (`Models/`, `Policies/`, `Resources/`, `Actions/`, `Events/`, `Http/`, `Mcp/`, `Contracts/`, `Services/`, `Support/`, ...):
 
 | Domain | Holds |
 | --- | --- |
@@ -517,7 +517,7 @@ The code is organised into domain modules under `src/Domains/{Domain}` (`JayI\Po
 | `Sharing` | `CartMemberModel`, sharing and visibility, `CartAccess` |
 | `Scope` | `CartPathModel`, the `ScopeTree`, `CartScope` and `CartParticipant` |
 
-Polycart stands on [jayi/foundation](https://github.com/jayjfletcher/Foundation), the runtime the jayi packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Foundation's MCP request plus the `cortex` surface for agent calls and line reason codes), the MCP server and its history tool, `Support/` (morph lookups and the base policy) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain. Domain providers extend Foundation's `ServiceProvider` directly. Each change's history is jayi/keen's, read through Foundation's `AuditTrail`.
+Polycart stands on [refactor-circus/foundation](https://github.com/Refactor-Circus/Foundation), the runtime the Refactor Circus packages share: its HTTP and MCP request bases, MCP tool and server bases, authorizer, Cortex integration, event contracts and model-event trait are used as they are. Cross-domain code stays outside the domains: the `Polycart` entry point and facade, `Mcp\Request` (Foundation's MCP request plus the `cortex` surface for agent calls and line reason codes), the MCP server and its history tool, `Support/` (morph lookups and the base policy) and the Atrium plugin, whose screens, `ScreenAccess` and `PolycartSupportFeature` live under `src/Atrium/` because they span every domain. Domain providers extend Foundation's `ServiceProvider` directly. Each change's history is refactor-circus/keen's, read through Foundation's `AuditTrail`.
 
 ## Testing
 

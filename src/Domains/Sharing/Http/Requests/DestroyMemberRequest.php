@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Sharing\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\Sharing\Http\Requests;
 
 use Illuminate\Http\Response;
-use JayI\Polycart\Domains\Cart\Http\Requests\CartRequest;
-use JayI\Polycart\Domains\Sharing\Actions\UnshareCartAction;
-use JayI\Polycart\Domains\Sharing\Models\CartMemberModel;
+use RefactorCircus\Polycart\Domains\Cart\Http\Requests\CartRequest;
+use RefactorCircus\Polycart\Domains\Sharing\Actions\UnshareCartAction;
+use RefactorCircus\Polycart\Domains\Sharing\Models\CartMemberModel;
 
 final class DestroyMemberRequest extends CartRequest
 {

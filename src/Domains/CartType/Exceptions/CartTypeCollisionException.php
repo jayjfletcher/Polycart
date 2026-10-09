@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Exceptions;
+namespace RefactorCircus\Polycart\Domains\CartType\Exceptions;
 
-use JayI\Polycart\Exceptions\PolycartException;
+use RefactorCircus\Polycart\Exceptions\PolycartException;
 
 final class CartTypeCollisionException extends PolycartException
 {

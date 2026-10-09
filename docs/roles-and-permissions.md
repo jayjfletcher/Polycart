@@ -56,7 +56,7 @@ The package itself checks six abilities:
 Override `roles()` on the type. Only the carts of that type are affected.
 
 ```php
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 class OrderCart extends CartType
 {
@@ -251,9 +251,9 @@ Polycart registers a policy for each of its models from `polycart.policies`:
 
 ```php
 'policies' => [
-    CartModel::class => \JayI\Polycart\Domains\Cart\Policies\CartPolicy::class,
-    CartLineModel::class => \JayI\Polycart\Domains\CartLine\Policies\CartLinePolicy::class,
-    CartMemberModel::class => \JayI\Polycart\Domains\Sharing\Policies\CartMemberPolicy::class,
+    CartModel::class => \RefactorCircus\Polycart\Domains\Cart\Policies\CartPolicy::class,
+    CartLineModel::class => \RefactorCircus\Polycart\Domains\CartLine\Policies\CartLinePolicy::class,
+    CartMemberModel::class => \RefactorCircus\Polycart\Domains\Sharing\Policies\CartMemberPolicy::class,
 ],
 ```
 

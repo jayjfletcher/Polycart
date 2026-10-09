@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartLine\Actions;
+namespace RefactorCircus\Polycart\Domains\CartLine\Actions;
 
-use JayI\Polycart\Domains\CartLine\Events\LineUpdatedActionEvent;
-use JayI\Polycart\Domains\CartLine\Events\LineUpdatingActionEvent;
-use JayI\Polycart\Domains\CartLine\Models\CartLineModel;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineUpdatedActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Events\LineUpdatingActionEvent;
+use RefactorCircus\Polycart\Domains\CartLine\Models\CartLineModel;
 
 /**
  * Change a line's quantity, removing it when the quantity reaches zero.

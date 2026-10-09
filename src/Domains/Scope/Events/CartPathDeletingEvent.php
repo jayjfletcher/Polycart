@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Scope\Events;
+namespace RefactorCircus\Polycart\Domains\Scope\Events;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use JayI\Foundation\Contracts\ModelLifecycleEvent;
-use JayI\Polycart\Domains\Scope\Models\CartPathModel;
+use RefactorCircus\Foundation\Contracts\ModelLifecycleEvent;
+use RefactorCircus\Polycart\Domains\Scope\Models\CartPathModel;
 
 /**
  * The CartPathModel `deleting` Eloquent event.

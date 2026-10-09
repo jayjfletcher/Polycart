@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Tests\Fixtures\Types;
+namespace RefactorCircus\Polycart\Tests\Fixtures\Types;
 
 use Closure;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\PrepareLine;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * A stage list with a stage that stops without rejecting or writing.

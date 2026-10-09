@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use JayI\Polycart\Domains\Cart\Concerns\HasCarts;
-use JayI\Polycart\Domains\Scope\Contracts\CartParticipant;
+use RefactorCircus\Polycart\Domains\Cart\Concerns\HasCarts;
+use RefactorCircus\Polycart\Domains\Scope\Contracts\CartParticipant;
 use Workbench\Database\Factories\UserFactory;
 
 /**

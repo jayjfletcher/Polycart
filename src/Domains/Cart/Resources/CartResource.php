@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Resources;
+namespace RefactorCircus\Polycart\Domains\Cart\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartLine\Resources\CartLineResource;
-use JayI\Polycart\Domains\Sharing\Resources\CartMemberResource;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartLine\Resources\CartLineResource;
+use RefactorCircus\Polycart\Domains\Sharing\Resources\CartMemberResource;
 
 /**
  * @mixin CartModel

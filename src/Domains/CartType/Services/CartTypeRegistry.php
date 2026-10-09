@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\CartType\Services;
+namespace RefactorCircus\Polycart\Domains\CartType\Services;
 
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\CartType\Exceptions\CartTypeCollisionException;
-use JayI\Polycart\Domains\CartType\Exceptions\UnknownCartTypeException;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\CartType\Exceptions\CartTypeCollisionException;
+use RefactorCircus\Polycart\Domains\CartType\Exceptions\UnknownCartTypeException;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 /**
  * The catalogue of cart types.

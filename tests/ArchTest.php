@@ -11,12 +11,12 @@ arch('it will not use dd(), ddd(), env(), or exit()')
     ->each->not->toBeUsed();
 
 arch('the package source declares strict types')
-    ->expect('JayI\Polycart')
+    ->expect('RefactorCircus\Polycart')
     ->toUseStrictTypes();
 
 arch('actions are final and declare their own validation rules')
     ->expect(array_map(
-        fn (string $domain): string => 'JayI\\Polycart\\Domains\\'.basename($domain).'\Actions',
+        fn (string $domain): string => 'RefactorCircus\\Polycart\\Domains\\'.basename($domain).'\Actions',
         (array) glob(dirname(__DIR__).'/src/Domains/*/Actions', GLOB_ONLYDIR),
     ))
     ->classes()
@@ -45,7 +45,7 @@ arch('every MCP request has a tool on the server')
 
 arch('domain models are named for their entity and end in Model')
     ->expect(array_map(
-        fn (string $domain): string => 'JayI\\Polycart\\Domains\\'.basename($domain).'\Models',
+        fn (string $domain): string => 'RefactorCircus\\Polycart\\Domains\\'.basename($domain).'\Models',
         (array) glob(dirname(__DIR__).'/src/Domains/*/Models', GLOB_ONLYDIR),
     ))
     ->toHaveSuffix('Model');

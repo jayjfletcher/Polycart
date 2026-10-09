@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\Cart\Http\Requests;
 
 use Illuminate\Http\JsonResponse;
-use JayI\Polycart\Domains\Cart\Actions\MergeCartsAction;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Cart\Resources\CartResource;
+use RefactorCircus\Polycart\Domains\Cart\Actions\MergeCartsAction;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Cart\Resources\CartResource;
 
 final class MergeCartsRequest extends CartRequest
 {

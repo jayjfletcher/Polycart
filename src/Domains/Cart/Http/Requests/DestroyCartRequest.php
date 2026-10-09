@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace JayI\Polycart\Domains\Cart\Http\Requests;
+namespace RefactorCircus\Polycart\Domains\Cart\Http\Requests;
 
 use Illuminate\Http\Response;
-use JayI\Polycart\Domains\Cart\Actions\DeleteCartAction;
+use RefactorCircus\Polycart\Domains\Cart\Actions\DeleteCartAction;
 
 final class DestroyCartRequest extends CartRequest
 {

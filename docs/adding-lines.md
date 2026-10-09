@@ -45,7 +45,7 @@ Every way of adding a line uses the same pipeline:
 | 6 | `ValidateLine` | Runs the type's `validate()`, such as its price requirement |
 | 7 | `WriteLine` | Saves the line |
 
-All of them live in `JayI\Polycart\Domains\CartLine\Support\Stages`.
+All of them live in `RefactorCircus\Polycart\Domains\CartLine\Support\Stages`.
 
 Where to put your own stages:
 
@@ -58,7 +58,7 @@ Where to put your own stages:
 
 ## The pending line
 
-`JayI\Polycart\Domains\CartLine\Support\PendingLine` is what the stages pass along.
+`RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine` is what the stages pass along.
 
 **Fixed for the whole add** (readonly):
 
@@ -96,8 +96,8 @@ A stage is a class with a `handle()` method that does its step and then calls `$
 
 ```php
 use Closure;
-use JayI\Polycart\Domains\CartLine\Contracts\AddLineStage;
-use JayI\Polycart\Domains\CartLine\Support\PendingLine;
+use RefactorCircus\Polycart\Domains\CartLine\Contracts\AddLineStage;
+use RefactorCircus\Polycart\Domains\CartLine\Support\PendingLine;
 
 final class CheckStock implements AddLineStage
 {
@@ -154,7 +154,7 @@ A stage must either call `$next($line)` or reject the line. One that returns wit
 $line->reject('This customer is on credit hold.', 'credit_hold');
 ```
 
-This throws a `JayI\Polycart\Domains\CartLine\Exceptions\LineRejectedException` with:
+This throws a `RefactorCircus\Polycart\Domains\CartLine\Exceptions\LineRejectedException` with:
 
 - `getMessage()`: text for people
 - `$e->reason`: a stable code for programs, such as `out_of_stock`, so clients can branch without parsing the message
@@ -184,10 +184,10 @@ The package's own refusals have codes too:
 Override `addLineStages()` on the type. You can start from the defaults and slot stages in with two helpers, so your type keeps any stages the package adds later:
 
 ```php
-use JayI\Polycart\Domains\CartLine\Support\Stages\BuildLine;
-use JayI\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
-use JayI\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
-use JayI\Polycart\Domains\CartType\Support\CartType;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\BuildLine;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\CheckAccepted;
+use RefactorCircus\Polycart\Domains\CartLine\Support\Stages\ResolvePrice;
+use RefactorCircus\Polycart\Domains\CartType\Support\CartType;
 
 class WholesaleCart extends CartType
 {
@@ -273,7 +273,7 @@ Both need the `update` ability on the cart when `polycart.authorization` is on. 
 
 - **One transaction:** the pipeline runs in a single database transaction, and so does a batch. Nested transactions become savepoints.
 - **Events:** adding fires `LineAddingActionEvent` before the pipeline runs and `LineAddedActionEvent` (with `merged`) once it commits, and a batch wraps these in `LinesAdding`/`LinesAddedActionEvent`. Finish events wait for the commit, so listeners never hear about a line that was rolled back. See [Events](events.md).
-- **History:** with jayi/keen installed, the audit log records `line.added` from the finish event, so a rolled-back add leaves no entry.
+- **History:** with refactor-circus/keen installed, the audit log records `line.added` from the finish event, so a rolled-back add leaves no entry.
 - **Expiry:** the cart's expiry is pushed back once the line is written.
 
 ## What the pipeline does not cover

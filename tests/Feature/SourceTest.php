@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Support\Facades\Route;
-use JayI\Foundation\Support\Surface;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
-use JayI\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
-use JayI\Polycart\Domains\Cart\Models\CartModel;
-use JayI\Polycart\Domains\Sharing\Enums\Visibility;
-use JayI\Polycart\Facades\Polycart;
-use JayI\Polycart\Mcp\PolycartServer;
+use RefactorCircus\Foundation\Support\Surface;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\ConvertCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Mcp\Tools\CreateCartTool;
+use RefactorCircus\Polycart\Domains\Cart\Models\CartModel;
+use RefactorCircus\Polycart\Domains\Sharing\Enums\Visibility;
+use RefactorCircus\Polycart\Facades\Polycart;
+use RefactorCircus\Polycart\Mcp\PolycartServer;
 
 it('records the surface of carts made directly', function (): void {
     // The test runner is a console process, so Foundation's Surface says `cli`.
