@@ -1,4 +1,5 @@
 <div align="center">
+    <img src="art/icon.png" width="160" alt="Polycart icon">
     <h1>Polycart</h1>
 </div>
 
