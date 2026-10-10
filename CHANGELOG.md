@@ -128,6 +128,6 @@
 - `RefactorCircus\Polycart\Atrium\Format::variant()` is replaced by `Badges::forCart()`.
 
 
-## [v0.1.0](https://github.com/jayi/polycart/compare/...v0.1.0) - 202x-xx-xx
+## [v0.1.0](https://github.com/Refactor-Circus/Polycart/compare/...v0.1.0) - 202x-xx-xx
 
 Initial pre-release.
